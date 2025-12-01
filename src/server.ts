@@ -552,8 +552,31 @@ server.registerResource(
   'ui://widget/savings-card-dynamic.html',
   {},
   async () => {
-    // Calculate expiration year (current year + 1)
-    const expirationYear = new Date().getFullYear() + 1;
+    // Get expiration year based on savings card enrolled year from app settings
+    let expirationYear: number;
+    
+    try {
+      const userToken = getAccessToken();
+      const response = await fetch(`${capiGatewayUrl}/v1/appSettings`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+      const settings = data.settings || [];
+      const settingsValue = JSON.parse(settings[0].value);
+      const savingsCardEnrolledYear = settingsValue.savingsCardEnrolledYear;
+      
+      expirationYear = savingsCardEnrolledYear + 1;
+      console.log(`Using enrolled year ${savingsCardEnrolledYear}, expiration: ${expirationYear}`);
+    } catch (error) {
+      console.error('Error fetching enrolled year, using default:', error);
+      expirationYear = new Date().getFullYear() + 1; // Default fallback
+    }
+
     
     return {
       contents: [
