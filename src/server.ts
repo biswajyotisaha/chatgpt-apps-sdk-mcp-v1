@@ -574,7 +574,7 @@ server.registerResource(
       console.log(`Using enrolled year ${savingsCardEnrolledYear}, expiration: ${expirationYear}`);
     } catch (error) {
       console.error('Error fetching enrolled year, using default:', error);
-      // expirationYear = new Date().getFullYear() + 1; // Default fallback
+      expirationYear = new Date().getFullYear() + 1; // Default fallback
     }
 
     
