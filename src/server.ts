@@ -570,7 +570,7 @@ server.registerResource(
       const settingsValue = JSON.parse(settings[0].value);
       const savingsCardEnrolledYear = settingsValue.savingsCardEnrolledYear;
       
-      expirationYear = savingsCardEnrolledYear + 2;
+      expirationYear = savingsCardEnrolledYear + 1;
       console.log(`Using enrolled year ${savingsCardEnrolledYear}, expiration: ${expirationYear}`);
     } catch (error) {
       console.error('Error fetching enrolled year, using default:', error);
