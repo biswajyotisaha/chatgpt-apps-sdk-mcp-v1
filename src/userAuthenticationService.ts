@@ -11,6 +11,7 @@ let lc3Id: string | null = null;
 let brand: string | null = null;
 let emailId: string | null = null;
 let officialBrandName: string | null = null;
+let savingsCardEnrolledYear: number | null = null;
 
 /**
  * Sets the current user's access token.
@@ -127,6 +128,40 @@ export function requireOfficialBrandName(): string {
     throw new Error('Official brand name not available.');
   }
   return officialBrandName;
+}
+
+/**
+ * Sets the savings card enrolled year.
+ * Converts string input to number for internal storage.
+ */
+export function setSavingsCardEnrolledYear(year: string | number | null): void {
+  if (year === null || year === undefined) {
+    savingsCardEnrolledYear = null;
+  } else if (typeof year === 'string') {
+    const parsedYear = parseInt(year, 10);
+    savingsCardEnrolledYear = isNaN(parsedYear) ? null : parsedYear;
+  } else {
+    savingsCardEnrolledYear = year;
+  }
+}
+
+/**
+ * Gets the savings card enrolled year without throwing an error.
+ * Returns null if not set.
+ */
+export function getSavingsCardEnrolledYear(): number | null {
+  return savingsCardEnrolledYear;
+}
+
+/**
+ * Gets the savings card enrolled year or throws an error if not available.
+ * Use this in tools that require enrolled year.
+ */
+export function requireSavingsCardEnrolledYear(): number {
+  if (!savingsCardEnrolledYear) {
+    throw new Error('Savings card enrolled year not available.');
+  }
+  return savingsCardEnrolledYear;
 }
 
 /**

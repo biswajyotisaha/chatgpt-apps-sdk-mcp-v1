@@ -21,7 +21,10 @@ import {
   setOfficialBrandName,
   requireOfficialBrandName,
   getOfficialBrandName,
-  extractPatientId
+  extractPatientId,
+  setSavingsCardEnrolledYear,
+  getSavingsCardEnrolledYear,
+  requireSavingsCardEnrolledYear
 } from './userAuthenticationService.js';
 
 // ==================== EXPRESS APP SETUP ====================
@@ -552,28 +555,21 @@ server.registerResource(
   'ui://widget/savings-card-dynamic.html',
   {},
   async () => {
-    // Get expiration year based on savings card enrolled year from app settings
+    // Get expiration year based on cached savings card enrolled year
     let expirationYear: number;
     
     try {
-      const userToken = getAccessToken();
-      const response = await fetch(`${capiGatewayUrl}/v1/appSettings`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const savingsCardEnrolledYear = getSavingsCardEnrolledYear();
       
-      const data = await response.json();
-      const settings = data.settings || [];
-      const settingsValue = JSON.parse(settings[0].value);
-      const savingsCardEnrolledYear = settingsValue.savingsCardEnrolledYear;
-      
-      expirationYear = savingsCardEnrolledYear + 1;
-      console.log(`Using enrolled year ${savingsCardEnrolledYear}, expiration: ${expirationYear}`);
+      if (savingsCardEnrolledYear) {
+        expirationYear = savingsCardEnrolledYear + 2; // Card expires 2 years after enrollment
+        console.log(`Using cached enrolled year ${savingsCardEnrolledYear}, expiration: ${expirationYear}`);
+      } else {
+        console.log('No cached enrolled year found, using default expiration');
+        expirationYear = new Date().getFullYear() + 2; // Default fallback
+      }
     } catch (error) {
-      console.error('Error fetching enrolled year, using default:', error);
+      console.error('Error getting cached enrolled year, using default:', error);
       expirationYear = new Date().getFullYear() + 2; // Default fallback
     }
 
@@ -887,16 +883,18 @@ server.registerTool(
   async () => {
     const userToken = requireAccessToken();
     
-    // Fetch brand and LC3 JWT if not already loaded
-    // await getBrandAndJwt(userToken);
+    // Fetch brand and user data from appSettings (but not LC3 JWT since authorize doesn't work)
+    await fetchAndSetBrand(userToken);
     
-    // const uid = requireLc3Id();
-    // const email = requireEmailId();
-    // const officialBrandName = requireOfficialBrandName();
+    // Use real user data from appSettings
+    const uid = requireLc3Id();
+    const email = requireEmailId();
+    const officialBrandName = requireOfficialBrandName();
     
-    const uid = 'f765e766-0379-4344-a703-9383c4818174';
-    const email = 'taltz1817@grr.la';
-    const officialBrandName = 'Ixekizumab US';
+    // Use constant UID since LC3 authorize doesn't work for getting real patient ID
+    // const uid = 'f765e766-0379-4344-a703-9383c4818174';
+    // const email = 'taltz1817@grr.la';
+    // const officialBrandName = 'Ixekizumab US';
     
     try {
       const controller = new AbortController();
@@ -1036,7 +1034,7 @@ app.get('/health', (req: Request, res: Response) => {
  * Advertises this server's resource URL and supported authorization servers.
  * Must match Auth0 API Identifier exactly.
  */
-app.get('/.well-known/oauth-protected-resource', (req, res) => {
+app.get('/.well-known/oauth-protected-resource', (req: any, res: any) => {
   const issuerURL = process.env.LILLY_ISSUER_BASE_URL;
   const audience = process.env.LILLY_AUDIENCE; // Use audience as resource URL
   
@@ -1169,31 +1167,40 @@ async function fetchAndSetBrand(token: string): Promise<void> {
       console.log(`Official brand name set to: ${officialName}`);
       setOfficialBrandName(officialName);
       
-      // Extract originalEmailId from the value field
+      // Extract originalEmailId and savingsCardEnrolledYear from the value field
       if (settings[0].value) {
         try {
           const settingsValue = JSON.parse(settings[0].value);
           const emailValue = settingsValue.originalEmailId || null;
+          const enrolledYear = settingsValue.savingsCardEnrolledYear || null;
+          
           console.log(`Email ID set to: ${emailValue}`);
+          console.log(`Savings Card Enrolled Year set to: ${enrolledYear}`);
+          
           setEmailId(emailValue);
+          setSavingsCardEnrolledYear(enrolledYear);
         } catch (parseError) {
           console.error('Failed to parse settings value:', parseError);
           setEmailId(null);
+          setSavingsCardEnrolledYear(null);
         }
       } else {
         setEmailId(null);
+        setSavingsCardEnrolledYear(null);
       }
     } else {
       console.log('User not registered, no brand found');
       setBrand(null);
       setOfficialBrandName(null);
       setEmailId(null);
+      setSavingsCardEnrolledYear(null);
     }
   } catch (error: any) {
     console.error('Error fetching brand:', error.message);
     setBrand(null);
     setOfficialBrandName(null);
     setEmailId(null);
+    setSavingsCardEnrolledYear(null);
   }
 }
 
