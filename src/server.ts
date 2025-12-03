@@ -1040,15 +1040,25 @@ app.get('/.well-known/oauth-protected-resource', (req, res) => {
  * Non-blocking - allows all requests through, tools enforce auth as needed.
  */
 async function verifyToken(req: Request, res: Response, next: any) {
+  // Log all incoming request headers from ChatGPT
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('📥 Incoming Request from ChatGPT');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🔍 Request Headers:');
+  console.log(JSON.stringify(req.headers, null, 2));
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
   const authHeader = req.headers.authorization;
   
   if (!authHeader) {
+    console.log('⚠️  No Authorization header found');
     setAccessToken(null);
     return next();
   }
   
   const token = authHeader.replace(/^Bearer\s+/i, '');
   if (!token || token === authHeader) {
+    console.log('⚠️  Invalid token format in Authorization header');
     setAccessToken(null);
     return next();
   }
@@ -1057,10 +1067,14 @@ async function verifyToken(req: Request, res: Response, next: any) {
   const currentToken = getAccessToken();
   const tokenChanged = token !== currentToken;
   
+  console.log(`🔑 Token received: ${token.substring(0, 20)}...`);
+  console.log(`🔄 Token changed: ${tokenChanged}`);
  
   if (tokenChanged ) {
     // Store the access token
     setAccessToken(token);
+    console.log('✅ Access token stored');
+    
     // Fetches brand and LC3 JWT token and brand using the access token.
     await fetchAndSetBrand(token);
     // Whenever access token changes try to fetch LC3 JWT, this will replace the existing value
