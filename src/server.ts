@@ -548,6 +548,288 @@ server.registerResource(
 );
 
 server.registerResource(
+  'registration-form',
+  'ui://widget/registration-form.html',
+  {},
+  async () => ({
+    contents: [
+      {
+        uri: 'ui://widget/registration-form.html',
+        mimeType: 'text/html+skybridge',
+        text: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registration Form</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --brand: #e81f26;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 20px;
+      --input-border: #d1d5db;
+      --input-focus: #3b82f6;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      min-height: 100svh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px;
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-lilly {
+      width: 120px;
+      height: auto;
+      margin: 0 auto 16px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--input-border);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--input-focus);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background-color: var(--brand);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .message.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      display: block;
+    }
+
+    .message.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+
+    .required {
+      color: var(--brand);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="card-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly logo" class="logo-lilly" />
+        <h1>Patient Registration</h1>
+        <div class="subtitle">Join our patient support program</div>
+      </div>
+
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="firstName">First Name <span class="required">*</span></label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter your first name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name <span class="required">*</span></label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            placeholder="Enter your last name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="your.email@example.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Date of Birth <span class="required">*</span></label>
+          <input
+            type="date"
+            id="dob"
+            name="dob"
+            required
+          />
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Submit Registration
+        </button>
+
+        <div id="message" class="message"></div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageEl = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      messageEl.className = 'message';
+      messageEl.textContent = '';
+
+      const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        dob: document.getElementById('dob').value,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        // Dummy API call - replace with actual endpoint
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          messageEl.className = 'message success';
+          messageEl.textContent = 'Registration successful! Welcome to the program.';
+          form.reset();
+          
+          // Notify ChatGPT widget if available
+          if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+            window.oai.widget.setState({
+              registrationComplete: true,
+              userData: formData
+            });
+          }
+        } else {
+          throw new Error('Registration failed');
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        messageEl.className = 'message error';
+        messageEl.textContent = 'Registration failed. Please try again later.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Registration';
+      }
+    });
+
+    console.log('Registration form loaded');
+  </script>
+</body>
+</html>`
+      },
+    ],
+  })
+);
+
+server.registerResource(
   'savings-card-dynamic',
   'ui://widget/savings-card-dynamic.html',
   {},
@@ -997,7 +1279,93 @@ server.registerTool(
   }
 );
 
+/**
+ * Tool: Show Registration Form
+ * Displays a patient registration form with fields for first name, last name, email, and date of birth.
+ * No authentication required - public registration available to all users.
+ */
+server.registerTool(
+  'show-registration-form',
+  {
+    title: 'Show Registration Form',
+    description: 'Display patient registration form for new users to sign up',
+    _meta: {
+      'openai/outputTemplate': 'ui://widget/registration-form.html',
+      'openai/toolInvocation/invoking': 'Loading registration form...',
+      'openai/toolInvocation/invoked': 'Registration form loaded successfully'
+    },
+    inputSchema: {}
+  },
+  async () => {
+    return {
+      content: [
+        { 
+          type: 'text', 
+          text: 'Registration form is ready. Please fill in your details to join the patient support program.'
+        }
+      ],
+      structuredContent: {
+        formType: 'patient-registration',
+        fields: ['firstName', 'lastName', 'email', 'dob']
+      }
+    };
+  }
+);
+
 // ==================== HTTP ENDPOINTS ====================
+
+/**
+ * Registration API Endpoint (Dummy)
+ * Accepts patient registration data and returns success response.
+ * This is a mock endpoint - replace with actual API integration.
+ */
+app.post('/api/register', express.json(), async (req: Request, res: Response) => {
+  try {
+    const { firstName, lastName, email, dob, timestamp } = req.body;
+    
+    // Validate required fields
+    if (!firstName || !lastName || !email || !dob) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields',
+        message: 'Please provide firstName, lastName, email, and dob'
+      });
+    }
+    
+    // Log the registration attempt
+    console.log('📝 Registration received:', {
+      firstName,
+      lastName,
+      email,
+      dob,
+      timestamp: timestamp || new Date().toISOString()
+    });
+    
+    // Simulate API processing delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Mock successful response
+    res.status(200).json({
+      success: true,
+      message: 'Registration successful',
+      data: {
+        userId: randomUUID(),
+        firstName,
+        lastName,
+        email,
+        registeredAt: new Date().toISOString(),
+        status: 'active'
+      }
+    });
+  } catch (error: any) {
+    console.error('Registration error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Registration failed',
+      message: error.message
+    });
+  }
+});
 
 /**
  * Health Check Endpoint
