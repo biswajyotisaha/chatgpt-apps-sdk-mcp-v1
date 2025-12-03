@@ -1292,7 +1292,10 @@ server.registerTool(
     _meta: {
       'openai/outputTemplate': 'ui://widget/registration-form.html',
       'openai/toolInvocation/invoking': 'Loading registration form...',
-      'openai/toolInvocation/invoked': 'Registration form loaded successfully'
+      'openai/toolInvocation/invoked': 'Registration form loaded successfully',
+      'securitySchemes': [
+        { type: 'noauth' }
+      ]
     },
     inputSchema: {}
   },
