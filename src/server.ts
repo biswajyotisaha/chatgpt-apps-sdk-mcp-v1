@@ -335,7 +335,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
 // Medicine Carousel Resource (All medicines)
 server.registerResource(
   'medicine-carousel',
-  'ui://widget/medicine-carousel.html',
+  'ui://widget/medicine-carousel-v1.html',
   {
     _meta: {
       'openai/widgetDomain': 'https://medicine-carousel.onrender.com',
@@ -351,9 +351,19 @@ server.registerResource(
   async () => ({
     contents: [
       {
-        uri: 'ui://widget/medicine-carousel.html',
+        uri: 'ui://widget/medicine-carousel-v1.html',
         mimeType: 'text/html+skybridge',
-        text: createMedicineCarouselHTML()
+        text: createMedicineCarouselHTML(),
+        _meta: {
+          'openai/widgetDomain': 'https://medicine-carousel.onrender.com',
+          'openai/widgetCSP': {
+            connect_domains: [],
+            resource_domains: [
+              'https://upload.wikimedia.org',
+              'https://logosandtypes.com'
+            ]
+          }
+        }
       },
     ]
   })
@@ -362,7 +372,7 @@ server.registerResource(
 // Single Medicine Resource  
 server.registerResource(
   'single-medicine',
-  'ui://widget/single-medicine.html',
+  'ui://widget/single-medicine-v1.html',
   {
     _meta: {
       'openai/widgetDomain': 'https://single-medicine.onrender.com',
@@ -378,9 +388,19 @@ server.registerResource(
   async () => ({
     contents: [
       {
-        uri: 'ui://widget/single-medicine.html',
+        uri: 'ui://widget/single-medicine-v1.html',
         mimeType: 'text/html+skybridge',
-        text: createMedicineCarouselHTML([AVAILABLE_MEDICINES[0]]) // Default to first medicine
+        text: createMedicineCarouselHTML([AVAILABLE_MEDICINES[0]]),
+        _meta: {
+          'openai/widgetDomain': 'https://single-medicine.onrender.com',
+          'openai/widgetCSP': {
+            connect_domains: [],
+            resource_domains: [
+              'https://upload.wikimedia.org',
+              'https://logosandtypes.com'
+            ]
+          }
+        }
       },
     ]
   })
@@ -388,7 +408,7 @@ server.registerResource(
 
 server.registerResource(
   'user-profile-dynamic',
-  'ui://widget/user-profile-dynamic.html',
+  'ui://widget/user-profile-dynamic-v1.html',
   {
     _meta: {
       'openai/widgetDomain': 'https://user-profile.onrender.com',
@@ -403,7 +423,7 @@ server.registerResource(
   async () => ({
     contents: [
       {
-        uri: 'ui://widget/user-profile-dynamic.html',
+        uri: 'ui://widget/user-profile-dynamic-v1.html',
         mimeType: 'text/html+skybridge',
         text: `<!DOCTYPE html>
 <html lang="en">
@@ -576,7 +596,16 @@ server.registerResource(
     window.addEventListener('openai:tool_response', renderIfReady);
   </script>
 </body>
-</html>`
+</html>`,
+        _meta: {
+          'openai/widgetDomain': 'https://user-profile.onrender.com',
+          'openai/widgetCSP': {
+            connect_domains: [],
+            resource_domains: [
+              'https://upload.wikimedia.org'
+            ]
+          }
+        }
       },
     ]
   })
@@ -584,7 +613,7 @@ server.registerResource(
 
 server.registerResource(
   'savings-card-dynamic',
-  'ui://widget/savings-card-dynamic.html',
+  'ui://widget/savings-card-dynamic-v1.html',
   {
     _meta: {
       'openai/widgetDomain': 'https://savings-card.onrender.com',
@@ -604,7 +633,7 @@ server.registerResource(
     return {
       contents: [
         {
-          uri: 'ui://widget/savings-card-dynamic.html',
+          uri: 'ui://widget/savings-card-dynamic-v1.html',
           mimeType: 'text/html+skybridge',
           text: `<!DOCTYPE html>
 <html lang="en">
@@ -780,7 +809,17 @@ server.registerResource(
     window.addEventListener('openai:tool_response', renderIfReady);
   </script>
 </body>
-</html>`
+</html>`,
+          _meta: {
+            'openai/widgetDomain': 'https://savings-card.onrender.com',
+            'openai/widgetCSP': {
+              connect_domains: [],
+              resource_domains: [
+                'https://upload.wikimedia.org',
+                'https://logosandtypes.com'
+              ]
+            }
+          }
         },
       ]
     };
@@ -801,7 +840,7 @@ server.registerTool(
     title: 'Show All Available Medicines',
     description: 'Display all available FDA-approved medicines in a carousel view',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/medicine-carousel.html',
+      'openai/outputTemplate': 'ui://widget/medicine-carousel-v1.html',
       'openai/toolInvocation/invoking': 'Loading available medicines...',
       'openai/toolInvocation/invoked': 'Medicines carousel loaded successfully',
       'securitySchemes': [
@@ -840,7 +879,7 @@ server.registerTool(
     title: 'Get User Profile',
     description: 'Fetch authenticated user profile from AWS API using the user\'s ChatGPT OAuth token',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/user-profile-dynamic.html',
+      'openai/outputTemplate': 'ui://widget/user-profile-dynamic-v1.html',
       'openai/toolInvocation/invoking': 'Fetching user profile...',
       'openai/toolInvocation/invoked': 'User profile loaded successfully'
     },
@@ -901,7 +940,7 @@ server.registerTool(
     title: 'Get Savings Card',
     description: 'Fetch copay savings card information for the authenticated user',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/savings-card-dynamic.html',
+      'openai/outputTemplate': 'ui://widget/savings-card-dynamic-v1.html',
       'openai/toolInvocation/invoking': 'Fetching savings card information...',
       'openai/toolInvocation/invoked': 'Savings card loaded successfully'
     },
@@ -987,7 +1026,7 @@ server.registerTool(
     title: 'Show Specific Medicine',
     description: 'Display information about a specific medicine',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/single-medicine.html',
+      'openai/outputTemplate': 'ui://widget/single-medicine-v1.html',
       'openai/toolInvocation/invoking': 'Loading medicine information...',
       'openai/toolInvocation/invoked': 'Medicine information loaded successfully',
       'securitySchemes': [
@@ -1021,7 +1060,7 @@ server.registerTool(
     
     // Create a dynamic resource
     const dynamicResource = {
-      uri: 'ui://widget/single-medicine.html',
+      uri: 'ui://widget/single-medicine-v1.html',
       mimeType: 'text/html+skybridge',
       text: singleMedicineHTML
     };
