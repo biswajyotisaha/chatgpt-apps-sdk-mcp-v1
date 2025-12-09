@@ -338,7 +338,7 @@ server.registerResource(
   'ui://widget/medicine-carousel.html',
   {
     _meta: {
-      'openai/widgetDomain': 'https://com.lilly.mcp.medicine-carousel',
+      'openai/widgetDomain': 'https://medicine-carousel.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
@@ -365,7 +365,7 @@ server.registerResource(
   'ui://widget/single-medicine.html',
   {
     _meta: {
-      'openai/widgetDomain': 'https://com.lilly.mcp.single-medicine',
+      'openai/widgetDomain': 'https://single-medicine.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
@@ -391,7 +391,7 @@ server.registerResource(
   'ui://widget/user-profile-dynamic.html',
   {
     _meta: {
-      'openai/widgetDomain': 'https://com.lilly.mcp.user-profile',
+      'openai/widgetDomain': 'https://user-profile.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
@@ -587,7 +587,7 @@ server.registerResource(
   'ui://widget/savings-card-dynamic.html',
   {
     _meta: {
-      'openai/widgetDomain': 'https://com.lilly.mcp.savings-card',
+      'openai/widgetDomain': 'https://savings-card.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
