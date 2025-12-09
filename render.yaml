@@ -1,0 +1,45 @@
+services:
+  # Your MCP Server as Docker container
+  - type: web
+    name: mcp-server
+    runtime: docker
+    plan: free
+    region: oregon  # or your preferred region
+    
+    # Docker configuration
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    
+    # Environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      
+      - key: PORT
+        value: 8000
+      
+      # Redis connection (paste your internal Redis URL here)
+      - key: REDIS_URL
+        value: redis://red-d4rb98ogjchc73bpidb0:6379  # REPLACE with your actual Redis internal URL
+      
+      # Your existing environment variables
+      - key: CAPI_GATEWAY_URL
+        value: https://consumer-api.iv.apps.lilly.com
+      
+      - key: LC3_GATEWAY_URL
+        value: https://lillytogether-gateway.iv.connectedcarecloud.com
+      
+      - key: DHISP_GATEWAY_URL
+        value: https://qa.ext-llydhisp.net/digh-lillytogether-test-xapi-v2
+      
+      - key: LILLY_ISSUER_BASE_URL
+        sync: false  # Set manually in Render dashboard
+      
+      - key: LILLY_AUDIENCE
+        sync: false  # Set manually in Render dashboard
+    
+    # Health check endpoint
+    healthCheckPath: /health
+    
+    # Auto-deploy on push to main branch
+    autoDeploy: true
