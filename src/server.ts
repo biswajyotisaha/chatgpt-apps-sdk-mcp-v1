@@ -947,7 +947,7 @@ server.registerTool(
     },
     inputSchema: {
       medicineName: z.string().describe('Name of the medicine to display')
-    }
+    } as any
   },
   async (args: any) => {
     const medicine = AVAILABLE_MEDICINES.find(med => 
@@ -958,7 +958,7 @@ server.registerTool(
       return {
         content: [
           { 
-            type: 'text', 
+            type: 'text' as const, 
             text: `Medicine "${args.medicineName}" not found. Available medicines: ${AVAILABLE_MEDICINES.map(m => m.name).join(', ')}`
           }
         ],
@@ -985,7 +985,7 @@ server.registerTool(
     return {
       content: [
         { 
-          type: 'text', 
+          type: 'text' as const, 
           text: `Displaying information for ${medicine.name} - FDA-approved medicine available for purchase.`
         }
       ],
