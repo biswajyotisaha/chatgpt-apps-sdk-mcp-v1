@@ -345,6 +345,16 @@ server.registerResource(
         text: createMedicineCarouselHTML()
       },
     ],
+    _meta: {
+      'openai/widgetDomain': 'com.lilly.mcp.medicine-carousel',
+      'openai/csp': {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", "data:", "https:"],
+        'connect-src': ["'self'"]
+      }
+    }
   })
 );
 
@@ -361,6 +371,16 @@ server.registerResource(
         text: createMedicineCarouselHTML([AVAILABLE_MEDICINES[0]]) // Default to first medicine
       },
     ],
+    _meta: {
+      'openai/widgetDomain': 'com.lilly.mcp.single-medicine',
+      'openai/csp': {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", "data:", "https:"],
+        'connect-src': ["'self'"]
+      }
+    }
   })
 );
 
@@ -547,6 +567,16 @@ server.registerResource(
 </html>`
       },
     ],
+    _meta: {
+      'openai/widgetDomain': 'com.lilly.mcp.user-profile',
+      'openai/csp': {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", "data:", "https:"],
+        'connect-src': ["'self'"]
+      }
+    }
   })
 );
 
@@ -740,6 +770,16 @@ server.registerResource(
 </html>`
         },
       ],
+      _meta: {
+        'openai/widgetDomain': 'com.lilly.mcp.savings-card',
+        'openai/csp': {
+          'default-src': ["'self'"],
+          'script-src': ["'self'", "'unsafe-inline'"],
+          'style-src': ["'self'", "'unsafe-inline'"],
+          'img-src': ["'self'", "data:", "https:"],
+          'connect-src': ["'self'"]
+        }
+      }
     };
   }
 );
