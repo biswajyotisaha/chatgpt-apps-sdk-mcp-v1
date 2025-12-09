@@ -338,13 +338,13 @@ server.registerResource(
   'ui://widget/medicine-carousel.html',
   {
     _meta: {
-      'openai/widgetDomain': 'com.lilly.mcp.medicine-carousel',
-      'openai/csp': {
-        'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", "data:", "https:"],
-        'connect-src': ["'self'"]
+      'openai/widgetDomain': 'https://com.lilly.mcp.medicine-carousel',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://upload.wikimedia.org',
+          'https://logosandtypes.com'
+        ]
       }
     }
   },
@@ -365,13 +365,13 @@ server.registerResource(
   'ui://widget/single-medicine.html',
   {
     _meta: {
-      'openai/widgetDomain': 'com.lilly.mcp.single-medicine',
-      'openai/csp': {
-        'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", "data:", "https:"],
-        'connect-src': ["'self'"]
+      'openai/widgetDomain': 'https://com.lilly.mcp.single-medicine',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://upload.wikimedia.org',
+          'https://logosandtypes.com'
+        ]
       }
     }
   },
@@ -391,13 +391,12 @@ server.registerResource(
   'ui://widget/user-profile-dynamic.html',
   {
     _meta: {
-      'openai/widgetDomain': 'com.lilly.mcp.user-profile',
-      'openai/csp': {
-        'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", "data:", "https:"],
-        'connect-src': ["'self'"]
+      'openai/widgetDomain': 'https://com.lilly.mcp.user-profile',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://upload.wikimedia.org'
+        ]
       }
     }
   },
@@ -588,13 +587,13 @@ server.registerResource(
   'ui://widget/savings-card-dynamic.html',
   {
     _meta: {
-      'openai/widgetDomain': 'com.lilly.mcp.savings-card',
-      'openai/csp': {
-        'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", "data:", "https:"],
-        'connect-src': ["'self'"]
+      'openai/widgetDomain': 'https://com.lilly.mcp.savings-card',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://upload.wikimedia.org',
+          'https://logosandtypes.com'
+        ]
       }
     }
   },
