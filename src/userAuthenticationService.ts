@@ -1,20 +1,22 @@
+import { AsyncLocalStorage } from 'async_hooks';
 import { jwtDecode } from 'jwt-decode';
 import { sessionManager } from './sessionManager.js';
 
 /**
- * User Authentication Service (Redis Edition)
+ * User Authentication Service (Redis Edition with AsyncLocalStorage)
  * 
  * This file provides helper functions to get/set user session data.
  * 
- * (Multi User with Redis):
+ * (Multi User with Redis + AsyncLocalStorage):
  * - Session data stored in Redis per user
- * - Each request requires session ID
- * - Complete isolation between users
+ * - Each request has isolated async context
+ * - Complete isolation between concurrent users
+ * - Thread-safe for async operations
  */
 
 /**
  * Request context interface
- * This gets attached to Express Request object by middleware
+ * This gets attached to each async execution chain
  */
 interface RequestContext {
   sessionId: string;
@@ -30,43 +32,58 @@ interface LC3JWTPayload {
 }
 
 /**
- * Current request context (set by middleware)
- * This is thread-safe because Node.js is single-threaded
+ * AsyncLocalStorage for request-scoped context
+ * 
+ * This creates isolated storage for each request's async execution chain.
+ * Unlike global variables, this won't be overwritten by concurrent requests.
+ * 
+ * How it works:
+ * - Each request creates its own async context
+ * - Context follows through all async operations (await, callbacks)
+ * - Concurrent requests have completely separate contexts
  */
-let currentContext: RequestContext | null = null;
+const asyncLocalStorage = new AsyncLocalStorage<RequestContext>();
 
 /**
- * Set Current Request Context
+ * Set Current Request Context (Thread-Safe)
  * 
- * Called by middleware to set the current user's session info
+ * Called by middleware to set the current user's session info.
+ * Uses AsyncLocalStorage to ensure isolation between concurrent requests.
  * 
  * @param sessionId - User's session ID
  * @param token - User's access token
  */
 export function setRequestContext(sessionId: string, token: string): void {
-  currentContext = { sessionId, token };
+  asyncLocalStorage.enterWith({ sessionId, token });
 }
 
 /**
  * Clear Request Context
  * 
- * Called after request completes to prevent context leaking
+ * Called after request completes.
+ * With AsyncLocalStorage, context is automatically cleaned up,
+ * but this function is kept for explicit cleanup and compatibility.
  */
 export function clearRequestContext(): void {
-  currentContext = null;
+  // AsyncLocalStorage auto-cleans on async chain completion
+  // This is a no-op but kept for API compatibility
 }
 
 /**
- * Get Current Context
+ * Get Current Context (Thread-Safe)
+ * 
+ * Retrieves the context for the current async execution chain.
+ * Each concurrent request gets its own isolated context.
  * 
  * @returns Current request context
  * @throws Error if no context set (middleware not run)
  */
 function requireContext(): RequestContext {
-  if (!currentContext) {
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) {
     throw new Error('No request context available. Authentication middleware required.');
   }
-  return currentContext;
+  return ctx;
 }
 
 // ==================== ACCESS TOKEN ====================
@@ -88,9 +105,10 @@ export async function getAccessToken(): Promise<string | null> {
  * @param token - New access token
  */
 export async function setAccessToken(token: string | null): Promise<void> {
-  if (!currentContext) return; // No context = no session to update
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return; // No context = no session to update
   
-  await sessionManager.updateSession(currentContext.sessionId, {
+  await sessionManager.updateSession(ctx.sessionId, {
     accessToken: token
   });
 }
@@ -118,9 +136,10 @@ export async function getLc3Jwt(): Promise<string | null> {
 }
 
 export async function setLc3Jwt(jwt: string | null): Promise<void> {
-  if (!currentContext) return;
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return;
   
-  await sessionManager.updateSession(currentContext.sessionId, {
+  await sessionManager.updateSession(ctx.sessionId, {
     lc3Jwt: jwt
   });
 }
@@ -142,9 +161,10 @@ export async function getLc3Id(): Promise<string | null> {
 }
 
 export async function setLc3Id(id: string | null): Promise<void> {
-  if (!currentContext) return;
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return;
   
-  await sessionManager.updateSession(currentContext.sessionId, {
+  await sessionManager.updateSession(ctx.sessionId, {
     lc3Id: id
   });
 }
@@ -166,9 +186,10 @@ export async function getBrand(): Promise<string | null> {
 }
 
 export async function setBrand(brand: string | null): Promise<void> {
-  if (!currentContext) return;
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return;
   
-  await sessionManager.updateSession(currentContext.sessionId, {
+  await sessionManager.updateSession(ctx.sessionId, {
     brand: brand
   });
 }
@@ -190,9 +211,10 @@ export async function getEmailId(): Promise<string | null> {
 }
 
 export async function setEmailId(email: string | null): Promise<void> {
-  if (!currentContext) return;
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return;
   
-  await sessionManager.updateSession(currentContext.sessionId, {
+  await sessionManager.updateSession(ctx.sessionId, {
     emailId: email
   });
 }
@@ -226,9 +248,10 @@ export async function getOfficialBrandName(brand?: string): Promise<string | nul
 }
 
 export async function setOfficialBrandName(name: string | null): Promise<void> {
-  if (!currentContext) return;
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return;
   
-  await sessionManager.updateSession(currentContext.sessionId, {
+  await sessionManager.updateSession(ctx.sessionId, {
     officialBrandName: name
   });
 }
