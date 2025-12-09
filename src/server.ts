@@ -1060,9 +1060,9 @@ async function verifyToken(req: Request, res: Response, next: any) {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('📥 Incoming Request from ChatGPT');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('🔍 Request Headers:');
-  console.log(JSON.stringify(req.headers, null, 2));
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  // console.log('🔍 Request Headers:');
+  // console.log(JSON.stringify(req.headers, null, 2));
+  // console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   
   const authHeader = req.headers.authorization;
   
@@ -1182,6 +1182,10 @@ async function fetchAndSetBrand(sessionId: string, token: string): Promise<void>
       });
       
       console.log(`✅ Brand data saved to Redis for ${sessionId}`);
+      console.log(`   📝 Brand: ${brandValue}`);
+      console.log(`   📝 Official Brand Name: ${officialName}`);
+      console.log(`   📝 Email ID: ${emailValue || 'null'}`);
+      console.log(`   📝 Raw settings data:`, JSON.stringify(settings[0], null, 2));
     }
   } catch (error: any) {
     console.error(`Error fetching brand for ${sessionId}:`, error.message);
@@ -1251,6 +1255,9 @@ async function fetchAndSetLc3JwtAndId(sessionId: string, token: string): Promise
         });
         
         console.log(`✅ LC3 data saved to Redis for ${sessionId}`);
+        console.log(`   📝 LC3 Patient ID: ${patientId}`);
+        console.log(`   📝 LC3 JWT (first 50 chars): ${lc3JwtToken.substring(0, 50)}...`);
+        console.log(`   📝 Brand used for LC3 request: ${brandName}`);
       } catch (error: any) {
         console.error('Error extracting patient ID:', error.message);
       }
