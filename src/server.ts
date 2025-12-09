@@ -31,11 +31,11 @@ import { setRequestContext, clearRequestContext } from './userAuthenticationServ
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
-const capiGatewayUrl = 'https://consumer-api.iv.apps.lilly.com';
-const lc3GatewayUrl = 'https://lillytogether-gateway.iv.connectedcarecloud.com';
-const dhispGatewayUrl = 'https://qa.ext-llydhisp.net/digh-lillytogether-test-xapi-v2';
+const capiGatewayUrl = process.env.CAPI_GATEWAY_URL || 'https://consumer-api.iv.apps.lilly.com';
+const lc3GatewayUrl = process.env.LC3_GATEWAY_URL || 'https://lillytogether-gateway.iv.connectedcarecloud.com';
+const dhispGatewayUrl = process.env.DHISP_GATEWAY_URL || 'https://qa.ext-llydhisp.net/digh-lillytogether-test-xapi-v2';
 
-// LC3 Gateway Headers
+// LC3 Gateway Headers (hardcoded - simulating mobile app device)
 const LC3_IDENTITY_PROVIDER = 'okta';
 const LC3_DEVICE_OS_VERSION = '18.7.1';
 const LC3_DEVICE = 'iPhone14,7';
