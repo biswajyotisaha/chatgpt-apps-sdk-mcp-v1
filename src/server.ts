@@ -23,6 +23,9 @@ import {
   getOfficialBrandName,
   extractPatientId
 } from './userAuthenticationService.js';
+import { sessionManager } from './sessionManager.js';
+import { setRequestContext, clearRequestContext } from './userAuthenticationService.js';
+
 
 // ==================== EXPRESS APP SETUP ====================
 
@@ -801,7 +804,7 @@ server.registerTool(
     inputSchema: {}
   },
   async () => {
-    const userToken = requireAccessToken();
+    const userToken = await requireAccessToken();
     
     try {
       const controller = new AbortController();
@@ -862,14 +865,14 @@ server.registerTool(
     inputSchema: {}
   },
   async () => {
-    const userToken = requireAccessToken();
+    const userToken = await requireAccessToken();
     
     // Fetch brand and LC3 JWT if not already loaded
     // await getBrandAndJwt(userToken);
     
-    // const uid = requireLc3Id();
-    // const email = requireEmailId();
-    // const officialBrandName = requireOfficialBrandName();
+    // const uid = await requireLc3Id();
+    // const email = await requireEmailId();
+    // const officialBrandName = await requireOfficialBrandName();
     
     const uid = 'f765e766-0379-4344-a703-9383c4818174';
     const email = 'taltz1817@grr.la';
@@ -1000,11 +1003,18 @@ server.registerTool(
 // ==================== HTTP ENDPOINTS ====================
 
 /**
- * Health Check Endpoint
- * Simple endpoint to verify server is running and responding.
+ * Health Check Endpoint (with Redis status)
  */
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+app.get('/health', async (_req: Request, res: Response) => {
+  const redisHealthy = await sessionManager.isHealthy();
+  const sessionCount = await sessionManager.getActiveSessionCount();
+  
+  res.json({
+    status: redisHealthy ? 'healthy' : 'unhealthy',
+    redis: redisHealthy,
+    activeSessions: sessionCount,
+    timestamp: new Date().toISOString()
+  });
 });
 
 /**
@@ -1035,12 +1045,18 @@ app.get('/.well-known/oauth-protected-resource', (req, res) => {
 });
 
 /**
- * Token Storage Middleware
- * Extracts OAuth token from Authorization header and stores it for tool use.
- * Non-blocking - allows all requests through, tools enforce auth as needed.
+ * Token Storage Middleware (Redis Edition)
+ * 
+ * Process for each request:
+ * 1. Extract JWT token from Authorization header
+ * 2. Decode token to get session ID (sub claim)
+ * 3. Get/create user session in Redis
+ * 4. Set request context for this user
+ * 5. Fetch brand and LC3 data if token changed
+ * 6. Process continues to tool handler
+ * 7. Clear context after response
  */
 async function verifyToken(req: Request, res: Response, next: any) {
-  // Log all incoming request headers from ChatGPT
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('📥 Incoming Request from ChatGPT');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -1052,79 +1068,73 @@ async function verifyToken(req: Request, res: Response, next: any) {
   
   if (!authHeader) {
     console.log('⚠️  No Authorization header found');
-    setAccessToken(null);
     return next();
   }
   
   const token = authHeader.replace(/^Bearer\s+/i, '');
   if (!token || token === authHeader) {
     console.log('⚠️  Invalid token format in Authorization header');
-    setAccessToken(null);
     return next();
   }
-  
-  // Check if access token value has changed
-  const currentToken = getAccessToken();
-  const tokenChanged = token !== currentToken;
-  
-  console.log(`🔑 Token received: ${token.substring(0, 20)}...`);
-  console.log(`🔄 Token changed: ${tokenChanged}`);
- 
-  if (tokenChanged ) {
-    // Store the access token
-    setAccessToken(token);
-    console.log('✅ Access token stored');
+try {
+    // Get or create session in Redis
+    const { sessionId, session } = await sessionManager.getSession(token);
     
-    // Fetches brand and LC3 JWT token and brand using the access token.
-    await fetchAndSetBrand(token);
-    // Whenever access token changes try to fetch LC3 JWT, this will replace the existing value
-    await fetchAndSetLc3JwtAndId(token);
+    console.log(`👤 User Session ID: ${sessionId}`);
+    
+    // Set request context for this user
+    setRequestContext(sessionId, token);
+    
+    // Check if token changed (new login or token refresh)
+    const tokenChanged = token !== session.accessToken;
+    
+    console.log(`🔑 Token received: ${token.substring(0, 20)}...`);
+    console.log(`🔄 Token changed: ${tokenChanged}`);
+   
+    if (tokenChanged) {
+      console.log(`✅ Token stored in Redis for session ${sessionId}`);
+      
+      // Update access token in session
+      await sessionManager.updateSession(sessionId, {
+        accessToken: token
+      });
+      
+      // Fetch user-specific data in background (don't block request)
+      Promise.all([
+        fetchAndSetBrand(sessionId, token),
+        fetchAndSetLc3JwtAndId(sessionId, token)
+      ]).catch(error => {
+        console.error('Background fetch error:', error);
+      });
+    }
+    
+    // Log session count periodically for monitoring
+    if (Math.random() < 0.01) { // 1% of requests
+      sessionManager.getActiveSessionCount().then(count => {
+        console.log(`📊 Active sessions in Redis: ${count}`);
+      });
+    }
+    
+    // Attach cleanup to response finish event
+    res.on('finish', () => {
+      clearRequestContext();
+    });
+
+    return next();
+  } catch (error) {
+    console.error('Session management error:', error);
+    clearRequestContext();
+    return res.status(500).json({ error: 'Session management failed' });
   }
-  
-  return next();
 }
 
 /**
- * Fetches brand and LC3 JWT token using the access token.
+ * Fetches user app settings and updates Redis
+ * 
+ * @param sessionId - User's session ID
+ * @param token - User's access token
  */
-async function getBrandAndJwt(token: string): Promise<void> {
-  let needsLc3Jwt = false;
-  let needsLc3Id = false;
-  let needsBrand = false;
-  
-  try {
-    requireLc3Jwt();
-  } catch {
-    needsLc3Jwt = true;
-  }
-  
-  try {
-    requireLc3Id();
-  } catch {
-    needsLc3Id = true;
-  }
-  
-  try {
-    requireBrand();
-  } catch {
-    needsBrand = true;
-  }
-
-  // Only call getBrandAndJwt if token changed or data is missing
-  if (needsLc3Jwt || needsLc3Id || needsBrand) {
-    // Fetch and set brand from app settings
-  await fetchAndSetBrand(token);
-  
-  // Fetch and set LC3 JWT and LC3 ID
-  await fetchAndSetLc3JwtAndId(token);
-  }
-}
-
-/**
- * Fetches user app settings and extracts the brand.
- * Sets the brand value if found in settings.
- */
-async function fetchAndSetBrand(token: string): Promise<void> {
+async function fetchAndSetBrand(sessionId: string, token: string): Promise<void> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -1141,61 +1151,60 @@ async function fetchAndSetBrand(token: string): Promise<void> {
     clearTimeout(timeoutId);
     
     if (!response.ok) {
-      console.error('Failed to fetch app settings:', response.status);
-      setBrand(null);
+      console.error(`Failed to fetch app settings for ${sessionId}:`, response.status);
       return;
     }
     
     const data = await response.json();
     const settings = data.settings || [];
     
-    // Extract brand and emailId from settings
     if (settings.length > 0 && settings[0].key) {
       const brandValue = settings[0].key;
-      console.log(`Brand set to: ${brandValue}`);
-      setBrand(brandValue);
       
-      // Set official brand name using the mapping function
-      const officialName = getOfficialBrandName(brandValue);
-      console.log(`Official brand name set to: ${officialName}`);
-      setOfficialBrandName(officialName);
+      // Get official brand name using mapping
+      const officialName = await getOfficialBrandName(brandValue);
       
-      // Extract originalEmailId from the value field
+      let emailValue = null;
       if (settings[0].value) {
         try {
           const settingsValue = JSON.parse(settings[0].value);
-          const emailValue = settingsValue.originalEmailId || null;
-          console.log(`Email ID set to: ${emailValue}`);
-          setEmailId(emailValue);
+          emailValue = settingsValue.originalEmailId || null;
         } catch (parseError) {
           console.error('Failed to parse settings value:', parseError);
-          setEmailId(null);
         }
-      } else {
-        setEmailId(null);
       }
-    } else {
-      console.log('User not registered, no brand found');
-      setBrand(null);
-      setOfficialBrandName(null);
-      setEmailId(null);
+
+      // Update session in Redis
+      await sessionManager.updateSession(sessionId, {
+        brand: brandValue,
+        officialBrandName: officialName,
+        emailId: emailValue
+      });
+      
+      console.log(`✅ Brand data saved to Redis for ${sessionId}`);
     }
   } catch (error: any) {
-    console.error('Error fetching brand:', error.message);
-    setBrand(null);
-    setOfficialBrandName(null);
-    setEmailId(null);
+    console.error(`Error fetching brand for ${sessionId}:`, error.message);
   }
 }
 
 /**
- * Fetches LC3 JWT token and extracts the patient ID.
- * Sets both lc3Jwt and lc3Id values.
+ * Fetches LC3 JWT and updates Redis
+ * 
+ * @param sessionId - User's session ID
+ * @param token - User's access token
  */
-async function fetchAndSetLc3JwtAndId(token: string): Promise<void> {
+async function fetchAndSetLc3JwtAndId(sessionId: string, token: string): Promise<void> {
   try {
-    // Get the brand from stored variable (default to 'taltz' if not set)
-    const brandName = requireBrand();
+    // Get session to read brand value
+    const { session } = await sessionManager.getSession(token);
+    
+    if (!session.brand) {
+      console.log(`No brand available for LC3 JWT fetch (session: ${sessionId})`);
+      return;
+    }
+    
+    const brandName = session.brand;
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -1223,40 +1232,35 @@ async function fetchAndSetLc3JwtAndId(token: string): Promise<void> {
     clearTimeout(timeoutId);
     
     if (!response.ok) {
-      console.error('Failed to fetch LC3 JWT:', response.status);
-      setLc3Jwt(null);
-      setLc3Id(null);
+      console.error(`Failed to fetch LC3 JWT for ${sessionId}:`, response.status);
       return;
     }
     
     const data = await response.json();
     
-    // Extract JWT from response
     if (data.jwt) {
       const lc3JwtToken = data.jwt;
-      console.log('LC3 JWT token received');
-      setLc3Jwt(lc3JwtToken);
       
-      // Extract patient ID from the JWT
       try {
         const patientId = extractPatientId(lc3JwtToken);
-        console.log(`LC3 ID set to: ${patientId}`);
-        setLc3Id(patientId);
+        
+        // Update session in Redis
+        await sessionManager.updateSession(sessionId, {
+          lc3Jwt: lc3JwtToken,
+          lc3Id: patientId
+        });
+        
+        console.log(`✅ LC3 data saved to Redis for ${sessionId}`);
       } catch (error: any) {
-        console.error('Error extracting patient ID from LC3 JWT:', error.message);
-        setLc3Id(null);
+        console.error('Error extracting patient ID:', error.message);
       }
-    } else {
-      console.log('User not registered, no LC3 JWT found');
-      setLc3Jwt(null);
-      setLc3Id(null);
     }
   } catch (error: any) {
-    console.error('Error fetching LC3 JWT:', error.message);
-    setLc3Jwt(null);
-    setLc3Id(null);
+    console.error(`Error fetching LC3 JWT for ${sessionId}:`, error.message);
   }
 }
+
+// Remove the old getBrandAndJwt function - no longer needed
 
 
 /**
