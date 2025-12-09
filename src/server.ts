@@ -336,15 +336,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
 server.registerResource(
   'medicine-carousel',
   'ui://widget/medicine-carousel.html',
-  {},
-  async () => ({
-    contents: [
-      {
-        uri: 'ui://widget/medicine-carousel.html',
-        mimeType: 'text/html+skybridge',
-        text: createMedicineCarouselHTML()
-      },
-    ],
+  {
     _meta: {
       'openai/widgetDomain': 'com.lilly.mcp.medicine-carousel',
       'openai/csp': {
@@ -355,6 +347,15 @@ server.registerResource(
         'connect-src': ["'self'"]
       }
     }
+  },
+  async () => ({
+    contents: [
+      {
+        uri: 'ui://widget/medicine-carousel.html',
+        mimeType: 'text/html+skybridge',
+        text: createMedicineCarouselHTML()
+      },
+    ]
   })
 );
 
@@ -362,15 +363,7 @@ server.registerResource(
 server.registerResource(
   'single-medicine',
   'ui://widget/single-medicine.html',
-  {},
-  async () => ({
-    contents: [
-      {
-        uri: 'ui://widget/single-medicine.html',
-        mimeType: 'text/html+skybridge',
-        text: createMedicineCarouselHTML([AVAILABLE_MEDICINES[0]]) // Default to first medicine
-      },
-    ],
+  {
     _meta: {
       'openai/widgetDomain': 'com.lilly.mcp.single-medicine',
       'openai/csp': {
@@ -381,13 +374,33 @@ server.registerResource(
         'connect-src': ["'self'"]
       }
     }
+  },
+  async () => ({
+    contents: [
+      {
+        uri: 'ui://widget/single-medicine.html',
+        mimeType: 'text/html+skybridge',
+        text: createMedicineCarouselHTML([AVAILABLE_MEDICINES[0]]) // Default to first medicine
+      },
+    ]
   })
 );
 
 server.registerResource(
   'user-profile-dynamic',
   'ui://widget/user-profile-dynamic.html',
-  {},
+  {
+    _meta: {
+      'openai/widgetDomain': 'com.lilly.mcp.user-profile',
+      'openai/csp': {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", "data:", "https:"],
+        'connect-src': ["'self'"]
+      }
+    }
+  },
   async () => ({
     contents: [
       {
@@ -566,9 +579,16 @@ server.registerResource(
 </body>
 </html>`
       },
-    ],
+    ]
+  })
+);
+
+server.registerResource(
+  'savings-card-dynamic',
+  'ui://widget/savings-card-dynamic.html',
+  {
     _meta: {
-      'openai/widgetDomain': 'com.lilly.mcp.user-profile',
+      'openai/widgetDomain': 'com.lilly.mcp.savings-card',
       'openai/csp': {
         'default-src': ["'self'"],
         'script-src': ["'self'", "'unsafe-inline'"],
@@ -577,13 +597,7 @@ server.registerResource(
         'connect-src': ["'self'"]
       }
     }
-  })
-);
-
-server.registerResource(
-  'savings-card-dynamic',
-  'ui://widget/savings-card-dynamic.html',
-  {},
+  },
   async () => {
     // Calculate expiration year (current year + 1)
     const expirationYear = new Date().getFullYear() + 1;
@@ -769,17 +783,7 @@ server.registerResource(
 </body>
 </html>`
         },
-      ],
-      _meta: {
-        'openai/widgetDomain': 'com.lilly.mcp.savings-card',
-        'openai/csp': {
-          'default-src': ["'self'"],
-          'script-src': ["'self'", "'unsafe-inline'"],
-          'style-src': ["'self'", "'unsafe-inline'"],
-          'img-src': ["'self'", "data:", "https:"],
-          'connect-src': ["'self'"]
-        }
-      }
+      ]
     };
   }
 );
