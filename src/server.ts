@@ -867,16 +867,20 @@ server.registerTool(
   async () => {
     const userToken = await requireAccessToken();
     
-    // Fetch brand and LC3 JWT if not already loaded
-    // await getBrandAndJwt(userToken);
+    // Try to get LC3 data from Redis (may not be available if LC3 authorization fails)
+    const lc3Id = await requireLc3Id().catch(() => null);
+    const emailId = await requireEmailId().catch(() => null);
+    const brandName = await requireOfficialBrandName().catch(() => null);
     
-    // const uid = await requireLc3Id();
-    // const email = await requireEmailId();
-    // const officialBrandName = await requireOfficialBrandName();
+    // Fall back to hardcoded values if LC3 data is not available
+    const uid = lc3Id || 'f765e766-0379-4344-a703-9383c4818174';
+    const email = emailId || 'taltz1817@grr.la';
+    const officialBrandName = brandName || 'Ixekizumab US';
     
-    const uid = 'f765e766-0379-4344-a703-9383c4818174';
-    const email = 'taltz1817@grr.la';
-    const officialBrandName = 'Ixekizumab US';
+    console.log(`💳 Savings card request using ${lc3Id ? 'Redis' : 'hardcoded'} values:`);
+    console.log(`   UID: ${uid}`);
+    console.log(`   Email: ${email}`);
+    console.log(`   Brand: ${officialBrandName}`);
     
     try {
       const controller = new AbortController();
