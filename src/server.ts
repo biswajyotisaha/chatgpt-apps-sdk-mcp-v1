@@ -21,7 +21,8 @@ import {
   setOfficialBrandName,
   requireOfficialBrandName,
   getOfficialBrandName,
-  extractPatientId
+  extractPatientId,
+  getSavingProgramEnrolledYear
 } from './userAuthenticationService.js';
 import { sessionManager } from './sessionManager.js';
 import { setRequestContext, clearRequestContext } from './userAuthenticationService.js';
@@ -627,8 +628,17 @@ server.registerResource(
     }
   },
   async () => {
-    // Calculate expiration year (current year + 1)
-    const expirationYear = new Date().getFullYear() + 1;
+    // Calculate expiration year (enrolled year + 2 for 24 months, fallback to current year + 1)
+    let expirationYear = new Date().getFullYear() + 1;
+    
+    try {
+      const enrolledYear = await getSavingProgramEnrolledYear();
+      if (enrolledYear) {
+        expirationYear = parseInt(enrolledYear) + 2; // 24 months from enrollment
+      }
+    } catch (error) {
+      // Use fallback year if getSavingProgramEnrolledYear fails
+    }
     
     return {
       contents: [
