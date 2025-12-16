@@ -22,7 +22,8 @@ import {
   requireOfficialBrandName,
   getOfficialBrandName,
   extractPatientId,
-  getSavingProgramEnrolledYear
+  getSavingProgramEnrolledYear,
+  setSavingProgramEnrolledYear
 } from './userAuthenticationService.js';
 import { sessionManager } from './sessionManager.js';
 import { setRequestContext, clearRequestContext } from './userAuthenticationService.js';
@@ -628,17 +629,6 @@ server.registerResource(
     }
   },
   async () => {
-    // Calculate expiration year (enrolled year + 2 for 24 months, fallback to current year + 1)
-    let expirationYear = new Date().getFullYear() + 1;
-    
-    try {
-      const enrolledYear = await getSavingProgramEnrolledYear();
-      if (enrolledYear) {
-        expirationYear = parseInt(enrolledYear) + 2; // 24 months from enrollment
-      }
-    } catch (error) {
-      // Use fallback year if getSavingProgramEnrolledYear fails
-    }
     
     return {
       contents: [
@@ -760,6 +750,7 @@ server.registerResource(
     function renderIfReady() {
       const out = window.openai?.toolOutput || {};
       const copayCard = out.copayCard || null;
+      const expirationYear = out.expirationYear || new Date().getFullYear() + 1;
 
       if (!copayCard) return;
 
@@ -783,7 +774,7 @@ server.registerResource(
       <div class="content">
         <img src="https://logosandtypes.com/wp-content/uploads/2025/04/Lilly-scaled.png" alt="Lilly L logo" class="logo-L" />
         <p class="terms">
-          Offer good until <strong>12/31/${expirationYear}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
+          Offer good until <strong>12/31/\${out.expirationYear || new Date().getFullYear() + 1}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
         </p>
       </div>
 
@@ -1007,12 +998,56 @@ server.registerTool(
       const data = await response.json();
       const copayCard = data.copayCard || {};
       
+      // Calculate expiration year (enrolled year + 2 for 24 months, fallback to current year + 1)
+      let expirationYear = new Date().getFullYear() + 1;
+      
+      // Extract and store enrollment year if available
+      if (copayCard.enrollmentDate || copayCard.createdDate || copayCard.activationDate) {
+        const enrollmentDateStr = copayCard.enrollmentDate || copayCard.createdDate || copayCard.activationDate;
+        try {
+          const enrollmentDate = new Date(enrollmentDateStr);
+          const enrollmentYear = enrollmentDate.getFullYear();
+          
+          // Validate enrollment year
+          if (!isNaN(enrollmentYear) && enrollmentYear > 2020 && enrollmentYear <= new Date().getFullYear()) {
+            expirationYear = enrollmentYear + 2; // 24 months from enrollment
+            console.log(`📅 Using enrollment year for expiration: ${enrollmentYear} + 2 = ${expirationYear}`);
+          } else {
+            console.log(`⚠️ Invalid enrollment year: ${enrollmentYear}, using fallback: ${expirationYear}`);
+          }
+          
+          // Store enrollment year in session for future use
+          const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
+          await setSavingProgramEnrolledYear(enrollmentYear.toString());
+          console.log(`📅 Enrollment year saved: ${enrollmentYear} (from ${enrollmentDateStr})`);
+        } catch (error) {
+          console.error('Failed to parse enrollment date:', enrollmentDateStr, error);
+        }
+      } else {
+        // Try to get previously stored enrollment year
+        try {
+          const storedYear = await getSavingProgramEnrolledYear();
+          if (storedYear && storedYear.trim()) {
+            const storedYearNum = parseInt(storedYear.trim());
+            if (!isNaN(storedYearNum) && storedYearNum > 2020 && storedYearNum <= new Date().getFullYear()) {
+              expirationYear = storedYearNum + 2;
+              console.log(`📅 Using stored enrollment year for expiration: ${storedYear} + 2 = ${expirationYear}`);
+            }
+          }
+        } catch (error) {
+          console.log(`📅 No stored enrollment year available, using fallback: ${expirationYear}`);
+        }
+      }
+      
       return {
         content: [{ 
           type: 'text', 
           text: `Savings card loaded: ${copayCard.copayCardNumber || 'No card number'}` 
         }],
-        structuredContent: { copayCard: copayCard }
+        structuredContent: { 
+          copayCard: copayCard,
+          expirationYear: expirationYear
+        }
       };
     } catch (error: any) {
       console.error('Failed to fetch savings card:', error.message);
