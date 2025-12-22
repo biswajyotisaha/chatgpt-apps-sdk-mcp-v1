@@ -1009,10 +1009,18 @@ server.registerTool(
       // Debug the API response
       console.log(`🔍 API Response data:`, JSON.stringify(data, null, 2));
       console.log(`🔍 Copay card object:`, JSON.stringify(copayCard, null, 2));
-      console.log(`🔍 Available date fields:`, {
+      console.log(`🔍 Available date fields in copayCard:`, {
         enrollmentDate: copayCard.enrollmentDate,
         createdDate: copayCard.createdDate,
         activationDate: copayCard.activationDate
+      });
+      
+      // Also check main data object for date fields
+      console.log(`🔍 Available date fields in main data:`, {
+        createdDate: data.createdDate,
+        enrolledYear: data.enrolledYear,
+        enrollmentDate: data.enrollmentDate,
+        activationDate: data.activationDate
       });
       
       // Calculate expiration year (enrolled year + 2 for 24 months, fallback to current year + 1)
@@ -1075,8 +1083,27 @@ server.registerTool(
               console.log(`⚠️ Invalid stored enrollment year: ${storedYearNum}, using fallback: ${expirationYear}`);
             }
           } else {
-            console.log(`❌ EXPIRATION LOGIC: No valid stored enrollment year, using fallback`);
-            console.log(`⚠️ No valid stored enrollment year, using fallback: ${expirationYear}`);
+            // No stored year found, set current year as enrollment year
+            const currentYear = new Date().getFullYear();
+            console.log(`🔧 FALLBACK LOGIC: No stored enrollment year, setting current year as enrollment year`);
+            console.log(`🔧 Setting enrollment year to current year: ${currentYear}`);
+            
+            try {
+              const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
+              await setSavingProgramEnrolledYear(currentYear.toString());
+              expirationYear = currentYear + 2;
+              
+              console.log(`✅ EXPIRATION LOGIC: Using current year as enrollment year`);
+              console.log(`📅 Enrollment year set and used for expiration: ${currentYear} + 2 = ${expirationYear}`);
+              
+              // Verify it was stored correctly
+              const verifyStored = await getSavingProgramEnrolledYear();
+              console.log(`🔍 Verification - newly stored enrollment year: ${verifyStored}`);
+            } catch (storeError) {
+              console.error('Failed to store current year as enrollment year:', storeError);
+              console.log(`❌ EXPIRATION LOGIC: Failed to store enrollment year, using fallback`);
+              console.log(`⚠️ Using fallback expiration year: ${expirationYear}`);
+            }
           }
         } catch (error) {
           console.log(`❌ EXPIRATION LOGIC: Error retrieving stored enrollment year, using fallback`);
@@ -1087,6 +1114,26 @@ server.registerTool(
       
       console.log(`🎯 FINAL EXPIRATION YEAR DECISION: ${expirationYear}`);
       console.log(`🎯 EXPIRATION DATE: 12/31/${expirationYear}`);
+      
+      // ABSOLUTE FALLBACK: Ensure we never return null expiration year
+      if (!expirationYear || expirationYear === null || expirationYear === undefined || isNaN(expirationYear)) {
+        const absoluteFallback = new Date().getFullYear() + 2; // Current year + 2 years
+        console.log(`🚨 EMERGENCY FALLBACK: Expiration year was invalid (${expirationYear}), using absolute fallback: ${absoluteFallback}`);
+        expirationYear = absoluteFallback;
+        
+        // Try to store this emergency fallback as enrollment year
+        try {
+          const emergencyEnrollmentYear = new Date().getFullYear();
+          const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
+          await setSavingProgramEnrolledYear(emergencyEnrollmentYear.toString());
+          console.log(`🚨 Emergency enrollment year stored: ${emergencyEnrollmentYear}`);
+        } catch (error) {
+          console.error('Failed to store emergency enrollment year:', error);
+        }
+      }
+      
+      console.log(`✅ GUARANTEED EXPIRATION YEAR: ${expirationYear}`);
+      console.log(`✅ GUARANTEED EXPIRATION DATE: 12/31/${expirationYear}`);
       
       return {
         content: [{ 
@@ -1345,10 +1392,22 @@ async function fetchAndSetBrand(sessionId: string, token: string): Promise<void>
       const officialName = await getOfficialBrandName(brandValue);
       
       let emailValue = null;
+      let savingsCardEnrolledYear = null;
       if (settings[0].value) {
         try {
           const settingsValue = JSON.parse(settings[0].value);
           emailValue = settingsValue.originalEmailId || null;
+          
+          // Extract savings card enrolled year
+          if (settingsValue.savingsCardEnrolledYear) {
+            try {
+              const enrolledDate = new Date(settingsValue.savingsCardEnrolledYear);
+              savingsCardEnrolledYear = enrolledDate.getFullYear().toString();
+              console.log(`📅 Extracted savingsCardEnrolledYear: ${savingsCardEnrolledYear} from ${settingsValue.savingsCardEnrolledYear}`);
+            } catch (dateError) {
+              console.error('Failed to parse savingsCardEnrolledYear date:', settingsValue.savingsCardEnrolledYear, dateError);
+            }
+          }
         } catch (parseError) {
           console.error('Failed to parse settings value:', parseError);
         }
@@ -1358,13 +1417,15 @@ async function fetchAndSetBrand(sessionId: string, token: string): Promise<void>
       await sessionManager.updateSession(sessionId, {
         brand: brandValue,
         officialBrandName: officialName,
-        emailId: emailValue
+        emailId: emailValue,
+        savingProgramEnrolledYear: savingsCardEnrolledYear
       });
       
       console.log(`✅ Brand data saved to Redis for ${sessionId}`);
       console.log(`   📝 Brand: ${brandValue}`);
       console.log(`   📝 Official Brand Name: ${officialName}`);
       console.log(`   📝 Email ID: ${emailValue || 'null'}`);
+      console.log(`   📝 Savings Card Enrolled Year: ${savingsCardEnrolledYear || 'null'}`);
       console.log(`   📝 Raw settings data:`, JSON.stringify(settings[0], null, 2));
     }
   } catch (error: any) {
