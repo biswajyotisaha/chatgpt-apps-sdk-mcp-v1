@@ -964,7 +964,14 @@ server.registerTool(
     console.log(`   UID: ${uid}`);
     console.log(`   Email: ${email}`);
     console.log(`   Brand: ${officialBrandName}`);
-    console.log(`   Enrolled year: ${await getSavingProgramEnrolledYear()}`);
+    
+    // Check stored enrollment year before API call
+    try {
+      const storedYear = await getSavingProgramEnrolledYear();
+      console.log(`   🔍 Pre-API stored enrollment year: ${storedYear}`);
+    } catch (error) {
+      console.log(`   🔍 Error getting pre-API enrollment year:`, error);
+    }
     
     try {
       const controller = new AbortController();
@@ -999,11 +1006,22 @@ server.registerTool(
       const data = await response.json();
       const copayCard = data.copayCard || {};
       
+      // Debug the API response
+      console.log(`🔍 API Response data:`, JSON.stringify(data, null, 2));
+      console.log(`🔍 Copay card object:`, JSON.stringify(copayCard, null, 2));
+      console.log(`🔍 Available date fields:`, {
+        enrollmentDate: copayCard.enrollmentDate,
+        createdDate: copayCard.createdDate,
+        activationDate: copayCard.activationDate
+      });
+      
       // Calculate expiration year (enrolled year + 2 for 24 months, fallback to current year + 1)
       let expirationYear = new Date().getFullYear() + 1;
+      console.log(`🔍 Initial expiration year (fallback): ${expirationYear}`);
       
       // Extract and store enrollment year if available
       if (copayCard.enrollmentDate || copayCard.createdDate || copayCard.activationDate) {
+        console.log(`✅ LOGIC PATH: Using API response date fields`);
         const enrollmentDateStr = copayCard.enrollmentDate || copayCard.createdDate || copayCard.activationDate;
         try {
           const enrollmentDate = new Date(enrollmentDateStr);
@@ -1021,8 +1039,10 @@ server.registerTool(
           // Validate enrollment year
           if (!isNaN(enrollmentYear) && enrollmentYear > 2020 && enrollmentYear <= new Date().getFullYear()) {
             expirationYear = enrollmentYear + 2; // 24 months from enrollment
+            console.log(`✅ EXPIRATION LOGIC: Using API enrollment year`);
             console.log(`📅 Using enrollment year for expiration: ${enrollmentYear} + 2 = ${expirationYear}`);
           } else {
+            console.log(`❌ EXPIRATION LOGIC: API enrollment year invalid, using fallback`);
             console.log(`⚠️ Invalid enrollment year: ${enrollmentYear}, using fallback: ${expirationYear}`);
           }
           
@@ -1030,24 +1050,43 @@ server.registerTool(
           const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
           await setSavingProgramEnrolledYear(enrollmentYear.toString());
           console.log(`📅 Enrollment year saved: ${enrollmentYear} (from ${enrollmentDateStr})`);
+          
+          // Verify it was stored correctly
+          const verifyStored = await getSavingProgramEnrolledYear();
+          console.log(`🔍 Verification - stored enrollment year: ${verifyStored}`);
         } catch (error) {
           console.error('Failed to parse enrollment date:', enrollmentDateStr, error);
         }
       } else {
         // Try to get previously stored enrollment year
+        console.log(`❌ LOGIC PATH: No API date fields available, checking stored enrollment year`);
+        console.log(`🔍 No date fields in API response, checking stored enrollment year...`);
         try {
           const storedYear = await getSavingProgramEnrolledYear();
+          console.log(`🔍 Retrieved stored enrollment year: ${storedYear}`);
           if (storedYear && storedYear.trim()) {
             const storedYearNum = parseInt(storedYear.trim());
             if (!isNaN(storedYearNum) && storedYearNum > 2020 && storedYearNum <= new Date().getFullYear()) {
               expirationYear = storedYearNum + 2;
+              console.log(`✅ EXPIRATION LOGIC: Using stored enrollment year`);
               console.log(`📅 Using stored enrollment year for expiration: ${storedYear} + 2 = ${expirationYear}`);
+            } else {
+              console.log(`❌ EXPIRATION LOGIC: Stored enrollment year invalid, using fallback`);
+              console.log(`⚠️ Invalid stored enrollment year: ${storedYearNum}, using fallback: ${expirationYear}`);
             }
+          } else {
+            console.log(`❌ EXPIRATION LOGIC: No valid stored enrollment year, using fallback`);
+            console.log(`⚠️ No valid stored enrollment year, using fallback: ${expirationYear}`);
           }
         } catch (error) {
+          console.log(`❌ EXPIRATION LOGIC: Error retrieving stored enrollment year, using fallback`);
+          console.log(`📅 Error retrieving stored enrollment year:`, error);
           console.log(`📅 No stored enrollment year available, using fallback: ${expirationYear}`);
         }
       }
+      
+      console.log(`🎯 FINAL EXPIRATION YEAR DECISION: ${expirationYear}`);
+      console.log(`🎯 EXPIRATION DATE: 12/31/${expirationYear}`);
       
       return {
         content: [{ 
