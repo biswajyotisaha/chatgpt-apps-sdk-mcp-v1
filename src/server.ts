@@ -750,6 +750,7 @@ server.registerResource(
     function renderIfReady() {
       const out = window.openai?.toolOutput || {};
       const copayCard = out.copayCard || null;
+      const expirationYear = out.expirationYear || new Date().getFullYear() + 1;
 
       if (!copayCard) return;
 
@@ -1034,12 +1035,29 @@ server.registerTool(
             const storedYearNum = parseInt(storedYear.trim());
             if (!isNaN(storedYearNum) && storedYearNum > 2020 && storedYearNum <= new Date().getFullYear()) {
               expirationYear = storedYearNum + 2;
+              console.log(`✅ EXPIRATION LOGIC: Using stored enrollment year`);
+              console.log(`📅 Using stored enrollment year for expiration: ${storedYear} + 2 = ${expirationYear}`);
+            }
+          } else {
+            // No stored year found, set current year as enrollment year
+            const currentYear = new Date().getFullYear();
+            try {
+              const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
+              await setSavingProgramEnrolledYear(currentYear.toString());
+              expirationYear = currentYear + 2;
+            } catch (storeError) {
+              console.error('Failed to store current year as enrollment year:', storeError);
             }
           }
         } catch (error) {
           console.error('Error retrieving stored enrollment year:', error);
         }
       }
+      
+      console.log(`🎯 FINAL EXPIRATION YEAR DECISION: ${expirationYear}`);
+      console.log(`🎯 EXPIRATION DATE: 12/31/${expirationYear}`);
+      console.log(`✅ GUARANTEED EXPIRATION YEAR: ${expirationYear}`);
+      console.log(`✅ GUARANTEED EXPIRATION DATE: 12/31/${expirationYear}`);
       
       return {
         content: [{ 
