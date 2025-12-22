@@ -964,6 +964,7 @@ server.registerTool(
     console.log(`   UID: ${uid}`);
     console.log(`   Email: ${email}`);
     console.log(`   Brand: ${officialBrandName}`);
+    console.log(`   Enrolled year: ${await getSavingProgramEnrolledYear()}`);
     
     try {
       const controller = new AbortController();
@@ -1007,6 +1008,15 @@ server.registerTool(
         try {
           const enrollmentDate = new Date(enrollmentDateStr);
           const enrollmentYear = enrollmentDate.getFullYear();
+          
+          // Debug enrollment year parsing
+          console.log(`🔍 Enrollment date string: ${enrollmentDateStr}`);
+          console.log(`🔍 Parsed enrollment date: ${enrollmentDate}`);
+          console.log(`🔍 Enrollment year: ${enrollmentYear}`);
+          console.log(`🔍 Current year: ${new Date().getFullYear()}`);
+          console.log(`🔍 isNaN check: ${!isNaN(enrollmentYear)}`);
+          console.log(`🔍 > 2020 check: ${enrollmentYear > 2020}`);
+          console.log(`🔍 <= current year check: ${enrollmentYear <= new Date().getFullYear()}`);
           
           // Validate enrollment year
           if (!isNaN(enrollmentYear) && enrollmentYear > 2020 && enrollmentYear <= new Date().getFullYear()) {
