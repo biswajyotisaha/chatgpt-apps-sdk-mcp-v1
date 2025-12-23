@@ -21,7 +21,9 @@ import {
   setOfficialBrandName,
   requireOfficialBrandName,
   getOfficialBrandName,
-  extractPatientId
+  extractPatientId,
+  getSavingProgramEnrolledYear,
+  setSavingProgramEnrolledYear
 } from './userAuthenticationService.js';
 import { sessionManager } from './sessionManager.js';
 import { setRequestContext, clearRequestContext } from './userAuthenticationService.js';
@@ -627,8 +629,6 @@ server.registerResource(
     }
   },
   async () => {
-    // Calculate expiration year (current year + 1)
-    const expirationYear = new Date().getFullYear() + 1;
     
     return {
       contents: [
@@ -750,6 +750,7 @@ server.registerResource(
     function renderIfReady() {
       const out = window.openai?.toolOutput || {};
       const copayCard = out.copayCard || null;
+      const expirationYear = out.expirationYear || new Date().getFullYear() + 1;
 
       if (!copayCard) return;
 
@@ -773,7 +774,7 @@ server.registerResource(
       <div class="content">
         <img src="https://logosandtypes.com/wp-content/uploads/2025/04/Lilly-scaled.png" alt="Lilly L logo" class="logo-L" />
         <p class="terms">
-          Offer good until <strong>12/31/${expirationYear}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
+          Offer good until <strong>12/31/\${out.expirationYear || new Date().getFullYear() + 1}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
         </p>
       </div>
 
@@ -964,6 +965,14 @@ server.registerTool(
     console.log(`   Email: ${email}`);
     console.log(`   Brand: ${officialBrandName}`);
     
+    // Check stored enrollment year before API call
+    try {
+      const storedYear = await getSavingProgramEnrolledYear();
+      console.log(`   🔍 Pre-API stored enrollment year: ${storedYear}`);
+    } catch (error) {
+      console.log(`   🔍 Error getting pre-API enrollment year:`, error);
+    }
+    
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -997,12 +1006,68 @@ server.registerTool(
       const data = await response.json();
       const copayCard = data.copayCard || {};
       
+      // Calculate expiration year (enrolled year + 2 for 24 months, fallback to current year + 1)
+      let expirationYear = new Date().getFullYear() + 1;
+      
+      // Extract and store enrollment year if available
+      if (copayCard.enrollmentDate || copayCard.createdDate || copayCard.activationDate) {
+        const enrollmentDateStr = copayCard.enrollmentDate || copayCard.createdDate || copayCard.activationDate;
+        try {
+          const enrollmentDate = new Date(enrollmentDateStr);
+          const enrollmentYear = enrollmentDate.getFullYear();
+          
+          // Validate enrollment year
+          if (!isNaN(enrollmentYear) && enrollmentYear > 2020 && enrollmentYear <= new Date().getFullYear()) {
+            expirationYear = enrollmentYear + 2; // 24 months from enrollment
+          }
+          
+          // Store enrollment year in session for future use
+          const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
+          await setSavingProgramEnrolledYear(enrollmentYear.toString());
+        } catch (error) {
+          console.error('Failed to parse enrollment date:', enrollmentDateStr, error);
+        }
+      } else {
+        // Try to get previously stored enrollment year
+        try {
+          const storedYear = await getSavingProgramEnrolledYear();
+          if (storedYear && storedYear.trim()) {
+            const storedYearNum = parseInt(storedYear.trim());
+            if (!isNaN(storedYearNum) && storedYearNum > 2020 && storedYearNum <= new Date().getFullYear()) {
+              expirationYear = storedYearNum + 2;
+              console.log(`✅ EXPIRATION LOGIC: Using stored enrollment year`);
+              console.log(`📅 Using stored enrollment year for expiration: ${storedYear} + 2 = ${expirationYear}`);
+            }
+          } else {
+            // No stored year found, set current year as enrollment year
+            const currentYear = new Date().getFullYear();
+            try {
+              const { setSavingProgramEnrolledYear } = await import('./userAuthenticationService.js');
+              await setSavingProgramEnrolledYear(currentYear.toString());
+              expirationYear = currentYear + 2;
+            } catch (storeError) {
+              console.error('Failed to store current year as enrollment year:', storeError);
+            }
+          }
+        } catch (error) {
+          console.error('Error retrieving stored enrollment year:', error);
+        }
+      }
+      
+      console.log(`🎯 FINAL EXPIRATION YEAR DECISION: ${expirationYear}`);
+      console.log(`🎯 EXPIRATION DATE: 12/31/${expirationYear}`);
+      console.log(`✅ GUARANTEED EXPIRATION YEAR: ${expirationYear}`);
+      console.log(`✅ GUARANTEED EXPIRATION DATE: 12/31/${expirationYear}`);
+      
       return {
         content: [{ 
           type: 'text', 
           text: `Savings card loaded: ${copayCard.copayCardNumber || 'No card number'}` 
         }],
-        structuredContent: { copayCard: copayCard }
+        structuredContent: { 
+          copayCard: copayCard,
+          expirationYear: expirationYear
+        }
       };
     } catch (error: any) {
       console.error('Failed to fetch savings card:', error.message);
@@ -1251,10 +1316,22 @@ async function fetchAndSetBrand(sessionId: string, token: string): Promise<void>
       const officialName = await getOfficialBrandName(brandValue);
       
       let emailValue = null;
+      let savingsCardEnrolledYear = null;
       if (settings[0].value) {
         try {
           const settingsValue = JSON.parse(settings[0].value);
           emailValue = settingsValue.originalEmailId || null;
+          
+          // Extract savings card enrolled year
+          if (settingsValue.savingsCardEnrolledYear) {
+            try {
+              const enrolledDate = new Date(settingsValue.savingsCardEnrolledYear);
+              savingsCardEnrolledYear = enrolledDate.getFullYear().toString();
+              console.log(`📅 Extracted savingsCardEnrolledYear: ${savingsCardEnrolledYear} from ${settingsValue.savingsCardEnrolledYear}`);
+            } catch (dateError) {
+              console.error('Failed to parse savingsCardEnrolledYear date:', settingsValue.savingsCardEnrolledYear, dateError);
+            }
+          }
         } catch (parseError) {
           console.error('Failed to parse settings value:', parseError);
         }
@@ -1264,13 +1341,15 @@ async function fetchAndSetBrand(sessionId: string, token: string): Promise<void>
       await sessionManager.updateSession(sessionId, {
         brand: brandValue,
         officialBrandName: officialName,
-        emailId: emailValue
+        emailId: emailValue,
+        savingProgramEnrolledYear: savingsCardEnrolledYear
       });
       
       console.log(`✅ Brand data saved to Redis for ${sessionId}`);
       console.log(`   📝 Brand: ${brandValue}`);
       console.log(`   📝 Official Brand Name: ${officialName}`);
       console.log(`   📝 Email ID: ${emailValue || 'null'}`);
+      console.log(`   📝 Savings Card Enrolled Year: ${savingsCardEnrolledYear || 'null'}`);
       console.log(`   📝 Raw settings data:`, JSON.stringify(settings[0], null, 2));
     }
   } catch (error: any) {

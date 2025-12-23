@@ -23,6 +23,7 @@ interface UserSession {
   brand: string | null;
   emailId: string | null;
   officialBrandName: string | null;
+  savingProgramEnrolledYear: string | null;
   userId: string | null;
   lastAccessed: number; // Timestamp of last request
 }
@@ -52,7 +53,7 @@ class SessionManager {
     this.redis = new Redis(redisUrl, {
       maxRetriesPerRequest: 3,
       enableReadyCheck: true,
-      retryStrategy: (times) => {
+      retryStrategy: (times: number) => {
         // Exponential backoff: wait longer between retries
         const delay = Math.min(times * 50, 2000);
         return delay;
@@ -60,7 +61,7 @@ class SessionManager {
     });
 
     // Event listeners for monitoring Redis connection
-    this.redis.on('error', (error) => {
+    this.redis.on('error', (error: Error) => {
       console.error('❌ Redis connection error:', error);
     });
 
@@ -147,6 +148,7 @@ class SessionManager {
         brand: null,
         emailId: null,
         officialBrandName: null,
+        savingProgramEnrolledYear: null,
         userId: this.extractUserId(token),
         lastAccessed: Date.now()
       };
