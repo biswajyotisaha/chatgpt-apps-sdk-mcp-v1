@@ -1211,9 +1211,9 @@ async function verifyToken(req: Request, res: Response, next: any) {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('📥 Incoming Request from ChatGPT');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('🔍 Request Headers:');
-  console.log(JSON.stringify(req.headers, null, 2));
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  // console.log('🔍 Request Headers:');
+  // console.log(JSON.stringify(req.headers, null, 2));
+  // console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   
   const authHeader = req.headers.authorization;
   
