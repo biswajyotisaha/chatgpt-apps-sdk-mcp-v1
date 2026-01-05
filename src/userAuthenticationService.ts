@@ -264,6 +264,31 @@ export async function requireOfficialBrandName(): Promise<string> {
   return name;
 }
 
+// ==================== SAVING PROGRAM ENROLLED YEAR ====================
+
+export async function getSavingProgramEnrolledYear(): Promise<string | null> {
+  const ctx = requireContext();
+  const { session } = await sessionManager.getSession(ctx.token);
+  return session.savingProgramEnrolledYear;
+}
+
+export async function setSavingProgramEnrolledYear(year: string | null): Promise<void> {
+  const ctx = asyncLocalStorage.getStore();
+  if (!ctx) return;
+  
+  await sessionManager.updateSession(ctx.sessionId, {
+    savingProgramEnrolledYear: year
+  });
+}
+
+export async function requireSavingProgramEnrolledYear(): Promise<string> {
+  const year = await getSavingProgramEnrolledYear();
+  if (!year) {
+    throw new Error('Saving program enrolled year not available.');
+  }
+  return year;
+}
+
 // ==================== UTILITY FUNCTIONS ====================
 
 /**
