@@ -3157,6 +3157,9 @@ async function fetchAndSetBrand(sessionId: string, token: string): Promise<void>
     const settings = data.settings || [];
     
     if (settings.length > 0 && settings[0].key) {
+      console.log(`✅ Settings found for ${sessionId} - User is already registered in LC3`);
+      console.log(`   📋 Settings count: ${settings.length}`);
+      
       const brandValue = settings[0].key;
       
       // Get official brand name using mapping
