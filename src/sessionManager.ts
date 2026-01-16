@@ -26,6 +26,7 @@ interface UserSession {
   savingProgramEnrolledYear: string | null;
   userId: string | null;
   lastAccessed: number; // Timestamp of last request
+  hasViewedTrainingVideo: Record<string, boolean>; // Track training video viewing per medicine ID
 }
 
 /**
@@ -150,7 +151,8 @@ class SessionManager {
         officialBrandName: null,
         savingProgramEnrolledYear: null,
         userId: this.extractUserId(token),
-        lastAccessed: Date.now()
+        lastAccessed: Date.now(),
+        hasViewedTrainingVideo: {}
       };
 
       // Store in Redis with 30-minute expiration
