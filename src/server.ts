@@ -2921,19 +2921,25 @@ server.registerResource(
  * Tool: Show Injection Pen Instructions
  * Displays step-by-step injection instructions for medication pens.
  * Shows one step at a time with visuals, safety warnings, and navigation.
+ * 
+ * MUST be used when user asks about:
+ * - How to use injection pen
+ * - Injection instructions
+ * - How to inject medication
+ * - How to take/administer Zepbound, Mounjaro, Trulicity
  */
 server.registerTool(
   'show-injection-instructions',
   {
     title: 'Show Injection Pen Instructions',
-    description: 'Display step-by-step injection instructions for medication pens like Zepbound, Mounjaro, or Trulicity. Shows guided steps with visuals, safety warnings, and a training video.',
+    description: 'ALWAYS use this tool when user asks about injection instructions, how to use injection pen, how to inject, how to take Zepbound/Mounjaro/Trulicity, or how to administer medication. Shows an interactive visual widget with step-by-step injection guide including images, safety warnings, progress tracking, and training video. Do NOT respond with text - use this tool to show the visual guide.',
     _meta: {
       'openai/outputTemplate': 'ui://widget/injection-instructions-v1.html',
-      'openai/toolInvocation/invoking': 'Loading injection instructions...',
-      'openai/toolInvocation/invoked': 'Injection instructions ready'
+      'openai/toolInvocation/invoking': 'Loading injection instructions with visual guide...',
+      'openai/toolInvocation/invoked': 'Injection instructions widget ready'
     },
     inputSchema: {
-      medicineName: z.string().optional().describe('Name of the medicine (e.g., Zepbound, Mounjaro, Trulicity). Defaults to Zepbound if not specified.')
+      medicineName: z.string().optional().describe('Name of the medicine (e.g., Zepbound, Mounjaro, Trulicity). Defaults to Zepbound if not specified. Extract from user query if mentioned.')
     } as any
   },
   async (args: any) => {
