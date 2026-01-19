@@ -2643,31 +2643,34 @@ server.registerResource(
   </div>
 
   <script>
+    // Base URL for images - will be updated from tool output
+    const baseUrl = 'https://medicine-carousel.onrender.com';
+    
     // Injection steps data - will be populated from tool output (4 simple steps)
     const defaultSteps = [
       {
         title: "Step 1: Choose Your Injection Site",
         description: "You may inject in your stomach (at least 2 inches from belly button), thigh, or upper arm. Rotate sites weekly.",
         warning: "Do not inject into tender, bruised, red, or hard skin.",
-        image: ""
+        image: baseUrl + "/public/images/injection_step_1.avif"
       },
       {
         title: "Step 2: Pull Off the Gray Base Cap",
         description: "Pull off the gray base cap while the pen is locked. Do not put it back on.",
         warning: "Do not touch the needle. Use pen within 5 minutes after removing cap.",
-        image: ""
+        image: baseUrl + "/public/images/injection_step_2.avif"
       },
       {
         title: "Step 3: Place on Skin and Unlock",
         description: "Place the clear base flat on your skin, then turn the lock ring to unlock.",
         warning: "Do not press the button until the base is flat on skin and unlocked.",
-        image: ""
+        image: baseUrl + "/public/images/injection_step_3.avif"
       },
       {
         title: "Step 4: Press and Hold the Button",
         description: "Press and hold the button for up to 10 seconds. Listen for the first click (injection started). When you hear the second click, injection is complete.",
         warning: "Do not lift until you hear the second click. Check gray plunger is visible.",
-        image: ""
+        image: baseUrl + "/public/images/injection_step_4.avif"
       }
     ];
 
@@ -2707,10 +2710,12 @@ server.registerResource(
       }
 
       const step = steps[currentStep];
-      // Use image if available, otherwise show step number
-      const visualContent = step.image 
-        ? \`<img src="\${step.image}" alt="\${step.title}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#9333ea;"><span style="font-size:48px;font-weight:bold;">\${currentStep + 1}</span><span style="font-size:14px;color:#6b7280;margin-top:8px;">\${step.title}</span></div>\`
-        : \`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#9333ea;"><span style="font-size:48px;font-weight:bold;">\${currentStep + 1}</span><span style="font-size:14px;color:#6b7280;margin-top:8px;">\${step.title}</span></div>\`;
+      // Use image if available and not empty, otherwise show step number
+      const hasImage = step.image && step.image.trim() !== '';
+      const fallbackHtml = \`<div class="step-number-fallback" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#9333ea;"><span style="font-size:48px;font-weight:bold;">\${currentStep + 1}</span><span style="font-size:14px;color:#6b7280;margin-top:8px;">\${step.title}</span></div>\`;
+      const visualContent = hasImage 
+        ? \`<img src="\${step.image}" alt="\${step.title}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="step-number-fallback" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#9333ea;"><span style="font-size:48px;font-weight:bold;">\${currentStep + 1}</span><span style="font-size:14px;color:#6b7280;margin-top:8px;">\${step.title}</span></div>\`
+        : fallbackHtml;
       
       stepContent.innerHTML = \`
         <h2 class="step-title">\${step.title}</h2>
