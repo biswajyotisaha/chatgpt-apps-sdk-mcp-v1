@@ -2632,21 +2632,13 @@ server.registerResource(
           </svg>
           Watch Training Video
         </button>
+        <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug" target="_blank" class="video-btn" style="margin-left: 10px; text-decoration: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+          </svg>
+          Official Instructions
+        </a>
       </div>
-    </div>
-  </div>
-
-  <div class="video-modal" id="video-modal">
-    <div class="video-container">
-      <button class="video-close" id="video-close">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
-          <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
-        </svg>
-      </button>
-      <video id="training-video" controls width="100%">
-        <source src="" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
     </div>
   </div>
 
@@ -2654,46 +2646,71 @@ server.registerResource(
     // Injection steps data - will be populated from tool output
     const defaultSteps = [
       {
-        title: "Check Your Pen",
-        description: "Before using your Zepbound pen, check the expiration date on the label. Do not use the pen if it has expired. Look at the medicine through the window - it should be clear and colorless to slightly yellow. Do not use if it looks cloudy, discolored, or has particles.",
-        warning: "Do not use the pen if it has been frozen or left in direct sunlight. Store in the refrigerator at 36°F to 46°F (2°C to 8°C).",
-        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+        title: "Step 1: Get to Know Your Pen",
+        description: "Your Zepbound single-dose pen has these parts: A gray base cap, a clear base, a medicine window, a purple injection button, and a lock ring.",
+        warning: "Do not use the pen if it appears damaged or if the medicine looks cloudy.",
+        image: ""
       },
       {
-        title: "Choose Your Injection Site",
-        description: "You can inject Zepbound into your stomach (abdomen), thigh, or upper arm. Choose a spot that is at least 2 inches away from your belly button. Rotate your injection site each week to avoid skin problems.",
-        warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+        title: "Step 2: Check the Medicine",
+        description: "Look through the medicine window. The medicine should be clear and colorless to slightly yellow. Check the expiration date.",
+        warning: "Do not use if expired, frozen, or exposed to heat above 86°F.",
+        image: ""
       },
       {
-        title: "Prepare the Pen",
-        description: "Pull off the gray base cap. You will see the needle. Do not touch the needle or let it touch any surface. Do not put the cap back on - you are now ready to inject.",
-        warning: "Use the pen only once. Each pen contains one dose. Do not try to reuse or refill the pen.",
-        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+        title: "Step 3: Wash Your Hands",
+        description: "Wash your hands with soap and water before preparing your injection.",
+        warning: "Do not share your pen with other people.",
+        image: ""
       },
       {
-        title: "Inject Your Dose",
-        description: "Place the clear base flat against your skin at the injection site. Unlock by turning the lock ring. Press and hold the purple injection button. You will hear a loud click when the injection starts. Keep holding the button down until you hear a second click (about 5-10 seconds).",
-        warning: "Keep the pen pressed firmly against your skin during the entire injection. Do not move the pen until the second click.",
-        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+        title: "Step 4: Choose Your Injection Site",
+        description: "Inject in your stomach (at least 2 inches from belly button), thigh, or upper arm. Rotate sites weekly.",
+        warning: "Do not inject into tender, bruised, red, or hard skin.",
+        image: ""
       },
       {
-        title: "Remove and Check",
-        description: "After the second click, lift the pen straight up from your skin. Look at the pen - the gray plunger should be visible in the window, confirming you received your full dose. A small drop of blood at the injection site is normal.",
-        warning: "If the gray plunger is not visible, you may not have received your full dose. Contact your healthcare provider.",
-        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+        title: "Step 5: Pull Off the Gray Cap",
+        description: "Pull the gray base cap straight off and throw it away. Do not put it back on.",
+        warning: "Do not touch the needle. Use pen within 5 minutes after removing cap.",
+        image: ""
       },
       {
-        title: "Dispose of the Pen",
-        description: "Put the used pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. When your sharps container is almost full, follow your community guidelines for proper disposal.",
-        warning: "Keep the sharps container out of reach of children. Do not recycle the pen or sharps container.",
-        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+        title: "Step 6: Place on Skin",
+        description: "Place the clear base flat against your skin at the injection site.",
+        warning: "Do not press the button until the base is flat on skin.",
+        image: ""
+      },
+      {
+        title: "Step 7: Unlock and Press Button",
+        description: "Turn the lock ring to unlock. Press and HOLD the purple button. You'll hear a loud click.",
+        warning: "Do not lift until you hear the second click (5-10 seconds).",
+        image: ""
+      },
+      {
+        title: "Step 8: Wait for Second Click",
+        description: "Keep holding the button. Wait for the second click (about 5-10 seconds). Then lift the pen.",
+        warning: "If no second click, check the gray plunger is visible in window.",
+        image: ""
+      },
+      {
+        title: "Step 9: Lift and Check",
+        description: "Lift the pen straight up. The gray plunger should be visible in the window, confirming full dose.",
+        warning: "If gray plunger is NOT visible, do not inject another dose. Call your healthcare provider.",
+        image: ""
+      },
+      {
+        title: "Step 10: Dispose Safely",
+        description: "Put the used pen in an FDA-cleared sharps disposal container immediately. Do not throw in trash.",
+        warning: "Keep sharps containers out of reach of children. Do not reuse the pen.",
+        image: ""
       }
     ];
 
     let currentStep = 0;
     let steps = defaultSteps;
-    let videoUrl = "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4";
+    let videoUrl = "https://uspl.lilly.com/zepbound/zepbound.html#ug";
+    let instructionsUrl = "https://uspl.lilly.com/zepbound/zepbound.html#ug";
 
     // DOM elements
     const stepContent = document.getElementById('step-content');
@@ -2702,10 +2719,7 @@ server.registerResource(
     const btnBack = document.getElementById('btn-back');
     const btnNext = document.getElementById('btn-next');
     const medicineName = document.getElementById('medicine-name');
-    const videoModal = document.getElementById('video-modal');
-    const trainingVideo = document.getElementById('training-video');
     const watchVideoBtn = document.getElementById('watch-video-btn');
-    const videoClose = document.getElementById('video-close');
     const navigation = document.getElementById('navigation');
 
     function renderStep() {
@@ -2729,11 +2743,12 @@ server.registerResource(
       }
 
       const step = steps[currentStep];
+      const stepIcon = getStepIcon(currentStep);
       
       stepContent.innerHTML = \`
         <h2 class="step-title">\${step.title}</h2>
         <div class="step-visual">
-          <img src="\${step.image}" alt="\${step.title}" onerror="this.parentElement.innerHTML='<span style=\\"color:#9ca3af\\">Visual Guide</span>'" />
+          \${stepIcon}
         </div>
         <p class="step-description">\${step.description}</p>
         \${step.warning ? \`
@@ -2755,6 +2770,33 @@ server.registerResource(
       btnNext.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
       navigation.classList.remove('hidden');
     }
+    
+    // SVG icons for each step
+    function getStepIcon(stepIndex) {
+      const icons = [
+        // Step 1: Get to Know Your Pen - Pen diagram
+        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="60" y="20" width="80" height="120" rx="10" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="70" y="30" width="60" height="40" rx="5" fill="#c4b5fd" stroke="#a78bfa" stroke-width="1"/><text x="100" y="55" text-anchor="middle" font-size="10" fill="#581c87">Medicine</text><circle cx="100" cy="95" r="15" fill="#a855f7"/><text x="100" y="100" text-anchor="middle" font-size="10" fill="white">Button</text><rect x="85" y="130" width="30" height="15" rx="3" fill="#6b7280"/><text x="100" y="140" text-anchor="middle" font-size="6" fill="white">Cap</text></svg>',
+        // Step 2: Check Medicine - Eye/inspect
+        '<svg viewBox="0 0 200 160" width="180" height="140"><circle cx="100" cy="80" r="50" fill="none" stroke="#3b82f6" stroke-width="3"/><circle cx="100" cy="80" r="25" fill="#60a5fa"/><circle cx="100" cy="80" r="10" fill="#1e3a8a"/><path d="M30 80 Q100 30 170 80 Q100 130 30 80" fill="none" stroke="#3b82f6" stroke-width="3"/><text x="100" y="150" text-anchor="middle" font-size="12" fill="#1e40af">Check medicine is clear</text></svg>',
+        // Step 3: Wash Hands
+        '<svg viewBox="0 0 200 160" width="180" height="140"><ellipse cx="100" cy="100" rx="40" ry="25" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2"/><path d="M70 60 Q100 40 130 60 L125 90 Q100 85 75 90 Z" fill="#fcd34d" stroke="#f59e0b" stroke-width="2"/><circle cx="85" cy="75" r="5" fill="#60a5fa"/><circle cx="100" cy="70" r="5" fill="#60a5fa"/><circle cx="115" cy="75" r="5" fill="#60a5fa"/><text x="100" y="145" text-anchor="middle" font-size="12" fill="#1e40af">Wash with soap & water</text></svg>',
+        // Step 4: Injection Sites - Body diagram
+        '<svg viewBox="0 0 200 160" width="180" height="140"><ellipse cx="100" cy="30" rx="20" ry="25" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="80" y="50" width="40" height="50" rx="5" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="75" y="95" width="15" height="45" rx="3" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="110" y="95" width="15" height="45" rx="3" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><circle cx="100" cy="70" r="8" fill="#ef4444" opacity="0.5"/><circle cx="87" cy="110" r="6" fill="#ef4444" opacity="0.5"/><circle cx="113" cy="110" r="6" fill="#ef4444" opacity="0.5"/><text x="100" y="155" text-anchor="middle" font-size="10" fill="#dc2626">Abdomen • Thigh • Upper Arm</text></svg>',
+        // Step 5: Remove Cap
+        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="80" y="40" width="40" height="80" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="50" width="30" height="25" rx="4" fill="#c4b5fd"/><rect x="90" y="115" width="20" height="25" rx="3" fill="#6b7280"/><path d="M110 127 L140 100" stroke="#6b7280" stroke-width="3" stroke-linecap="round" stroke-dasharray="5,5"/><rect x="135" y="85" width="20" height="25" rx="3" fill="#6b7280" transform="rotate(30 145 97)"/><path d="M130 70 L150 50" stroke="#10b981" stroke-width="2"/><path d="M145 55 L150 50 L155 60" fill="none" stroke="#10b981" stroke-width="2"/><text x="100" y="155" text-anchor="middle" font-size="11" fill="#374151">Pull cap straight off</text></svg>',
+        // Step 6: Place on Skin
+        '<svg viewBox="0 0 200 160" width="180" height="140"><path d="M20 120 Q100 100 180 120 L180 150 Q100 130 20 150 Z" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="80" y="30" width="40" height="75" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="40" width="30" height="20" rx="4" fill="#c4b5fd"/><rect x="90" y="100" width="20" height="10" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"/><text x="100" y="155" text-anchor="middle" font-size="11" fill="#374151">Place flat on skin</text></svg>',
+        // Step 7: Press Button
+        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="80" y="50" width="40" height="80" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="60" width="30" height="20" rx="4" fill="#c4b5fd"/><circle cx="100" cy="40" r="12" fill="#a855f7" stroke="#7c3aed" stroke-width="2"/><path d="M100 20 L100 30" stroke="#10b981" stroke-width="3"/><path d="M95 22 L100 17 L105 22" fill="none" stroke="#10b981" stroke-width="2"/><text x="100" y="38" text-anchor="middle" font-size="8" fill="white">PUSH</text><path d="M50 60 L65 75" stroke="#f59e0b" stroke-width="2"/><text x="40" y="55" font-size="10" fill="#f59e0b">Click!</text><text x="100" y="150" text-anchor="middle" font-size="11" fill="#374151">Press & hold button</text></svg>',
+        // Step 8: Wait for Second Click
+        '<svg viewBox="0 0 200 160" width="180" height="140"><circle cx="100" cy="70" r="45" fill="none" stroke="#3b82f6" stroke-width="3"/><line x1="100" y1="70" x2="100" y2="40" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round"/><line x1="100" y1="70" x2="125" y2="85" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="70" r="5" fill="#1e3a8a"/><text x="100" y="75" text-anchor="middle" font-size="20" fill="#3b82f6">5-10</text><text x="100" y="90" text-anchor="middle" font-size="10" fill="#3b82f6">seconds</text><text x="100" y="140" text-anchor="middle" font-size="11" fill="#374151">Wait for 2nd click</text></svg>',
+        // Step 9: Check Dose
+        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="80" y="30" width="40" height="80" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="40" width="30" height="25" rx="4" fill="#6b7280"/><text x="100" y="57" text-anchor="middle" font-size="8" fill="white">✓ Gray</text><circle cx="145" cy="60" r="25" fill="none" stroke="#10b981" stroke-width="3"/><path d="M135 60 L142 67 L158 51" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M120 45 L130 55" stroke="#10b981" stroke-width="2"/><text x="100" y="130" text-anchor="middle" font-size="11" fill="#374151">Gray plunger visible = Full dose</text></svg>',
+        // Step 10: Dispose
+        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="70" y="40" width="60" height="80" rx="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/><text x="100" y="70" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">SHARPS</text><path d="M85 80 L115 80 M100 65 L100 95" stroke="#dc2626" stroke-width="3"/><rect x="90" y="100" width="20" height="25" rx="3" fill="#9333ea" transform="rotate(-15 100 112)"/><path d="M115 115 L125 125" stroke="#6b7280" stroke-width="2" stroke-dasharray="3,3"/><text x="100" y="150" text-anchor="middle" font-size="11" fill="#374151">Dispose in sharps container</text></svg>'
+      ];
+      return icons[stepIndex] || icons[0];
+    }
 
     // Event listeners
     btnBack.addEventListener('click', () => {
@@ -2769,22 +2811,9 @@ server.registerResource(
       renderStep();
     });
 
+    // Open video/instructions in new tab
     watchVideoBtn.addEventListener('click', () => {
-      trainingVideo.src = videoUrl;
-      videoModal.classList.add('active');
-      trainingVideo.play();
-    });
-
-    videoClose.addEventListener('click', () => {
-      trainingVideo.pause();
-      videoModal.classList.remove('active');
-    });
-
-    videoModal.addEventListener('click', (e) => {
-      if (e.target === videoModal) {
-        trainingVideo.pause();
-        videoModal.classList.remove('active');
-      }
+      window.open(videoUrl, '_blank');
     });
 
     // Load data from tool output if available
@@ -2795,6 +2824,9 @@ server.registerResource(
       }
       if (out.videoUrl) {
         videoUrl = out.videoUrl;
+      }
+      if (out.instructionsUrl) {
+        instructionsUrl = out.instructionsUrl;
       }
       if (out.medicineName) {
         medicineName.textContent = out.medicineName + ' Injection Pen';
