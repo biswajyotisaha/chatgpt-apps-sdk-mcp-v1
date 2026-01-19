@@ -2643,66 +2643,30 @@ server.registerResource(
   </div>
 
   <script>
-    // Injection steps data - will be populated from tool output
+    // Injection steps data - will be populated from tool output (4 simple steps)
     const defaultSteps = [
       {
-        title: "Step 1: Get to Know Your Pen",
-        description: "Your Zepbound single-dose pen has these parts: A gray base cap, a clear base, a medicine window, a purple injection button, and a lock ring.",
-        warning: "Do not use the pen if it appears damaged or if the medicine looks cloudy.",
-        image: ""
-      },
-      {
-        title: "Step 2: Check the Medicine",
-        description: "Look through the medicine window. The medicine should be clear and colorless to slightly yellow. Check the expiration date.",
-        warning: "Do not use if expired, frozen, or exposed to heat above 86°F.",
-        image: ""
-      },
-      {
-        title: "Step 3: Wash Your Hands",
-        description: "Wash your hands with soap and water before preparing your injection.",
-        warning: "Do not share your pen with other people.",
-        image: ""
-      },
-      {
-        title: "Step 4: Choose Your Injection Site",
-        description: "Inject in your stomach (at least 2 inches from belly button), thigh, or upper arm. Rotate sites weekly.",
+        title: "Step 1: Choose Your Injection Site",
+        description: "You may inject in your stomach (at least 2 inches from belly button), thigh, or upper arm. Rotate sites weekly.",
         warning: "Do not inject into tender, bruised, red, or hard skin.",
         image: ""
       },
       {
-        title: "Step 5: Pull Off the Gray Cap",
-        description: "Pull the gray base cap straight off and throw it away. Do not put it back on.",
+        title: "Step 2: Pull Off the Gray Base Cap",
+        description: "Pull off the gray base cap while the pen is locked. Do not put it back on.",
         warning: "Do not touch the needle. Use pen within 5 minutes after removing cap.",
         image: ""
       },
       {
-        title: "Step 6: Place on Skin",
-        description: "Place the clear base flat against your skin at the injection site.",
-        warning: "Do not press the button until the base is flat on skin.",
+        title: "Step 3: Place on Skin and Unlock",
+        description: "Place the clear base flat on your skin, then turn the lock ring to unlock.",
+        warning: "Do not press the button until the base is flat on skin and unlocked.",
         image: ""
       },
       {
-        title: "Step 7: Unlock and Press Button",
-        description: "Turn the lock ring to unlock. Press and HOLD the purple button. You'll hear a loud click.",
-        warning: "Do not lift until you hear the second click (5-10 seconds).",
-        image: ""
-      },
-      {
-        title: "Step 8: Wait for Second Click",
-        description: "Keep holding the button. Wait for the second click (about 5-10 seconds). Then lift the pen.",
-        warning: "If no second click, check the gray plunger is visible in window.",
-        image: ""
-      },
-      {
-        title: "Step 9: Lift and Check",
-        description: "Lift the pen straight up. The gray plunger should be visible in the window, confirming full dose.",
-        warning: "If gray plunger is NOT visible, do not inject another dose. Call your healthcare provider.",
-        image: ""
-      },
-      {
-        title: "Step 10: Dispose Safely",
-        description: "Put the used pen in an FDA-cleared sharps disposal container immediately. Do not throw in trash.",
-        warning: "Keep sharps containers out of reach of children. Do not reuse the pen.",
+        title: "Step 4: Press and Hold the Button",
+        description: "Press and hold the button for up to 10 seconds. Listen for the first click (injection started). When you hear the second click, injection is complete.",
+        warning: "Do not lift until you hear the second click. Check gray plunger is visible.",
         image: ""
       }
     ];
@@ -2743,12 +2707,15 @@ server.registerResource(
       }
 
       const step = steps[currentStep];
-      const stepIcon = getStepIcon(currentStep);
+      // Use image if available, otherwise show step number
+      const visualContent = step.image 
+        ? \`<img src="\${step.image}" alt="\${step.title}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#9333ea;"><span style="font-size:48px;font-weight:bold;">\${currentStep + 1}</span><span style="font-size:14px;color:#6b7280;margin-top:8px;">\${step.title}</span></div>\`
+        : \`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#9333ea;"><span style="font-size:48px;font-weight:bold;">\${currentStep + 1}</span><span style="font-size:14px;color:#6b7280;margin-top:8px;">\${step.title}</span></div>\`;
       
       stepContent.innerHTML = \`
         <h2 class="step-title">\${step.title}</h2>
         <div class="step-visual">
-          \${stepIcon}
+          \${visualContent}
         </div>
         <p class="step-description">\${step.description}</p>
         \${step.warning ? \`
@@ -2769,33 +2736,6 @@ server.registerResource(
       btnBack.disabled = currentStep === 0;
       btnNext.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
       navigation.classList.remove('hidden');
-    }
-    
-    // SVG icons for each step
-    function getStepIcon(stepIndex) {
-      const icons = [
-        // Step 1: Get to Know Your Pen - Pen diagram
-        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="60" y="20" width="80" height="120" rx="10" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="70" y="30" width="60" height="40" rx="5" fill="#c4b5fd" stroke="#a78bfa" stroke-width="1"/><text x="100" y="55" text-anchor="middle" font-size="10" fill="#581c87">Medicine</text><circle cx="100" cy="95" r="15" fill="#a855f7"/><text x="100" y="100" text-anchor="middle" font-size="10" fill="white">Button</text><rect x="85" y="130" width="30" height="15" rx="3" fill="#6b7280"/><text x="100" y="140" text-anchor="middle" font-size="6" fill="white">Cap</text></svg>',
-        // Step 2: Check Medicine - Eye/inspect
-        '<svg viewBox="0 0 200 160" width="180" height="140"><circle cx="100" cy="80" r="50" fill="none" stroke="#3b82f6" stroke-width="3"/><circle cx="100" cy="80" r="25" fill="#60a5fa"/><circle cx="100" cy="80" r="10" fill="#1e3a8a"/><path d="M30 80 Q100 30 170 80 Q100 130 30 80" fill="none" stroke="#3b82f6" stroke-width="3"/><text x="100" y="150" text-anchor="middle" font-size="12" fill="#1e40af">Check medicine is clear</text></svg>',
-        // Step 3: Wash Hands
-        '<svg viewBox="0 0 200 160" width="180" height="140"><ellipse cx="100" cy="100" rx="40" ry="25" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2"/><path d="M70 60 Q100 40 130 60 L125 90 Q100 85 75 90 Z" fill="#fcd34d" stroke="#f59e0b" stroke-width="2"/><circle cx="85" cy="75" r="5" fill="#60a5fa"/><circle cx="100" cy="70" r="5" fill="#60a5fa"/><circle cx="115" cy="75" r="5" fill="#60a5fa"/><text x="100" y="145" text-anchor="middle" font-size="12" fill="#1e40af">Wash with soap & water</text></svg>',
-        // Step 4: Injection Sites - Body diagram
-        '<svg viewBox="0 0 200 160" width="180" height="140"><ellipse cx="100" cy="30" rx="20" ry="25" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="80" y="50" width="40" height="50" rx="5" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="75" y="95" width="15" height="45" rx="3" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="110" y="95" width="15" height="45" rx="3" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><circle cx="100" cy="70" r="8" fill="#ef4444" opacity="0.5"/><circle cx="87" cy="110" r="6" fill="#ef4444" opacity="0.5"/><circle cx="113" cy="110" r="6" fill="#ef4444" opacity="0.5"/><text x="100" y="155" text-anchor="middle" font-size="10" fill="#dc2626">Abdomen • Thigh • Upper Arm</text></svg>',
-        // Step 5: Remove Cap
-        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="80" y="40" width="40" height="80" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="50" width="30" height="25" rx="4" fill="#c4b5fd"/><rect x="90" y="115" width="20" height="25" rx="3" fill="#6b7280"/><path d="M110 127 L140 100" stroke="#6b7280" stroke-width="3" stroke-linecap="round" stroke-dasharray="5,5"/><rect x="135" y="85" width="20" height="25" rx="3" fill="#6b7280" transform="rotate(30 145 97)"/><path d="M130 70 L150 50" stroke="#10b981" stroke-width="2"/><path d="M145 55 L150 50 L155 60" fill="none" stroke="#10b981" stroke-width="2"/><text x="100" y="155" text-anchor="middle" font-size="11" fill="#374151">Pull cap straight off</text></svg>',
-        // Step 6: Place on Skin
-        '<svg viewBox="0 0 200 160" width="180" height="140"><path d="M20 120 Q100 100 180 120 L180 150 Q100 130 20 150 Z" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><rect x="80" y="30" width="40" height="75" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="40" width="30" height="20" rx="4" fill="#c4b5fd"/><rect x="90" y="100" width="20" height="10" rx="2" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"/><text x="100" y="155" text-anchor="middle" font-size="11" fill="#374151">Place flat on skin</text></svg>',
-        // Step 7: Press Button
-        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="80" y="50" width="40" height="80" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="60" width="30" height="20" rx="4" fill="#c4b5fd"/><circle cx="100" cy="40" r="12" fill="#a855f7" stroke="#7c3aed" stroke-width="2"/><path d="M100 20 L100 30" stroke="#10b981" stroke-width="3"/><path d="M95 22 L100 17 L105 22" fill="none" stroke="#10b981" stroke-width="2"/><text x="100" y="38" text-anchor="middle" font-size="8" fill="white">PUSH</text><path d="M50 60 L65 75" stroke="#f59e0b" stroke-width="2"/><text x="40" y="55" font-size="10" fill="#f59e0b">Click!</text><text x="100" y="150" text-anchor="middle" font-size="11" fill="#374151">Press & hold button</text></svg>',
-        // Step 8: Wait for Second Click
-        '<svg viewBox="0 0 200 160" width="180" height="140"><circle cx="100" cy="70" r="45" fill="none" stroke="#3b82f6" stroke-width="3"/><line x1="100" y1="70" x2="100" y2="40" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round"/><line x1="100" y1="70" x2="125" y2="85" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="70" r="5" fill="#1e3a8a"/><text x="100" y="75" text-anchor="middle" font-size="20" fill="#3b82f6">5-10</text><text x="100" y="90" text-anchor="middle" font-size="10" fill="#3b82f6">seconds</text><text x="100" y="140" text-anchor="middle" font-size="11" fill="#374151">Wait for 2nd click</text></svg>',
-        // Step 9: Check Dose
-        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="80" y="30" width="40" height="80" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="2"/><rect x="85" y="40" width="30" height="25" rx="4" fill="#6b7280"/><text x="100" y="57" text-anchor="middle" font-size="8" fill="white">✓ Gray</text><circle cx="145" cy="60" r="25" fill="none" stroke="#10b981" stroke-width="3"/><path d="M135 60 L142 67 L158 51" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M120 45 L130 55" stroke="#10b981" stroke-width="2"/><text x="100" y="130" text-anchor="middle" font-size="11" fill="#374151">Gray plunger visible = Full dose</text></svg>',
-        // Step 10: Dispose
-        '<svg viewBox="0 0 200 160" width="180" height="140"><rect x="70" y="40" width="60" height="80" rx="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/><text x="100" y="70" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">SHARPS</text><path d="M85 80 L115 80 M100 65 L100 95" stroke="#dc2626" stroke-width="3"/><rect x="90" y="100" width="20" height="25" rx="3" fill="#9333ea" transform="rotate(-15 100 112)"/><path d="M115 115 L125 125" stroke="#6b7280" stroke-width="2" stroke-dasharray="3,3"/><text x="100" y="150" text-anchor="middle" font-size="11" fill="#374151">Dispose in sharps container</text></svg>'
-      ];
-      return icons[stepIndex] || icons[0];
     }
 
     // Event listeners
@@ -2847,6 +2787,7 @@ server.registerResource(
           'openai/widgetCSP': {
             connect_domains: [],
             resource_domains: [
+              'https://medicine-carousel.onrender.com',
               'https://upload.wikimedia.org',
               'https://delivery-p137454-e1438138.adobeaemcloud.com',
               'https://uspl.lilly.com',
@@ -2980,8 +2921,10 @@ server.registerTool(
     const medicineName = args.medicineName?.toLowerCase() || 'zepbound';
     
     // Medicine-specific data
-    // Official Zepbound/Mounjaro Instructions for Use from FDA-approved labeling
-    // Image URLs from official Lilly AEM CDN
+    // Official Zepbound/Mounjaro Instructions for Use - 4 simple steps
+    // Images served from local public folder
+    const baseImageUrl = process.env.PUBLIC_URL || 'https://medicine-carousel.onrender.com';
+    
     const medicineData: Record<string, { 
       name: string; 
       videoUrl: string; 
@@ -2990,135 +2933,63 @@ server.registerTool(
     }> = {
       'zepbound': {
         name: 'Zepbound®',
-        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
+        videoUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
         instructionsUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
         steps: [
           {
-            title: "Step 1: Get to Know Your Pen",
-            description: "Your Zepbound single-dose pen has these parts: A gray base cap that covers the needle, a clear base you'll place against your skin, a medicine window to check your dose, a purple injection button on top, and a lock ring to unlock before injecting. Each pen is single-use and contains one weekly dose.",
-            warning: "Do not use the pen if it appears damaged or if the medicine looks cloudy, discolored, or contains particles. The medicine should be clear and colorless to slightly yellow.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-background.png"
+            title: "Step 1: Choose Your Injection Site",
+            description: "You may inject Zepbound in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week.",
+            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
+            image: `${baseImageUrl}/public/images/injection_step_1.avif`
           },
           {
-            title: "Step 2: Check the Medicine and Expiration Date",
-            description: "Look through the medicine window on the side of the pen. The medicine should be clear and colorless to slightly yellow. Check the expiration date (EXP) on the pen label. If the medicine is expired, cloudy, discolored, or has particles in it, do not use the pen.",
-            warning: "Do not use your Zepbound pen after the expiration date printed on the label. Do not use the pen if it has been frozen or exposed to heat above 86°F (30°C). Store unused pens in the refrigerator at 36°F to 46°F (2°C to 8°C).",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-medicine-window.png"
+            title: "Step 2: Pull Off the Gray Base Cap",
+            description: "Pull off the gray base cap while the pen is locked. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal.",
+            warning: "Do not touch the needle. After you remove the cap, you must use the pen within 5 minutes.",
+            image: `${baseImageUrl}/public/images/injection_step_2.avif`
           },
           {
-            title: "Step 3: Wash Your Hands",
-            description: "Wash your hands with soap and water before preparing your injection. This helps prevent infection at the injection site.",
-            warning: "Do not share your Zepbound pen with other people, even if the needle has been changed. You may give other people a serious infection, or get a serious infection from them.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-wash-hands.png"
+            title: "Step 3: Place on Skin and Unlock",
+            description: "Place the clear base flat on your skin at your chosen injection site. Make sure you can see the medicine window. Then turn the lock ring to unlock the pen.",
+            warning: "Do not press the injection button until the clear base is flat against your skin and the pen is unlocked.",
+            image: `${baseImageUrl}/public/images/injection_step_3.avif`
           },
           {
-            title: "Step 4: Choose Your Injection Site",
-            description: "You may inject Zepbound in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week. You may use the same area of your body, but make sure to choose a different spot within that area.",
-            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks. Do not inject into areas with skin problems such as rashes or visible blood vessels.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-injection-sites.png"
-          },
-          {
-            title: "Step 5: Pull Off the Gray Base Cap",
-            description: "Pull the gray base cap straight off and throw it away. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal. A hidden needle is now exposed inside the clear base.",
-            warning: "Do not touch the needle. The needle will stay hidden until you press the injection button. After you remove the cap, you must use the pen within 5 minutes or the medicine may dry and clog the needle.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-remove-cap.png"
-          },
-          {
-            title: "Step 6: Place Clear Base Flat on Skin",
-            description: "Place the clear base flat against your skin at your chosen injection site. Make sure you can see the medicine window. You may gently pinch the skin at the injection site if desired.",
-            warning: "Do not press the injection button until the clear base is flat against your skin. The pen will not work unless it is held against your skin.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-place-on-skin.png"
-          },
-          {
-            title: "Step 7: Unlock and Press the Purple Button",
-            description: "While holding the clear base flat against your skin, turn the lock ring to unlock the pen. Then press and HOLD the purple injection button. You will hear a loud click when the injection starts — the needle goes in automatically. Keep holding the button down.",
-            warning: "Do not lift the pen until you hear the second click indicating the injection is complete (about 5 to 10 seconds). If you lift too early, you may not get your full dose.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-inject.png"
-          },
-          {
-            title: "Step 8: Wait for the Second Click",
-            description: "Continue holding the purple button down. You will hear a second click after about 5 to 10 seconds. The second click means your injection is complete. You may now lift the pen from your skin.",
-            warning: "If you do not hear the second click, check the medicine window — the gray plunger should be visible, confirming you received your dose. If you're unsure, contact your healthcare provider.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-second-click.png"
-          },
-          {
-            title: "Step 9: Lift the Pen and Check",
-            description: "Lift the pen straight up from your skin. The needle will automatically retract into the pen. Look at the medicine window — the gray plunger should be visible, confirming you received your full dose. It is normal to see a small drop of blood or medicine at the injection site.",
-            warning: "If the gray plunger is NOT visible in the medicine window, you may not have received your full dose. Do not inject another dose. Call your healthcare provider or 1-800-LillyRx (1-800-545-5979).",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-check-dose.png"
-          },
-          {
-            title: "Step 10: Dispose of the Pen Safely",
-            description: "Put your used Zepbound pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. If you do not have an FDA-cleared sharps container, you may use a household container made of heavy-duty plastic with a tight-fitting, puncture-resistant lid.",
-            warning: "Do not recycle your used sharps disposal container. Check your local guidelines for proper disposal. Keep sharps containers out of reach of children. Do not reuse the pen.",
-            image: "https://pi.lilly.com/us/zepbound-ai-ifu-dispose.png"
+            title: "Step 4: Press and Hold the Button",
+            description: "Press and hold the purple injection button for up to 10 seconds. Listen for the first click — it means the injection has started. Keep holding. When you hear the second click, the injection is complete. You may now lift the pen.",
+            warning: "Do not lift the pen until you hear the second click. If the gray plunger is NOT visible in the window after injection, contact your healthcare provider.",
+            image: `${baseImageUrl}/public/images/injection_step_4.avif`
           }
         ]
       },
       'mounjaro': {
         name: 'Mounjaro®',
-        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
+        videoUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
         instructionsUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
         steps: [
           {
-            title: "Step 1: Get to Know Your Pen",
-            description: "Your Mounjaro single-dose pen has these parts: A gray base cap that covers the needle, a clear base you'll place against your skin, a medicine window to check your dose, a purple injection button on top, and a lock ring to unlock before injecting. Each pen is single-use and contains one weekly dose.",
-            warning: "Do not use the pen if it appears damaged or if the medicine looks cloudy, discolored, or contains particles. The medicine should be clear and colorless to slightly yellow.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-background.png"
+            title: "Step 1: Choose Your Injection Site",
+            description: "You may inject Mounjaro in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week.",
+            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
+            image: `${baseImageUrl}/public/images/injection_step_1.avif`
           },
           {
-            title: "Step 2: Check the Medicine and Expiration Date",
-            description: "Look through the medicine window on the side of the pen. The medicine should be clear and colorless to slightly yellow. Check the expiration date (EXP) on the pen label. If the medicine is expired, cloudy, discolored, or has particles in it, do not use the pen.",
-            warning: "Do not use your Mounjaro pen after the expiration date printed on the label. Do not use the pen if it has been frozen or exposed to heat above 86°F (30°C). Store unused pens in the refrigerator at 36°F to 46°F (2°C to 8°C).",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-medicine-window.png"
+            title: "Step 2: Pull Off the Gray Base Cap",
+            description: "Pull off the gray base cap while the pen is locked. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal.",
+            warning: "Do not touch the needle. After you remove the cap, you must use the pen within 5 minutes.",
+            image: `${baseImageUrl}/public/images/injection_step_2.avif`
           },
           {
-            title: "Step 3: Wash Your Hands",
-            description: "Wash your hands with soap and water before preparing your injection. This helps prevent infection at the injection site.",
-            warning: "Do not share your Mounjaro pen with other people, even if the needle has been changed. You may give other people a serious infection, or get a serious infection from them.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-wash-hands.png"
+            title: "Step 3: Place on Skin and Unlock",
+            description: "Place the clear base flat on your skin at your chosen injection site. Make sure you can see the medicine window. Then turn the lock ring to unlock the pen.",
+            warning: "Do not press the injection button until the clear base is flat against your skin and the pen is unlocked.",
+            image: `${baseImageUrl}/public/images/injection_step_3.avif`
           },
           {
-            title: "Step 4: Choose Your Injection Site",
-            description: "You may inject Mounjaro in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week. You may use the same area of your body, but make sure to choose a different spot within that area.",
-            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks. Do not inject into areas with skin problems such as rashes or visible blood vessels.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-injection-sites.png"
-          },
-          {
-            title: "Step 5: Pull Off the Gray Base Cap",
-            description: "Pull the gray base cap straight off and throw it away. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal. A hidden needle is now exposed inside the clear base.",
-            warning: "Do not touch the needle. The needle will stay hidden until you press the injection button. After you remove the cap, you must use the pen within 5 minutes or the medicine may dry and clog the needle.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-remove-cap.png"
-          },
-          {
-            title: "Step 6: Place Clear Base Flat on Skin",
-            description: "Place the clear base flat against your skin at your chosen injection site. Make sure you can see the medicine window. You may gently pinch the skin at the injection site if desired.",
-            warning: "Do not press the injection button until the clear base is flat against your skin. The pen will not work unless it is held against your skin.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-place-on-skin.png"
-          },
-          {
-            title: "Step 7: Unlock and Press the Purple Button",
-            description: "While holding the clear base flat against your skin, turn the lock ring to unlock the pen. Then press and HOLD the purple injection button. You will hear a loud click when the injection starts — the needle goes in automatically. Keep holding the button down.",
-            warning: "Do not lift the pen until you hear the second click indicating the injection is complete (about 5 to 10 seconds). If you lift too early, you may not get your full dose.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-inject.png"
-          },
-          {
-            title: "Step 8: Wait for the Second Click",
-            description: "Continue holding the purple button down. You will hear a second click after about 5 to 10 seconds. The second click means your injection is complete. You may now lift the pen from your skin.",
-            warning: "If you do not hear the second click, check the medicine window — the gray plunger should be visible, confirming you received your dose. If you're unsure, contact your healthcare provider.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-second-click.png"
-          },
-          {
-            title: "Step 9: Lift the Pen and Check",
-            description: "Lift the pen straight up from your skin. The needle will automatically retract into the pen. Look at the medicine window — the gray plunger should be visible, confirming you received your full dose. It is normal to see a small drop of blood or medicine at the injection site.",
-            warning: "If the gray plunger is NOT visible in the medicine window, you may not have received your full dose. Do not inject another dose. Call your healthcare provider or 1-800-LillyRx (1-800-545-5979).",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-check-dose.png"
-          },
-          {
-            title: "Step 10: Dispose of the Pen Safely",
-            description: "Put your used Mounjaro pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. If you do not have an FDA-cleared sharps container, you may use a household container made of heavy-duty plastic with a tight-fitting, puncture-resistant lid.",
-            warning: "Do not recycle your used sharps disposal container. Check your local guidelines for proper disposal. Keep sharps containers out of reach of children. Do not reuse the pen.",
-            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-dispose.png"
+            title: "Step 4: Press and Hold the Button",
+            description: "Press and hold the purple injection button for up to 10 seconds. Listen for the first click — it means the injection has started. Keep holding. When you hear the second click, the injection is complete. You may now lift the pen.",
+            warning: "Do not lift the pen until you hear the second click. If the gray plunger is NOT visible in the window after injection, contact your healthcare provider.",
+            image: `${baseImageUrl}/public/images/injection_step_4.avif`
           }
         ]
       }
