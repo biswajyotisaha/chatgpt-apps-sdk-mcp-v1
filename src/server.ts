@@ -2233,6 +2233,598 @@ server.registerResource(
   })
 );
 
+// Injection Pen Instructions Resource
+server.registerResource(
+  'injection-instructions',
+  'ui://widget/injection-instructions-v1.html',
+  {
+    _meta: {
+      'openai/widgetDomain': 'https://injection-instructions.onrender.com',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://upload.wikimedia.org',
+          'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://uspl.lilly.com'
+        ]
+      }
+    }
+  },
+  async () => ({
+    contents: [
+      {
+        uri: 'ui://widget/injection-instructions-v1.html',
+        mimeType: 'text/html+skybridge',
+        text: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Injection Pen Instructions</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --brand: #e81f26;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --warning-bg: #fef3c7;
+      --warning-border: #f59e0b;
+      --warning-text: #92400e;
+      --info-bg: #dbeafe;
+      --info-border: #3b82f6;
+      --info-text: #1e40af;
+      --success: #10b981;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100svh;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .disclaimer {
+      background: var(--info-bg);
+      border: 1px solid var(--info-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--info-text);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .disclaimer-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #e81f26 0%, #c41922 100%);
+      color: white;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .medicine-logo {
+      height: 32px;
+      width: auto;
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .step-indicator {
+      background: rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .content {
+      padding: 24px;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .step-visual {
+      width: 100%;
+      height: 200px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .step-visual img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .step-visual video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .step-description {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .warning-box {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .warning-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--warning-border);
+    }
+
+    .warning-text {
+      font-size: 14px;
+      color: var(--warning-text);
+      line-height: 1.5;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-top: 1px solid #e5e7eb;
+      background: #fafafa;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      background: #e5e7eb;
+      color: var(--text);
+    }
+
+    .btn-back:hover:not(:disabled) {
+      background: #d1d5db;
+    }
+
+    .btn-next {
+      background: var(--brand);
+      color: white;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background: #c41922;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 0 24px 0 24px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--brand);
+      transition: width 0.3s ease;
+    }
+
+    .video-section {
+      padding: 20px 24px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+    }
+
+    .video-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .video-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .video-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .video-modal.active {
+      display: flex;
+    }
+
+    .video-container {
+      max-width: 800px;
+      width: 100%;
+      background: black;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .video-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .complete-message {
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .complete-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .complete-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+
+    .complete-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .complete-text {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 480px) {
+      .navigation { flex-direction: column; gap: 12px; }
+      .nav-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="disclaimer">
+      <svg class="disclaimer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>These are official manufacturer instructions and do not replace guidance from your healthcare provider. Always consult your doctor or pharmacist with questions.</span>
+    </div>
+
+    <div class="card">
+      <div class="header">
+        <div class="header-left">
+          <span class="header-title" id="medicine-name">Zepbound® Injection Pen</span>
+        </div>
+        <span class="step-indicator" id="step-indicator">Step 1 of 6</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 16.66%"></div>
+      </div>
+
+      <div id="step-content" class="content">
+        <!-- Step content will be rendered here -->
+      </div>
+
+      <div id="navigation" class="navigation">
+        <button class="nav-btn btn-back" id="btn-back" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/>
+          </svg>
+          Back
+        </button>
+        <button class="nav-btn btn-next" id="btn-next">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="video-section">
+        <button class="video-btn" id="watch-video-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z"/>
+          </svg>
+          Watch Training Video
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="video-modal" id="video-modal">
+    <div class="video-container">
+      <button class="video-close" id="video-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
+        </svg>
+      </button>
+      <video id="training-video" controls width="100%">
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <script>
+    // Injection steps data - will be populated from tool output
+    const defaultSteps = [
+      {
+        title: "Check Your Pen",
+        description: "Before using your Zepbound pen, check the expiration date on the label. Do not use the pen if it has expired. Look at the medicine through the window - it should be clear and colorless to slightly yellow. Do not use if it looks cloudy, discolored, or has particles.",
+        warning: "Do not use the pen if it has been frozen or left in direct sunlight. Store in the refrigerator at 36°F to 46°F (2°C to 8°C).",
+        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+      },
+      {
+        title: "Choose Your Injection Site",
+        description: "You can inject Zepbound into your stomach (abdomen), thigh, or upper arm. Choose a spot that is at least 2 inches away from your belly button. Rotate your injection site each week to avoid skin problems.",
+        warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
+        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+      },
+      {
+        title: "Prepare the Pen",
+        description: "Pull off the gray base cap. You will see the needle. Do not touch the needle or let it touch any surface. Do not put the cap back on - you are now ready to inject.",
+        warning: "Use the pen only once. Each pen contains one dose. Do not try to reuse or refill the pen.",
+        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+      },
+      {
+        title: "Inject Your Dose",
+        description: "Place the clear base flat against your skin at the injection site. Unlock by turning the lock ring. Press and hold the purple injection button. You will hear a loud click when the injection starts. Keep holding the button down until you hear a second click (about 5-10 seconds).",
+        warning: "Keep the pen pressed firmly against your skin during the entire injection. Do not move the pen until the second click.",
+        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+      },
+      {
+        title: "Remove and Check",
+        description: "After the second click, lift the pen straight up from your skin. Look at the pen - the gray plunger should be visible in the window, confirming you received your full dose. A small drop of blood at the injection site is normal.",
+        warning: "If the gray plunger is not visible, you may not have received your full dose. Contact your healthcare provider.",
+        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+      },
+      {
+        title: "Dispose of the Pen",
+        description: "Put the used pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. When your sharps container is almost full, follow your community guidelines for proper disposal.",
+        warning: "Keep the sharps container out of reach of children. Do not recycle the pen or sharps container.",
+        image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+      }
+    ];
+
+    let currentStep = 0;
+    let steps = defaultSteps;
+    let videoUrl = "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4";
+
+    // DOM elements
+    const stepContent = document.getElementById('step-content');
+    const stepIndicator = document.getElementById('step-indicator');
+    const progressFill = document.getElementById('progress-fill');
+    const btnBack = document.getElementById('btn-back');
+    const btnNext = document.getElementById('btn-next');
+    const medicineName = document.getElementById('medicine-name');
+    const videoModal = document.getElementById('video-modal');
+    const trainingVideo = document.getElementById('training-video');
+    const watchVideoBtn = document.getElementById('watch-video-btn');
+    const videoClose = document.getElementById('video-close');
+    const navigation = document.getElementById('navigation');
+
+    function renderStep() {
+      if (currentStep >= steps.length) {
+        // Show completion message
+        stepContent.innerHTML = \`
+          <div class="complete-message">
+            <div class="complete-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/>
+              </svg>
+            </div>
+            <h2 class="complete-title">You're All Set!</h2>
+            <p class="complete-text">You've reviewed all the injection steps. Remember to always follow your healthcare provider's instructions and refer to the official prescribing information if you have questions.</p>
+          </div>
+        \`;
+        stepIndicator.textContent = 'Complete';
+        progressFill.style.width = '100%';
+        navigation.classList.add('hidden');
+        return;
+      }
+
+      const step = steps[currentStep];
+      
+      stepContent.innerHTML = \`
+        <h2 class="step-title">\${step.title}</h2>
+        <div class="step-visual">
+          <img src="\${step.image}" alt="\${step.title}" onerror="this.parentElement.innerHTML='<span style=\\"color:#9ca3af\\">Visual Guide</span>'" />
+        </div>
+        <p class="step-description">\${step.description}</p>
+        \${step.warning ? \`
+          <div class="warning-box">
+            <svg class="warning-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span class="warning-text">\${step.warning}</span>
+          </div>
+        \` : ''}
+      \`;
+
+      // Update indicators
+      stepIndicator.textContent = \`Step \${currentStep + 1} of \${steps.length}\`;
+      progressFill.style.width = \`\${((currentStep + 1) / steps.length) * 100}%\`;
+
+      // Update buttons
+      btnBack.disabled = currentStep === 0;
+      btnNext.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
+      navigation.classList.remove('hidden');
+    }
+
+    // Event listeners
+    btnBack.addEventListener('click', () => {
+      if (currentStep > 0) {
+        currentStep--;
+        renderStep();
+      }
+    });
+
+    btnNext.addEventListener('click', () => {
+      currentStep++;
+      renderStep();
+    });
+
+    watchVideoBtn.addEventListener('click', () => {
+      trainingVideo.src = videoUrl;
+      videoModal.classList.add('active');
+      trainingVideo.play();
+    });
+
+    videoClose.addEventListener('click', () => {
+      trainingVideo.pause();
+      videoModal.classList.remove('active');
+    });
+
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        trainingVideo.pause();
+        videoModal.classList.remove('active');
+      }
+    });
+
+    // Load data from tool output if available
+    function loadFromToolOutput() {
+      const out = window.openai?.toolOutput || {};
+      if (out.steps && out.steps.length > 0) {
+        steps = out.steps;
+      }
+      if (out.videoUrl) {
+        videoUrl = out.videoUrl;
+      }
+      if (out.medicineName) {
+        medicineName.textContent = out.medicineName + ' Injection Pen';
+      }
+      renderStep();
+    }
+
+    loadFromToolOutput();
+    window.addEventListener('openai:set_globals', loadFromToolOutput);
+    window.addEventListener('openai:tool_response', loadFromToolOutput);
+
+    console.log('Injection instructions widget loaded');
+  </script>
+</body>
+</html>`,
+        _meta: {
+          'openai/widgetDomain': 'https://injection-instructions.onrender.com',
+          'openai/widgetCSP': {
+            connect_domains: [],
+            resource_domains: [
+              'https://upload.wikimedia.org',
+              'https://delivery-p137454-e1438138.adobeaemcloud.com',
+              'https://uspl.lilly.com'
+            ]
+          }
+        }
+      }
+    ]
+  })
+);
+
 
 // Troubleshooting Widget Resource
 server.registerResource(
@@ -2324,6 +2916,133 @@ server.registerResource(
 
 
 // ==================== TOOLS ====================
+
+/**
+ * Tool: Show Injection Pen Instructions
+ * Displays step-by-step injection instructions for medication pens.
+ * Shows one step at a time with visuals, safety warnings, and navigation.
+ */
+server.registerTool(
+  'show-injection-instructions',
+  {
+    title: 'Show Injection Pen Instructions',
+    description: 'Display step-by-step injection instructions for medication pens like Zepbound, Mounjaro, or Trulicity. Shows guided steps with visuals, safety warnings, and a training video.',
+    _meta: {
+      'openai/outputTemplate': 'ui://widget/injection-instructions-v1.html',
+      'openai/toolInvocation/invoking': 'Loading injection instructions...',
+      'openai/toolInvocation/invoked': 'Injection instructions ready'
+    },
+    inputSchema: {
+      medicineName: z.string().optional().describe('Name of the medicine (e.g., Zepbound, Mounjaro, Trulicity). Defaults to Zepbound if not specified.')
+    } as any
+  },
+  async (args: any) => {
+    const medicineName = args.medicineName?.toLowerCase() || 'zepbound';
+    
+    // Medicine-specific data
+    const medicineData: Record<string, { 
+      name: string; 
+      videoUrl: string; 
+      instructionsUrl: string;
+      steps: Array<{ title: string; description: string; warning: string; image: string }>;
+    }> = {
+      'zepbound': {
+        name: 'Zepbound®',
+        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
+        instructionsUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
+        steps: [
+          {
+            title: "Check Your Pen",
+            description: "Before using your Zepbound pen, check the expiration date on the label. Do not use the pen if it has expired. Look at the medicine through the window - it should be clear and colorless to slightly yellow. Do not use if it looks cloudy, discolored, or has particles.",
+            warning: "Do not use the pen if it has been frozen or left in direct sunlight. Store in the refrigerator at 36°F to 46°F (2°C to 8°C).",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Choose Your Injection Site",
+            description: "You can inject Zepbound into your stomach (abdomen), thigh, or upper arm. Choose a spot that is at least 2 inches away from your belly button. Rotate your injection site each week to avoid skin problems.",
+            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Prepare the Pen",
+            description: "Pull off the gray base cap. You will see the needle. Do not touch the needle or let it touch any surface. Do not put the cap back on - you are now ready to inject.",
+            warning: "Use the pen only once. Each pen contains one dose. Do not try to reuse or refill the pen.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Inject Your Dose",
+            description: "Place the clear base flat against your skin at the injection site. Unlock by turning the lock ring. Press and hold the purple injection button. You will hear a loud click when the injection starts. Keep holding the button down until you hear a second click (about 5-10 seconds).",
+            warning: "Keep the pen pressed firmly against your skin during the entire injection. Do not move the pen until the second click.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Remove and Check",
+            description: "After the second click, lift the pen straight up from your skin. Look at the pen - the gray plunger should be visible in the window, confirming you received your full dose. A small drop of blood at the injection site is normal.",
+            warning: "If the gray plunger is not visible, you may not have received your full dose. Contact your healthcare provider.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Dispose of the Pen",
+            description: "Put the used pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. When your sharps container is almost full, follow your community guidelines for proper disposal.",
+            warning: "Keep the sharps container out of reach of children. Do not recycle the pen or sharps container.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          }
+        ]
+      },
+      'mounjaro': {
+        name: 'Mounjaro®',
+        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
+        instructionsUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
+        steps: [
+          {
+            title: "Check Your Pen",
+            description: "Before using your Mounjaro pen, check the expiration date on the label. Do not use the pen if it has expired. Look at the medicine through the window - it should be clear and colorless to slightly yellow.",
+            warning: "Do not use the pen if it has been frozen. Store in the refrigerator at 36°F to 46°F (2°C to 8°C).",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Choose Your Injection Site",
+            description: "You can inject Mounjaro into your stomach (abdomen), thigh, or upper arm. Rotate your injection site each week.",
+            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Prepare and Inject",
+            description: "Pull off the gray base cap. Place the clear base flat against your skin. Unlock and press the purple button. Hold until you hear the second click.",
+            warning: "Keep the pen pressed firmly against your skin during the entire injection.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          },
+          {
+            title: "Dispose Safely",
+            description: "Put the used pen in a sharps disposal container. Do not throw in household trash.",
+            warning: "Keep the sharps container out of reach of children.",
+            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+          }
+        ]
+      }
+    };
+
+    // Get medicine data or default to Zepbound
+    const medicine = medicineData[medicineName] || medicineData['zepbound'];
+    const displayName = medicine.name;
+
+    return {
+      content: [
+        { 
+          type: 'text' as const, 
+          text: `Here are the step-by-step injection instructions for ${displayName}. Use the Next and Back buttons to navigate through each step. A training video is also available.`
+        }
+      ],
+      structuredContent: {
+        medicineName: displayName,
+        steps: medicine.steps,
+        videoUrl: medicine.videoUrl,
+        instructionsUrl: medicine.instructionsUrl,
+        totalSteps: medicine.steps.length
+      }
+    };
+  }
+);
 
 /**
  * Tool: Show All Medicines
