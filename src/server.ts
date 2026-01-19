@@ -2245,7 +2245,8 @@ server.registerResource(
         resource_domains: [
           'https://upload.wikimedia.org',
           'https://delivery-p137454-e1438138.adobeaemcloud.com',
-          'https://uspl.lilly.com'
+          'https://uspl.lilly.com',
+          'https://pi.lilly.com'
         ]
       }
     }
@@ -2816,7 +2817,8 @@ server.registerResource(
             resource_domains: [
               'https://upload.wikimedia.org',
               'https://delivery-p137454-e1438138.adobeaemcloud.com',
-              'https://uspl.lilly.com'
+              'https://uspl.lilly.com',
+              'https://pi.lilly.com'
             ]
           }
         }
@@ -2946,6 +2948,8 @@ server.registerTool(
     const medicineName = args.medicineName?.toLowerCase() || 'zepbound';
     
     // Medicine-specific data
+    // Official Zepbound/Mounjaro Instructions for Use from FDA-approved labeling
+    // Image URLs from official Lilly AEM CDN
     const medicineData: Record<string, { 
       name: string; 
       videoUrl: string; 
@@ -2958,40 +2962,64 @@ server.registerTool(
         instructionsUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
         steps: [
           {
-            title: "Check Your Pen",
-            description: "Before using your Zepbound pen, check the expiration date on the label. Do not use the pen if it has expired. Look at the medicine through the window - it should be clear and colorless to slightly yellow. Do not use if it looks cloudy, discolored, or has particles.",
-            warning: "Do not use the pen if it has been frozen or left in direct sunlight. Store in the refrigerator at 36°F to 46°F (2°C to 8°C).",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 1: Get to Know Your Pen",
+            description: "Your Zepbound single-dose pen has these parts: A gray base cap that covers the needle, a clear base you'll place against your skin, a medicine window to check your dose, a purple injection button on top, and a lock ring to unlock before injecting. Each pen is single-use and contains one weekly dose.",
+            warning: "Do not use the pen if it appears damaged or if the medicine looks cloudy, discolored, or contains particles. The medicine should be clear and colorless to slightly yellow.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-background.png"
           },
           {
-            title: "Choose Your Injection Site",
-            description: "You can inject Zepbound into your stomach (abdomen), thigh, or upper arm. Choose a spot that is at least 2 inches away from your belly button. Rotate your injection site each week to avoid skin problems.",
-            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 2: Check the Medicine and Expiration Date",
+            description: "Look through the medicine window on the side of the pen. The medicine should be clear and colorless to slightly yellow. Check the expiration date (EXP) on the pen label. If the medicine is expired, cloudy, discolored, or has particles in it, do not use the pen.",
+            warning: "Do not use your Zepbound pen after the expiration date printed on the label. Do not use the pen if it has been frozen or exposed to heat above 86°F (30°C). Store unused pens in the refrigerator at 36°F to 46°F (2°C to 8°C).",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-medicine-window.png"
           },
           {
-            title: "Prepare the Pen",
-            description: "Pull off the gray base cap. You will see the needle. Do not touch the needle or let it touch any surface. Do not put the cap back on - you are now ready to inject.",
-            warning: "Use the pen only once. Each pen contains one dose. Do not try to reuse or refill the pen.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 3: Wash Your Hands",
+            description: "Wash your hands with soap and water before preparing your injection. This helps prevent infection at the injection site.",
+            warning: "Do not share your Zepbound pen with other people, even if the needle has been changed. You may give other people a serious infection, or get a serious infection from them.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-wash-hands.png"
           },
           {
-            title: "Inject Your Dose",
-            description: "Place the clear base flat against your skin at the injection site. Unlock by turning the lock ring. Press and hold the purple injection button. You will hear a loud click when the injection starts. Keep holding the button down until you hear a second click (about 5-10 seconds).",
-            warning: "Keep the pen pressed firmly against your skin during the entire injection. Do not move the pen until the second click.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 4: Choose Your Injection Site",
+            description: "You may inject Zepbound in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week. You may use the same area of your body, but make sure to choose a different spot within that area.",
+            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks. Do not inject into areas with skin problems such as rashes or visible blood vessels.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-injection-sites.png"
           },
           {
-            title: "Remove and Check",
-            description: "After the second click, lift the pen straight up from your skin. Look at the pen - the gray plunger should be visible in the window, confirming you received your full dose. A small drop of blood at the injection site is normal.",
-            warning: "If the gray plunger is not visible, you may not have received your full dose. Contact your healthcare provider.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 5: Pull Off the Gray Base Cap",
+            description: "Pull the gray base cap straight off and throw it away. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal. A hidden needle is now exposed inside the clear base.",
+            warning: "Do not touch the needle. The needle will stay hidden until you press the injection button. After you remove the cap, you must use the pen within 5 minutes or the medicine may dry and clog the needle.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-remove-cap.png"
           },
           {
-            title: "Dispose of the Pen",
-            description: "Put the used pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. When your sharps container is almost full, follow your community guidelines for proper disposal.",
-            warning: "Keep the sharps container out of reach of children. Do not recycle the pen or sharps container.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 6: Place Clear Base Flat on Skin",
+            description: "Place the clear base flat against your skin at your chosen injection site. Make sure you can see the medicine window. You may gently pinch the skin at the injection site if desired.",
+            warning: "Do not press the injection button until the clear base is flat against your skin. The pen will not work unless it is held against your skin.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-place-on-skin.png"
+          },
+          {
+            title: "Step 7: Unlock and Press the Purple Button",
+            description: "While holding the clear base flat against your skin, turn the lock ring to unlock the pen. Then press and HOLD the purple injection button. You will hear a loud click when the injection starts — the needle goes in automatically. Keep holding the button down.",
+            warning: "Do not lift the pen until you hear the second click indicating the injection is complete (about 5 to 10 seconds). If you lift too early, you may not get your full dose.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-inject.png"
+          },
+          {
+            title: "Step 8: Wait for the Second Click",
+            description: "Continue holding the purple button down. You will hear a second click after about 5 to 10 seconds. The second click means your injection is complete. You may now lift the pen from your skin.",
+            warning: "If you do not hear the second click, check the medicine window — the gray plunger should be visible, confirming you received your dose. If you're unsure, contact your healthcare provider.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-second-click.png"
+          },
+          {
+            title: "Step 9: Lift the Pen and Check",
+            description: "Lift the pen straight up from your skin. The needle will automatically retract into the pen. Look at the medicine window — the gray plunger should be visible, confirming you received your full dose. It is normal to see a small drop of blood or medicine at the injection site.",
+            warning: "If the gray plunger is NOT visible in the medicine window, you may not have received your full dose. Do not inject another dose. Call your healthcare provider or 1-800-LillyRx (1-800-545-5979).",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-check-dose.png"
+          },
+          {
+            title: "Step 10: Dispose of the Pen Safely",
+            description: "Put your used Zepbound pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. If you do not have an FDA-cleared sharps container, you may use a household container made of heavy-duty plastic with a tight-fitting, puncture-resistant lid.",
+            warning: "Do not recycle your used sharps disposal container. Check your local guidelines for proper disposal. Keep sharps containers out of reach of children. Do not reuse the pen.",
+            image: "https://pi.lilly.com/us/zepbound-ai-ifu-dispose.png"
           }
         ]
       },
@@ -3001,28 +3029,64 @@ server.registerTool(
         instructionsUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
         steps: [
           {
-            title: "Check Your Pen",
-            description: "Before using your Mounjaro pen, check the expiration date on the label. Do not use the pen if it has expired. Look at the medicine through the window - it should be clear and colorless to slightly yellow.",
-            warning: "Do not use the pen if it has been frozen. Store in the refrigerator at 36°F to 46°F (2°C to 8°C).",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 1: Get to Know Your Pen",
+            description: "Your Mounjaro single-dose pen has these parts: A gray base cap that covers the needle, a clear base you'll place against your skin, a medicine window to check your dose, a purple injection button on top, and a lock ring to unlock before injecting. Each pen is single-use and contains one weekly dose.",
+            warning: "Do not use the pen if it appears damaged or if the medicine looks cloudy, discolored, or contains particles. The medicine should be clear and colorless to slightly yellow.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-background.png"
           },
           {
-            title: "Choose Your Injection Site",
-            description: "You can inject Mounjaro into your stomach (abdomen), thigh, or upper arm. Rotate your injection site each week.",
-            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 2: Check the Medicine and Expiration Date",
+            description: "Look through the medicine window on the side of the pen. The medicine should be clear and colorless to slightly yellow. Check the expiration date (EXP) on the pen label. If the medicine is expired, cloudy, discolored, or has particles in it, do not use the pen.",
+            warning: "Do not use your Mounjaro pen after the expiration date printed on the label. Do not use the pen if it has been frozen or exposed to heat above 86°F (30°C). Store unused pens in the refrigerator at 36°F to 46°F (2°C to 8°C).",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-medicine-window.png"
           },
           {
-            title: "Prepare and Inject",
-            description: "Pull off the gray base cap. Place the clear base flat against your skin. Unlock and press the purple button. Hold until you hear the second click.",
-            warning: "Keep the pen pressed firmly against your skin during the entire injection.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 3: Wash Your Hands",
+            description: "Wash your hands with soap and water before preparing your injection. This helps prevent infection at the injection site.",
+            warning: "Do not share your Mounjaro pen with other people, even if the needle has been changed. You may give other people a serious infection, or get a serious infection from them.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-wash-hands.png"
           },
           {
-            title: "Dispose Safely",
-            description: "Put the used pen in a sharps disposal container. Do not throw in household trash.",
-            warning: "Keep the sharps container out of reach of children.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c"
+            title: "Step 4: Choose Your Injection Site",
+            description: "You may inject Mounjaro in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week. You may use the same area of your body, but make sure to choose a different spot within that area.",
+            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks. Do not inject into areas with skin problems such as rashes or visible blood vessels.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-injection-sites.png"
+          },
+          {
+            title: "Step 5: Pull Off the Gray Base Cap",
+            description: "Pull the gray base cap straight off and throw it away. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal. A hidden needle is now exposed inside the clear base.",
+            warning: "Do not touch the needle. The needle will stay hidden until you press the injection button. After you remove the cap, you must use the pen within 5 minutes or the medicine may dry and clog the needle.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-remove-cap.png"
+          },
+          {
+            title: "Step 6: Place Clear Base Flat on Skin",
+            description: "Place the clear base flat against your skin at your chosen injection site. Make sure you can see the medicine window. You may gently pinch the skin at the injection site if desired.",
+            warning: "Do not press the injection button until the clear base is flat against your skin. The pen will not work unless it is held against your skin.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-place-on-skin.png"
+          },
+          {
+            title: "Step 7: Unlock and Press the Purple Button",
+            description: "While holding the clear base flat against your skin, turn the lock ring to unlock the pen. Then press and HOLD the purple injection button. You will hear a loud click when the injection starts — the needle goes in automatically. Keep holding the button down.",
+            warning: "Do not lift the pen until you hear the second click indicating the injection is complete (about 5 to 10 seconds). If you lift too early, you may not get your full dose.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-inject.png"
+          },
+          {
+            title: "Step 8: Wait for the Second Click",
+            description: "Continue holding the purple button down. You will hear a second click after about 5 to 10 seconds. The second click means your injection is complete. You may now lift the pen from your skin.",
+            warning: "If you do not hear the second click, check the medicine window — the gray plunger should be visible, confirming you received your dose. If you're unsure, contact your healthcare provider.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-second-click.png"
+          },
+          {
+            title: "Step 9: Lift the Pen and Check",
+            description: "Lift the pen straight up from your skin. The needle will automatically retract into the pen. Look at the medicine window — the gray plunger should be visible, confirming you received your full dose. It is normal to see a small drop of blood or medicine at the injection site.",
+            warning: "If the gray plunger is NOT visible in the medicine window, you may not have received your full dose. Do not inject another dose. Call your healthcare provider or 1-800-LillyRx (1-800-545-5979).",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-check-dose.png"
+          },
+          {
+            title: "Step 10: Dispose of the Pen Safely",
+            description: "Put your used Mounjaro pen in an FDA-cleared sharps disposal container right away after use. Do not throw the pen in your household trash. If you do not have an FDA-cleared sharps container, you may use a household container made of heavy-duty plastic with a tight-fitting, puncture-resistant lid.",
+            warning: "Do not recycle your used sharps disposal container. Check your local guidelines for proper disposal. Keep sharps containers out of reach of children. Do not reuse the pen.",
+            image: "https://pi.lilly.com/us/mounjaro-ai-ifu-dispose.png"
           }
         ]
       }
