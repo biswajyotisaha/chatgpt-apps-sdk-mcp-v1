@@ -2252,6 +2252,10 @@ server.registerResource(
           'https://*.adobeaemcloud.com',
           'https://uspl.lilly.com',
           'https://pi.lilly.com'
+        ],
+        media_domains: [
+          'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://*.adobeaemcloud.com'
         ]
       }
     }
@@ -2266,6 +2270,7 @@ server.registerResource(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://delivery-p137454-e1438138.adobeaemcloud.com https://*.adobeaemcloud.com blob: data:; img-src 'self' https://delivery-p137454-e1438138.adobeaemcloud.com https://*.adobeaemcloud.com https://upload.wikimedia.org data:;">
   <title>Injection Pen Instructions</title>
   <style>
     :root {
@@ -2860,6 +2865,10 @@ server.registerResource(
               'https://*.adobeaemcloud.com',
               'https://uspl.lilly.com',
               'https://pi.lilly.com'
+            ],
+            media_domains: [
+              'https://delivery-p137454-e1438138.adobeaemcloud.com',
+              'https://*.adobeaemcloud.com'
             ]
           }
         }
