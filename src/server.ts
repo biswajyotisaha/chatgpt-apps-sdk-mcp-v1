@@ -2654,7 +2654,7 @@ server.registerResource(
         </button>
       </div>
 
-      <div class="video-section">
+      <div class="video-section hidden" id="video-section">
         <button class="video-btn" id="watch-video-btn">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256">
             <path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z"/>
@@ -2726,6 +2726,7 @@ server.registerResource(
     const medicineName = document.getElementById('medicine-name');
     const watchVideoBtn = document.getElementById('watch-video-btn');
     const navigation = document.getElementById('navigation');
+    const videoSection = document.getElementById('video-section');
 
     function renderStep() {
       if (currentStep >= steps.length) {
@@ -2744,8 +2745,13 @@ server.registerResource(
         stepIndicator.textContent = 'Complete';
         progressFill.style.width = '100%';
         navigation.classList.add('hidden');
+        // Show video section on completion
+        videoSection.classList.remove('hidden');
         return;
       }
+
+      // Hide video section during steps
+      videoSection.classList.add('hidden');
 
       const step = steps[currentStep];
       // Use image if available and not empty, otherwise show step number
