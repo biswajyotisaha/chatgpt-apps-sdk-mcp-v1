@@ -801,11 +801,6 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
       position: relative;
     }
     
-    .check-list li::before {
-      content: "👁️";
-      margin-right: 8px;
-    }
-    
     .question-section {
       background: #f8fafc;
       border-radius: 12px;
