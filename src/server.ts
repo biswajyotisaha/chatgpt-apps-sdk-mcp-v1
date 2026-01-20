@@ -2372,7 +2372,7 @@ server.registerResource(
 
     .step-visual {
       width: 100%;
-      height: 320px;
+      height: 420px;
       background: #f3f4f6;
       border-radius: 12px;
       display: flex;
@@ -2532,6 +2532,12 @@ server.registerResource(
       position: relative;
     }
 
+    .video-container video {
+      width: 100%;
+      max-height: 80vh;
+      border: none;
+    }
+
     .video-container iframe {
       width: 100%;
       height: 500px;
@@ -2663,7 +2669,10 @@ server.registerResource(
     <div class="video-modal" id="video-modal">
       <div class="video-container">
         <button class="video-close" id="video-close">&times;</button>
-        <iframe id="video-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <video id="video-player" controls>
+          <source id="video-source" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   </div>
@@ -2700,7 +2709,7 @@ server.registerResource(
 
     let currentStep = 0;
     let steps = defaultSteps;
-    let videoUrl = "https://uspl.lilly.com/zepbound/zepbound.html#ug";
+    let videoUrl = "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4";
     let instructionsUrl = "https://uspl.lilly.com/zepbound/zepbound.html#ug";
 
     // DOM elements
@@ -2782,26 +2791,31 @@ server.registerResource(
 
     // Video modal elements
     const videoModal = document.getElementById('video-modal');
-    const videoIframe = document.getElementById('video-iframe');
+    const videoPlayer = document.getElementById('video-player');
+    const videoSource = document.getElementById('video-source');
     const videoCloseBtn = document.getElementById('video-close');
 
     // Open video in modal
     watchVideoBtn.addEventListener('click', () => {
-      videoIframe.src = videoUrl;
+      videoSource.src = videoUrl;
+      videoPlayer.load();
       videoModal.classList.add('active');
+      videoPlayer.play();
     });
 
     // Close video modal
     videoCloseBtn.addEventListener('click', () => {
       videoModal.classList.remove('active');
-      videoIframe.src = ''; // Stop video playback
+      videoPlayer.pause();
+      videoPlayer.currentTime = 0;
     });
 
     // Close modal on backdrop click
     videoModal.addEventListener('click', (e) => {
       if (e.target === videoModal) {
         videoModal.classList.remove('active');
-        videoIframe.src = '';
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
       }
     });
 
@@ -2986,7 +3000,7 @@ server.registerTool(
     }> = {
       'zepbound': {
         name: 'Zepbound®',
-        videoUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
+        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
         instructionsUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
         steps: [
           {
@@ -3017,7 +3031,7 @@ server.registerTool(
       },
       'mounjaro': {
         name: 'Mounjaro®',
-        videoUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
+        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
         instructionsUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
         steps: [
           {
