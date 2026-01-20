@@ -4,8 +4,8 @@ import { z } from 'zod';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { randomUUID } from 'crypto';
-import { AVAILABLE_MEDICINES } from './data.js';
-import { MedicineData } from './types.js';
+import { AVAILABLE_MEDICINES, TROUBLESHOOTING_DATA, DEVICE_TROUBLESHOOTING_FLOWS } from './data.js';
+import { MedicineData, TrainingVideoData, TroubleshootingData, DeviceTroubleshootingFlow } from './types.js';
 import { 
   setAccessToken, 
   getAccessToken,
@@ -327,6 +327,970 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
     }
     
     console.log('Medicine carousel loaded with ${medicines.length} items');
+  </script>
+</body>
+</html>`;
+}
+
+/**
+ * Generates HTML for the troubleshooting widget.
+ * Creates an interactive troubleshooting guide with common issues, side effects, and emergency contacts.
+ * 
+ * @param troubleshootingData - Troubleshooting data for the specific medicine
+ * @returns Complete HTML string ready for rendering in ChatGPT widget
+ */
+function createTroubleshootingWidgetHTML(troubleshootingData: TroubleshootingData): string {
+  const severityColors = {
+    mild: '#10b981',
+    moderate: '#f59e0b', 
+    severe: '#ef4444',
+    emergency: '#dc2626'
+  };
+
+  const severityIcons = {
+    mild: '💡',
+    moderate: '⚠️',
+    severe: '🚨',
+    emergency: '🆘'
+  };
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troubleshooting Guide - ${troubleshootingData.medicineName}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+      background: #f8fafc;
+      color: #1f2937;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .widget-container { 
+      width: 100%; 
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .widget-header {
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .content-area {
+      padding: 32px;
+    }
+    
+    .tab-navigation {
+      display: flex;
+      border-bottom: 2px solid #e5e7eb;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    
+    .tab-button {
+      background: none;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    
+    .tab-button.active {
+      color: #dc2626;
+      border-bottom-color: #dc2626;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .issue-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-left: 4px solid #10b981;
+    }
+    
+    .issue-header {
+      padding: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .issue-content {
+      padding: 0 20px 20px;
+      display: none;
+    }
+    
+    .issue-content.expanded {
+      display: block;
+    }
+    
+    .solutions-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+    
+    .solutions-list li {
+      background: white;
+      margin-bottom: 8px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 3px solid #10b981;
+    }
+    
+    .emergency-contacts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    
+    .contact-card {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    
+    .contact-card a {
+      color: #dc2626;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="widget-header">
+      <h1>🩺 Troubleshooting Guide</h1>
+      <p>Get help with common issues for ${troubleshootingData.medicineName}</p>
+    </div>
+    
+    <div class="content-area">
+      <div class="tab-navigation">
+        <button class="tab-button active" onclick="showTab('common-issues')">Common Issues</button>
+        <button class="tab-button" onclick="showTab('side-effects')">Side Effects</button>
+        <button class="tab-button" onclick="showTab('emergency')">Emergency</button>
+      </div>
+      
+      <div id="common-issues" class="tab-content active">
+        <h2 style="margin-bottom: 20px;">🔧 Common Issues & Solutions</h2>
+        ${troubleshootingData.commonIssues.map((issue, index) => `
+          <div class="issue-card">
+            <div class="issue-header" onclick="toggleIssue(${index})">
+              <span>💡</span>
+              <span>${issue.issue}</span>
+              <span style="margin-left: auto; background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">${issue.severity}</span>
+            </div>
+            <div class="issue-content" id="content-${index}">
+              <h4>Solutions:</h4>
+              <ul class="solutions-list">
+                ${issue.solutions.map(solution => `<li>${solution}</li>`).join('')}
+              </ul>
+              <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; margin: 16px 0;">
+                <h4 style="color: #92400e; margin-bottom: 8px;">⚠️ When to Seek Help:</h4>
+                <p>${issue.whenToSeekHelp}</p>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div id="side-effects" class="tab-content">
+        <h2 style="margin-bottom: 20px;">⚕️ Side Effects Management</h2>
+        ${troubleshootingData.sideEffects.common.map((effect, index) => `
+          <div class="issue-card">
+            <div class="issue-header" onclick="toggleIssue('side-${index}')">
+              <span>⚠️</span>
+              <span>${effect.issue}</span>
+            </div>
+            <div class="issue-content" id="content-side-${index}">
+              <ul class="solutions-list">
+                ${effect.solutions.map(solution => `<li>${solution}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div id="emergency" class="tab-content">
+        <div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 24px;">
+          <h3>🆘 Emergency Information</h3>
+          <p>Keep these numbers accessible at all times</p>
+        </div>
+        
+        <div class="emergency-contacts">
+          <div class="contact-card">
+            <h4>🚨 Medical Emergency</h4>
+            <a href="tel:${troubleshootingData.emergencyContacts.medicalEmergency}">${troubleshootingData.emergencyContacts.medicalEmergency}</a>
+          </div>
+          
+          <div class="contact-card">
+            <h4>☎️ Lilly Support</h4>
+            <a href="tel:${troubleshootingData.emergencyContacts.lillySupport}">${troubleshootingData.emergencyContacts.lillySupport}</a>
+          </div>
+          
+          <div class="contact-card">
+            <h4>☠️ Poison Control</h4>
+            <a href="tel:${troubleshootingData.emergencyContacts.poison}">${troubleshootingData.emergencyContacts.poison}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+    
+    function toggleIssue(issueId) {
+      const content = document.getElementById('content-' + issueId);
+      const isExpanded = content.classList.contains('expanded');
+      
+      document.querySelectorAll('.issue-content.expanded').forEach(el => {
+        el.classList.remove('expanded');
+      });
+      
+      if (!isExpanded) {
+        content.classList.add('expanded');
+      }
+    }
+    
+    console.log('Troubleshooting widget loaded for ${troubleshootingData.medicineName}');
+  </script>
+</body>
+</html>`;
+}
+
+/**
+ * Generates HTML for the interactive device troubleshooting widget.
+ * Creates a step-by-step guided troubleshooting flow with Yes/No buttons and product quality complaint form.
+ * 
+ * @param troubleshootingFlow - Device troubleshooting flow data
+ * @returns Complete HTML string ready for rendering in ChatGPT widget
+ */
+function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceTroubleshootingFlow): string {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Device Troubleshooting - ${troubleshootingFlow.medicineName}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+      background: #f8fafc;
+      color: #1f2937;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .widget-container { 
+      width: 100%; 
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      overflow: hidden;
+      min-height: 500px;
+    }
+    
+    .widget-header {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .widget-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .device-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 16px 0;
+      justify-content: center;
+    }
+    
+    .device-image {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px;
+    }
+    
+    .content-area {
+      padding: 32px;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #3b82f6;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    
+    .step-container {
+      display: none;
+    }
+    
+    .step-container.active {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    
+    .step-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+    }
+    
+    .step-description {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    
+    .device-visual {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      border: 2px solid #e5e7eb;
+    }
+    
+    .device-visual img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+    
+    .safety-warning {
+      background: #fef3c7;
+      border: 2px solid #f59e0b;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 20px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .safety-warning .icon {
+      font-size: 20px;
+      color: #f59e0b;
+      flex-shrink: 0;
+    }
+    
+    .safety-warning .text {
+      color: #92400e;
+      font-weight: 600;
+    }
+    
+    .check-instructions {
+      background: #f0f9ff;
+      border: 1px solid #0ea5e9;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .check-instructions h4 {
+      color: #0c4a6e;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+    
+    .check-list {
+      list-style: disc;
+      padding-left: 20px;
+    }
+    
+    .check-list li {
+      background: white;
+      margin-bottom: 8px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 3px solid #0ea5e9;
+      position: relative;
+    }
+    
+    .question-section {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+    }
+    
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 20px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+    
+    .choice-button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 120px;
+    }
+    
+    .choice-button:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .choice-button.yes {
+      background: #10b981;
+    }
+    
+    .choice-button.yes:hover {
+      background: #059669;
+    }
+    
+    .choice-button.no {
+      background: #ef4444;
+    }
+    
+    .choice-button.no:hover {
+      background: #dc2626;
+    }
+    
+    .outcome-section {
+      background: #f0fdf4;
+      border: 2px solid #16a34a;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      text-align: center;
+      display: none;
+    }
+    
+    .outcome-section.show {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .outcome-section.escalate {
+      background: #fef2f2;
+      border-color: #dc2626;
+    }
+    
+    .outcome-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .outcome-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #16a34a;
+    }
+    
+    .outcome-section.escalate .outcome-title {
+      color: #dc2626;
+    }
+    
+    .outcome-text {
+      font-size: 16px;
+      color: #374151;
+      margin-bottom: 20px;
+    }
+    
+    .complaint-form {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      display: none;
+    }
+    
+    .complaint-form.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+    }
+    
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      ring: 2px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .readonly {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    
+    .summary-section {
+      background: #eff6ff;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+    
+    .summary-title {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+    
+    .restart-button {
+      background: #6b7280;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    
+    @media (max-width: 640px) {
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .choice-button {
+        width: 100%;
+      }
+      
+      .content-area {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="widget-header">
+      <h1>🔧 Device Troubleshooting</h1>
+      <p>Let's diagnose your ${troubleshootingFlow.deviceName} issue step by step</p>
+      
+      <div class="device-info">
+        <img src="${troubleshootingFlow.deviceImage}" alt="${troubleshootingFlow.deviceName}" class="device-image">
+        <div>
+          <strong>${troubleshootingFlow.medicineName}</strong>
+          <div style="opacity: 0.8;">${troubleshootingFlow.deviceName}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-area">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+      
+      ${troubleshootingFlow.steps.map((step, index) => `
+        <div class="step-container ${index === 0 ? 'active' : ''}" id="step-${step.id}">
+          <div class="step-header">
+            <div class="step-number">${index + 1}</div>
+            <h2 class="step-title">${step.title}</h2>
+          </div>
+          
+          <p class="step-description">${step.description}</p>
+          
+          ${step.visual ? `
+            <div class="device-visual">
+              <img src="${step.visual}" alt="${step.title}">
+              <p style="color: #6b7280; font-size: 14px;">Visual reference for this step</p>
+            </div>
+          ` : ''}
+          
+          ${step.safetyWarning ? `
+            <div class="safety-warning">
+              <div class="icon">⚠️</div>
+              <div class="text">Safety Warning: ${step.safetyWarning}</div>
+            </div>
+          ` : ''}
+          
+          <div class="check-instructions">
+            <h4>Please check the following:</h4>
+            <ul class="check-list">
+              ${step.checkInstructions.map(instruction => `<li>${instruction}</li>`).join('')}
+            </ul>
+          </div>
+          
+          <div class="question-section">
+            <div class="question-text">
+              Based on what you observed, does everything look correct?
+            </div>
+            <div class="button-group">
+              <button class="choice-button yes" onclick="handleChoice('${step.id}', 'yes')">
+                ✅ Yes
+              </button>
+              <button class="choice-button no" onclick="handleChoice('${step.id}', 'no')">
+                ❌ No
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+      
+      <!-- Outcome Section -->
+      <div class="outcome-section" id="outcome-section">
+        <div class="outcome-icon" id="outcome-icon">✅</div>
+        <h3 class="outcome-title" id="outcome-title">Troubleshooting Complete</h3>
+        <p class="outcome-text" id="outcome-text"></p>
+        
+        <div class="button-group">
+          <button class="choice-button" id="primary-action-btn" style="display: none;">
+            Action
+          </button>
+          <button class="choice-button no" onclick="restartFlow()">
+            Start Over
+          </button>
+        </div>
+      </div>
+      
+      <!-- Product Quality Complaint Form -->
+      <div class="complaint-form" id="complaint-form">
+        <h3 style="color: #dc2626; margin-bottom: 16px;">📋 Product Quality Report</h3>
+        <p style="color: #6b7280; margin-bottom: 20px;">
+          We'll report this issue to our product quality team. Please provide additional details:
+        </p>
+        
+        <form id="quality-complaint-form">
+          <div class="form-group">
+            <label class="form-label">Product Information</label>
+            <input type="text" class="form-input readonly" value="${troubleshootingFlow.medicineName} - ${troubleshootingFlow.deviceName}" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Issue Type</label>
+            <input type="text" class="form-input readonly" value="Device not functioning as expected" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">When did this issue occur? *</label>
+            <input type="datetime-local" class="form-input" id="occurrence-date" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Lot Number (if available)</label>
+            <input type="text" class="form-input" id="lot-number" placeholder="Found on pen label">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Additional Details</label>
+            <textarea class="form-textarea" id="additional-details" 
+              placeholder="Please describe exactly what happened and any other relevant information..."></textarea>
+          </div>
+          
+          <div class="summary-section">
+            <div class="summary-title">Troubleshooting Summary</div>
+            <div id="troubleshooting-summary">Your responses will be included in the report.</div>
+          </div>
+          
+          <div class="button-group">
+            <button type="submit" class="choice-button">
+              📤 Submit Report
+            </button>
+            <button type="button" class="choice-button no" onclick="cancelComplaint()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const flowSteps = ${JSON.stringify(troubleshootingFlow.steps)};
+    const outcomes = ${JSON.stringify(troubleshootingFlow.outcomes)};
+    let currentStepIndex = 0;
+    let userResponses = {};
+    let troubleshootingSummary = [];
+    
+    function updateProgress() {
+      const progress = ((currentStepIndex + 1) / flowSteps.length) * 100;
+      document.getElementById('progress-fill').style.width = progress + '%';
+    }
+    
+    function showStep(stepId) {
+      // Hide all steps
+      document.querySelectorAll('.step-container').forEach(step => {
+        step.classList.remove('active');
+      });
+      
+      // Show target step
+      const targetStep = document.getElementById('step-' + stepId);
+      if (targetStep) {
+        targetStep.classList.add('active');
+      }
+    }
+    
+    function handleChoice(stepId, choice) {
+      const step = flowSteps.find(s => s.id === stepId);
+      if (!step) return;
+      
+      userResponses[stepId] = choice;
+      troubleshootingSummary.push(\`\${step.title}: \${choice === 'yes' ? 'Yes' : 'No'}\`);
+      
+      const action = choice === 'yes' ? step.yesAction : step.noAction;
+      
+      if (action.type === 'next' && action.nextStepId) {
+        // Move to next step
+        currentStepIndex = flowSteps.findIndex(s => s.id === action.nextStepId);
+        showStep(action.nextStepId);
+        updateProgress();
+      } else if (action.type === 'complete') {
+        // Show resolution
+        showOutcome(action.outcome, 'resolved');
+      } else if (action.type === 'escalate') {
+        // Show escalation outcome
+        showOutcome(action.outcome, 'escalate');
+      }
+      
+      // Update widget state
+      if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+        window.oai.widget.setState({
+          currentStep: stepId,
+          userResponses: userResponses,
+          flowProgress: currentStepIndex + 1,
+          medicineId: '${troubleshootingFlow.medicineId}',
+          viewMode: 'interactive-troubleshooting'
+        });
+      }
+    }
+    
+    function showOutcome(outcomeText, type) {
+      // Hide all steps
+      document.querySelectorAll('.step-container').forEach(step => {
+        step.classList.remove('active');
+      });
+      
+      const outcomeSection = document.getElementById('outcome-section');
+      const outcomeIcon = document.getElementById('outcome-icon');
+      const outcomeTitle = document.getElementById('outcome-title');
+      const outcomeTextEl = document.getElementById('outcome-text');
+      const primaryBtn = document.getElementById('primary-action-btn');
+      
+      if (type === 'escalate') {
+        outcomeSection.className = 'outcome-section escalate show';
+        outcomeIcon.textContent = '🚨';
+        outcomeTitle.textContent = 'Issue Needs Investigation';
+        primaryBtn.textContent = '📋 Log Product Quality Complaint';
+        primaryBtn.style.display = 'block';
+        primaryBtn.onclick = showComplaintForm;
+      } else {
+        outcomeSection.className = 'outcome-section show';
+        outcomeIcon.textContent = '✅';
+        outcomeTitle.textContent = 'Issue Resolved';
+        primaryBtn.style.display = 'none';
+      }
+      
+      outcomeTextEl.textContent = outcomeText;
+      updateProgress();
+    }
+    
+    function showComplaintForm() {
+      document.getElementById('outcome-section').style.display = 'none';
+      document.getElementById('complaint-form').classList.add('show');
+      
+      // Set current date/time
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById('occurrence-date').value = now.toISOString().slice(0, 16);
+      
+      // Update summary
+      document.getElementById('troubleshooting-summary').innerHTML = 
+        troubleshootingSummary.join('<br>');
+    }
+    
+    function cancelComplaint() {
+      document.getElementById('complaint-form').classList.remove('show');
+      document.getElementById('outcome-section').style.display = 'block';
+    }
+    
+    function restartFlow() {
+      currentStepIndex = 0;
+      userResponses = {};
+      troubleshootingSummary = [];
+      
+      // Hide outcome and complaint form
+      document.getElementById('outcome-section').classList.remove('show');
+      document.getElementById('complaint-form').classList.remove('show');
+      
+      // Show first step
+      showStep(flowSteps[0].id);
+      updateProgress();
+    }
+    
+    // Handle complaint form submission
+    document.getElementById('quality-complaint-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        medicineId: '${troubleshootingFlow.medicineId}',
+        medicineName: '${troubleshootingFlow.medicineName}',
+        deviceName: '${troubleshootingFlow.deviceName}',
+        issueType: '${troubleshootingFlow.issueType}',
+        occurrenceDate: document.getElementById('occurrence-date').value,
+        lotNumber: document.getElementById('lot-number').value,
+        additionalDetails: document.getElementById('additional-details').value,
+        troubleshootingSteps: troubleshootingSummary,
+        userResponses: userResponses,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Show success message
+      const complaintForm = document.getElementById('complaint-form');
+      complaintForm.innerHTML = \`
+        <div style="text-align: center; padding: 40px;">
+          <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+          <h3 style="color: #16a34a; margin-bottom: 12px;">Report Submitted Successfully</h3>
+          <p style="color: #374151; margin-bottom: 20px;">
+            Your product quality report has been submitted. Reference ID: PQ-\${Date.now().toString().slice(-6)}
+          </p>
+          <p style="color: #6b7280; font-size: 14px;">
+            Do not use this pen. If you have concerns about your dose or symptoms, please contact your healthcare provider.
+          </p>
+        </div>
+      \`;
+      
+      // Update widget state
+      if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+        window.oai.widget.setState({
+          complaintSubmitted: true,
+          complaintData: formData,
+          viewMode: 'interactive-troubleshooting'
+        });
+      }
+    });
+    
+    // Initialize
+    updateProgress();
+    console.log('Interactive troubleshooting widget loaded for ${troubleshootingFlow.medicineName}');
   </script>
 </body>
 </html>`;
@@ -1270,6 +2234,95 @@ server.registerResource(
 );
 
 
+// Troubleshooting Widget Resource
+server.registerResource(
+  'troubleshooting-widget-dynamic',
+  'ui://widget/troubleshooting-widget-dynamic-v1.html',
+  {
+    _meta: {
+      'openai/widgetDomain': 'https://troubleshooting-widget.onrender.com',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://upload.wikimedia.org',
+          'https://logosandtypes.com'
+        ]
+      }
+    }
+  },
+  async () => {
+    // Default troubleshooting data (Zepbound) - will be replaced dynamically by tool
+    const defaultTroubleshootingData = TROUBLESHOOTING_DATA['p1'];
+    
+    return {
+      contents: [
+        {
+          uri: 'ui://widget/troubleshooting-widget-dynamic-v1.html',
+          mimeType: 'text/html+skybridge',
+          text: createTroubleshootingWidgetHTML(defaultTroubleshootingData),
+          _meta: {
+            'openai/widgetDomain': 'https://troubleshooting-widget.onrender.com',
+            'openai/widgetCSP': {
+              connect_domains: [],
+              resource_domains: [
+                'https://delivery-p137454-e1438138.adobeaemcloud.com',
+                'https://upload.wikimedia.org',
+                'https://logosandtypes.com'
+              ]
+            }
+          }
+        },
+      ]
+    };
+  }
+);
+
+// Interactive Device Troubleshooting Widget Resource
+server.registerResource(
+  'interactive-troubleshooting-dynamic',
+  'ui://widget/interactive-troubleshooting-dynamic-v1.html',
+  {
+    _meta: {
+      'openai/widgetDomain': 'https://interactive-troubleshooting.onrender.com',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://upload.wikimedia.org',
+          'https://logosandtypes.com'
+        ]
+      }
+    }
+  },
+  async () => {
+    // Default flow (Zepbound pen clicking issue)
+    const defaultFlow = DEVICE_TROUBLESHOOTING_FLOWS['zepbound-pen-not-clicking'];
+    
+    return {
+      contents: [
+        {
+          uri: 'ui://widget/interactive-troubleshooting-dynamic-v1.html',
+          mimeType: 'text/html+skybridge',
+          text: createInteractiveTroubleshootingWidgetHTML(defaultFlow),
+          _meta: {
+            'openai/widgetDomain': 'https://interactive-troubleshooting.onrender.com',
+            'openai/widgetCSP': {
+              connect_domains: [],
+              resource_domains: [
+                'https://delivery-p137454-e1438138.adobeaemcloud.com',
+                'https://upload.wikimedia.org',
+                'https://logosandtypes.com'
+              ]
+            }
+          }
+        },
+      ]
+    };
+  }
+);
+
+
 // ==================== TOOLS ====================
 
 /**
@@ -1586,6 +2639,190 @@ server.registerTool(
         }
       ],
       structuredContent: medicineData,
+      _meta: {
+        'openai/dynamicContent': dynamicResource
+      }
+    };
+  }
+);
+
+/**
+ * Tool: Show Injection Training
+ * Displays injection instructions with optional training video for first-time users.
+ * Transitions from instruction completion to video player within the same widget.
+ * Tracks user's first-time status and video viewing history.
+ */
+
+/**
+ * Tool: Show Troubleshooting Guide
+ * Displays comprehensive troubleshooting information for common medication issues.
+ * Includes common problems, side effects, emergency contacts, and when to seek help.
+ * Interactive widget with tabs for different types of issues.
+ */
+server.registerTool(
+  'show-troubleshooting-guide',
+  {
+    title: 'Show Troubleshooting Guide',
+    description: 'Display troubleshooting guide with common issues, side effects, and emergency information for a specific medicine',
+    _meta: {
+      'openai/outputTemplate': 'ui://widget/troubleshooting-widget-dynamic-v1.html',
+      'openai/toolInvocation/invoking': 'Loading troubleshooting guide...',
+      'openai/toolInvocation/invoked': 'Troubleshooting guide loaded successfully',
+      'securitySchemes': [
+        { type: 'noauth' },
+        { type: 'oauth2', scopes: ['openid', 'profile'] }
+      ]
+    },
+    inputSchema: {
+      medicineName: z.string().describe('Name of the medicine for troubleshooting help')
+    } as any
+  },
+  async (args: any) => {
+    // Find the medicine
+    const medicine = AVAILABLE_MEDICINES.find(med => 
+      med.name.toLowerCase().includes(args.medicineName.toLowerCase())
+    );
+    
+    if (!medicine) {
+      return {
+        content: [
+          { 
+            type: 'text' as const, 
+            text: `Troubleshooting guide not found for "${args.medicineName}". Available medicines: ${AVAILABLE_MEDICINES.map(m => m.name).join(', ')}`
+          }
+        ],
+        structuredContent: { error: 'Medicine not found', medicineName: args.medicineName }
+      };
+    }
+
+    // Get troubleshooting data
+    const troubleshootingData = TROUBLESHOOTING_DATA[medicine.id];
+    if (!troubleshootingData) {
+      return {
+        content: [
+          { 
+            type: 'text' as const, 
+            text: `Troubleshooting guide not yet available for ${medicine.name}. Please contact Lilly support at 1-800-LillyRx for assistance.`
+          }
+        ],
+        structuredContent: { error: 'Troubleshooting data not available', medicineName: medicine.name }
+      };
+    }
+
+    console.log(`🩺 Troubleshooting guide request for ${medicine.name}`);
+
+    // Create dynamic troubleshooting widget
+    const troubleshootingHTML = createTroubleshootingWidgetHTML(troubleshootingData);
+    
+    const dynamicResource = {
+      uri: 'ui://widget/troubleshooting-widget-dynamic-v1.html',
+      mimeType: 'text/html+skybridge',
+      text: troubleshootingHTML
+    };
+
+    return {
+      content: [
+        { 
+          type: 'text' as const, 
+          text: `${medicine.name} troubleshooting guide loaded. Find solutions for common issues, side effects management, and emergency contacts.`
+        }
+      ],
+      structuredContent: troubleshootingData,
+      _meta: {
+        'openai/dynamicContent': dynamicResource
+      }
+    };
+  }
+);
+
+/**
+ * Tool: Interactive Device Troubleshooting
+ * Provides step-by-step guided troubleshooting for device issues like "pen not clicking".
+ * Uses Yes/No buttons for guided flow and can escalate to product quality complaint form.
+ * Designed for Maya's scenario where she reports pen clicking issues.
+ */
+server.registerTool(
+  'interactive-device-troubleshooting',
+  {
+    title: 'Interactive Device Troubleshooting',
+    description: 'Guided step-by-step troubleshooting for medication device issues with product quality reporting',
+    _meta: {
+      'openai/outputTemplate': 'ui://widget/interactive-troubleshooting-dynamic-v1.html',
+      'openai/toolInvocation/invoking': 'Starting device troubleshooting...',
+      'openai/toolInvocation/invoked': 'Interactive troubleshooting loaded successfully',
+      'securitySchemes': [
+        { type: 'noauth' },
+        { type: 'oauth2', scopes: ['openid', 'profile'] }
+      ]
+    },
+    inputSchema: {
+      medicineOrIssue: z.string().describe('Medicine name or description of device issue (e.g., "Zepbound pen not clicking", "Humalog pen not working")')
+    } as any
+  },
+  async (args: any) => {
+    const issueDescription = args.medicineOrIssue.toLowerCase();
+    
+    // Determine which troubleshooting flow to use based on the issue
+    let flowKey = null;
+    let medicine = null;
+    
+    // Check for specific device issues
+    if (issueDescription.includes('zepbound') && (issueDescription.includes('click') || issueDescription.includes('pen'))) {
+      flowKey = 'zepbound-pen-not-clicking';
+      medicine = AVAILABLE_MEDICINES.find(m => m.id === 'p1');
+    } else if (issueDescription.includes('humalog') && issueDescription.includes('pen')) {
+      flowKey = 'humalog-pen-not-working';
+      medicine = AVAILABLE_MEDICINES.find(m => m.id === 'p2');
+    } else {
+      // Try to find medicine by name and default to pen issues
+      medicine = AVAILABLE_MEDICINES.find(med => 
+        issueDescription.includes(med.name.toLowerCase())
+      );
+      
+      if (medicine && medicine.id === 'p1') {
+        flowKey = 'zepbound-pen-not-clicking';
+      } else if (medicine && medicine.id === 'p2') {
+        flowKey = 'humalog-pen-not-working';
+      }
+    }
+    
+    if (!flowKey || !medicine) {
+      return {
+        content: [
+          { 
+            type: 'text' as const, 
+            text: `I couldn't find a specific troubleshooting flow for "${args.medicineOrIssue}". Available troubleshooting: Zepbound pen issues, Humalog pen issues. Please be more specific about the device problem you're experiencing.`
+          }
+        ],
+        structuredContent: { 
+          error: 'Troubleshooting flow not found', 
+          availableFlows: Object.keys(DEVICE_TROUBLESHOOTING_FLOWS),
+          suggestion: 'Try: "Zepbound pen not clicking" or "Humalog pen not working"'
+        }
+      };
+    }
+
+    const troubleshootingFlow = DEVICE_TROUBLESHOOTING_FLOWS[flowKey];
+    
+    console.log(`🔧 Interactive troubleshooting started for: ${troubleshootingFlow.medicineName} - ${troubleshootingFlow.issueType}`);
+
+    // Create dynamic interactive troubleshooting widget
+    const interactiveTroubleshootingHTML = createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow);
+    
+    const dynamicResource = {
+      uri: 'ui://widget/interactive-troubleshooting-dynamic-v1.html',
+      mimeType: 'text/html+skybridge',
+      text: interactiveTroubleshootingHTML
+    };
+
+    return {
+      content: [
+        { 
+          type: 'text' as const, 
+          text: `Starting guided troubleshooting for your ${troubleshootingFlow.deviceName}. I'll walk you through step-by-step checks with simple Yes/No questions. If needed, we can submit a product quality report at the end.`
+        }
+      ],
+      structuredContent: troubleshootingFlow,
       _meta: {
         'openai/dynamicContent': dynamicResource
       }
