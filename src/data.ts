@@ -282,14 +282,14 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
     medicineId: "p1",
     medicineName: "Zepbound",
     deviceName: "Zepbound Pen",
-    deviceImage: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
+    deviceImage: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:a1271fbf-ac2b-4e68-aa87-cc4dc3011f02/as/WEB_3.0_howtouse_pen_white_bg.avif?assetname=WEB_3.0_howtouse_pen_white_bg.png&width=1200&format=webply",
     issueType: "pen-not-clicking",
     steps: [
       {
         id: "check-caps",
         title: "Step 1: Check Pen Caps",
         description: "First, let's make sure the pen is properly prepared for injection.",
-        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-2-v1.jpg",
         checkInstructions: [
           "Look at your Zepbound pen",
           "Check if both the outer cap and inner needle cap have been removed",
@@ -308,7 +308,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "check-medicine",
         title: "Step 2: Check Medicine Appearance",
         description: "Now let's verify the medicine inside looks correct.",
-        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-2-v1.jpg",
         safetyWarning: "Do not use this pen if the medicine appears cloudy, discolored, or contains particles.",
         checkInstructions: [
           "Look through the pen window at the medicine inside",
@@ -328,7 +328,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "check-expiration",
         title: "Step 3: Check Expiration Date",
         description: "Let's verify the pen hasn't expired.",
-        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-3-v1.jpg",
         checkInstructions: [
           "Look for the expiration date on the pen label",
           "Check if today's date is before the expiration date",
@@ -347,7 +347,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "check-storage",
         title: "Step 4: Check Storage Conditions",
         description: "Proper storage is crucial for pen function.",
-        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-1-v2.jpg",
         checkInstructions: [
           "Has this pen been stored in the refrigerator (36-46°F)?",
           "Has it been at room temperature for 15-30 minutes before this injection?",
