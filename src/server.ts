@@ -2242,7 +2242,9 @@ server.registerResource(
       'openai/widgetDomain': 'https://injection-instructions.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [
-          'https://delivery-p137454-e1438138.adobeaemcloud.com'
+          'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://uspl.lilly.com',
+          'https://pi.lilly.com'
         ],
         resource_domains: [
           'https://upload.wikimedia.org',
@@ -2370,7 +2372,7 @@ server.registerResource(
 
     .step-visual {
       width: 100%;
-      height: 200px;
+      height: 320px;
       background: #f3f4f6;
       border-radius: 12px;
       display: flex;
@@ -2510,7 +2512,7 @@ server.registerResource(
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -2522,18 +2524,24 @@ server.registerResource(
     }
 
     .video-container {
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
-      background: black;
+      background: #000;
       border-radius: 12px;
       overflow: hidden;
       position: relative;
     }
 
+    .video-container iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+
     .video-close {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: -40px;
+      right: 0;
       width: 36px;
       height: 36px;
       background: rgba(255,255,255,0.9);
@@ -2544,6 +2552,13 @@ server.registerResource(
       align-items: center;
       justify-content: center;
       z-index: 10;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .video-close:hover {
+      background: #fff;
     }
 
     .complete-message {
@@ -2641,6 +2656,14 @@ server.registerResource(
           </svg>
           Official Instructions
         </a>
+      </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal">
+      <div class="video-container">
+        <button class="video-close" id="video-close">&times;</button>
+        <iframe id="video-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -2757,9 +2780,29 @@ server.registerResource(
       renderStep();
     });
 
-    // Open video/instructions in new tab
+    // Video modal elements
+    const videoModal = document.getElementById('video-modal');
+    const videoIframe = document.getElementById('video-iframe');
+    const videoCloseBtn = document.getElementById('video-close');
+
+    // Open video in modal
     watchVideoBtn.addEventListener('click', () => {
-      window.open(videoUrl, '_blank');
+      videoIframe.src = videoUrl;
+      videoModal.classList.add('active');
+    });
+
+    // Close video modal
+    videoCloseBtn.addEventListener('click', () => {
+      videoModal.classList.remove('active');
+      videoIframe.src = ''; // Stop video playback
+    });
+
+    // Close modal on backdrop click
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        videoModal.classList.remove('active');
+        videoIframe.src = '';
+      }
     });
 
     // Load data from tool output if available
@@ -2792,7 +2835,9 @@ server.registerResource(
           'openai/widgetDomain': 'https://injection-instructions.onrender.com',
           'openai/widgetCSP': {
             connect_domains: [
-              'https://delivery-p137454-e1438138.adobeaemcloud.com'
+              'https://delivery-p137454-e1438138.adobeaemcloud.com',
+              'https://uspl.lilly.com',
+              'https://pi.lilly.com'
             ],
             resource_domains: [
               'https://medicine-carousel.onrender.com',
