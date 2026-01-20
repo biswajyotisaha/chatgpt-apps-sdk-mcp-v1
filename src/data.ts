@@ -282,14 +282,14 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
     medicineId: "p1",
     medicineName: "Zepbound",
     deviceName: "Zepbound Pen",
-    deviceImage: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+    deviceImage: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
     issueType: "pen-not-clicking",
     steps: [
       {
         id: "check-caps",
         title: "Step 1: Check Pen Caps",
         description: "First, let's make sure the pen is properly prepared for injection.",
-        visual: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
         checkInstructions: [
           "Look at your Zepbound pen",
           "Check if both the outer cap and inner needle cap have been removed",
@@ -308,7 +308,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "check-medicine",
         title: "Step 2: Check Medicine Appearance",
         description: "Now let's verify the medicine inside looks correct.",
-        visual: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
         safetyWarning: "Do not use this pen if the medicine appears cloudy, discolored, or contains particles.",
         checkInstructions: [
           "Look through the pen window at the medicine inside",
@@ -328,7 +328,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "check-expiration",
         title: "Step 3: Check Expiration Date",
         description: "Let's verify the pen hasn't expired.",
-        visual: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
         checkInstructions: [
           "Look for the expiration date on the pen label",
           "Check if today's date is before the expiration date",
@@ -347,7 +347,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "check-storage",
         title: "Step 4: Check Storage Conditions",
         description: "Proper storage is crucial for pen function.",
-        visual: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
         checkInstructions: [
           "Has this pen been stored in the refrigerator (36-46°F)?",
           "Has it been at room temperature for 15-30 minutes before this injection?",
@@ -366,7 +366,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
         id: "test-mechanism",
         title: "Step 5: Test Pen Mechanism",
         description: "Let's test if the pen mechanism is working.",
-        visual: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+        visual: "https://uspl.lilly.com/zepbound/zep-pen-ifu-5-v1.jpg",
         safetyWarning: "Do not inject yet - this is just a mechanism test.",
         checkInstructions: [
           "Hold the pen firmly in your hand",
