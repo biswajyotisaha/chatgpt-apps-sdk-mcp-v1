@@ -2643,34 +2643,32 @@ server.registerResource(
   </div>
 
   <script>
-    // Base URL for images - will be updated from tool output
-    const baseUrl = 'https://medicine-carousel.onrender.com';
-    
     // Injection steps data - will be populated from tool output (4 simple steps)
+    // Images use relative paths to load from local /public/images/ folder
     const defaultSteps = [
       {
         title: "Step 1: Choose Your Injection Site",
         description: "You may inject in your stomach (at least 2 inches from belly button), thigh, or upper arm. Rotate sites weekly.",
         warning: "Do not inject into tender, bruised, red, or hard skin.",
-        image: baseUrl + "/public/images/injection_step_1.avif"
+        image: "/public/images/injection_step_1.avif"
       },
       {
         title: "Step 2: Pull Off the Gray Base Cap",
         description: "Pull off the gray base cap while the pen is locked. Do not put it back on.",
         warning: "Do not touch the needle. Use pen within 5 minutes after removing cap.",
-        image: baseUrl + "/public/images/injection_step_2.avif"
+        image: "/public/images/injection_step_2.avif"
       },
       {
         title: "Step 3: Place on Skin and Unlock",
         description: "Place the clear base flat on your skin, then turn the lock ring to unlock.",
         warning: "Do not press the button until the base is flat on skin and unlocked.",
-        image: baseUrl + "/public/images/injection_step_3.avif"
+        image: "/public/images/injection_step_3.avif"
       },
       {
         title: "Step 4: Press and Hold the Button",
         description: "Press and hold the button for up to 10 seconds. Listen for the first click (injection started). When you hear the second click, injection is complete.",
         warning: "Do not lift until you hear the second click. Check gray plunger is visible.",
-        image: baseUrl + "/public/images/injection_step_4.avif"
+        image: "/public/images/injection_step_4.avif"
       }
     ];
 
@@ -2928,7 +2926,7 @@ server.registerTool(
     // Medicine-specific data
     // Official Zepbound/Mounjaro Instructions for Use - 4 simple steps
     // Images served from local public folder
-    const baseImageUrl = process.env.PUBLIC_URL || 'https://medicine-carousel.onrender.com';
+    // Use relative paths for images - they load from local /public/images/ folder
     
     const medicineData: Record<string, { 
       name: string; 
@@ -2945,25 +2943,25 @@ server.registerTool(
             title: "Step 1: Choose Your Injection Site",
             description: "You may inject Zepbound in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week.",
             warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-            image: `${baseImageUrl}/public/images/injection_step_1.avif`
+            image: "/public/images/injection_step_1.avif"
           },
           {
             title: "Step 2: Pull Off the Gray Base Cap",
             description: "Pull off the gray base cap while the pen is locked. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal.",
             warning: "Do not touch the needle. After you remove the cap, you must use the pen within 5 minutes.",
-            image: `${baseImageUrl}/public/images/injection_step_2.avif`
+            image: "/public/images/injection_step_2.avif"
           },
           {
             title: "Step 3: Place on Skin and Unlock",
             description: "Place the clear base flat on your skin at your chosen injection site. Make sure you can see the medicine window. Then turn the lock ring to unlock the pen.",
             warning: "Do not press the injection button until the clear base is flat against your skin and the pen is unlocked.",
-            image: `${baseImageUrl}/public/images/injection_step_3.avif`
+            image: "/public/images/injection_step_3.avif"
           },
           {
             title: "Step 4: Press and Hold the Button",
             description: "Press and hold the purple injection button for up to 10 seconds. Listen for the first click — it means the injection has started. Keep holding. When you hear the second click, the injection is complete. You may now lift the pen.",
             warning: "Do not lift the pen until you hear the second click. If the gray plunger is NOT visible in the window after injection, contact your healthcare provider.",
-            image: `${baseImageUrl}/public/images/injection_step_4.avif`
+            image: "/public/images/injection_step_4.avif"
           }
         ]
       },
@@ -2976,25 +2974,25 @@ server.registerTool(
             title: "Step 1: Choose Your Injection Site",
             description: "You may inject Mounjaro in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week.",
             warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-            image: `${baseImageUrl}/public/images/injection_step_1.avif`
+            image: "/public/images/injection_step_1.avif"
           },
           {
             title: "Step 2: Pull Off the Gray Base Cap",
             description: "Pull off the gray base cap while the pen is locked. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal.",
             warning: "Do not touch the needle. After you remove the cap, you must use the pen within 5 minutes.",
-            image: `${baseImageUrl}/public/images/injection_step_2.avif`
+            image: "/public/images/injection_step_2.avif"
           },
           {
             title: "Step 3: Place on Skin and Unlock",
             description: "Place the clear base flat on your skin at your chosen injection site. Make sure you can see the medicine window. Then turn the lock ring to unlock the pen.",
             warning: "Do not press the injection button until the clear base is flat against your skin and the pen is unlocked.",
-            image: `${baseImageUrl}/public/images/injection_step_3.avif`
+            image: "/public/images/injection_step_3.avif"
           },
           {
             title: "Step 4: Press and Hold the Button",
             description: "Press and hold the purple injection button for up to 10 seconds. Listen for the first click — it means the injection has started. Keep holding. When you hear the second click, the injection is complete. You may now lift the pen.",
             warning: "Do not lift the pen until you hear the second click. If the gray plunger is NOT visible in the window after injection, contact your healthcare provider.",
-            image: `${baseImageUrl}/public/images/injection_step_4.avif`
+            image: "/public/images/injection_step_4.avif"
           }
         ]
       }
