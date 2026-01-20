@@ -745,8 +745,9 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .device-visual img {
-      width: 120px;
-      height: 120px;
+      width: 100%;
+      max-width: 400px;
+      height: auto;
       object-fit: contain;
       margin-bottom: 12px;
     }
@@ -788,17 +789,16 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .check-list {
-      list-style: none;
-      padding: 0;
+      list-style: disc;
+      padding-left: 20px;
     }
     
     .check-list li {
       background: white;
       margin-bottom: 8px;
-      padding: 12px 16px;
+      padding: 12px 16px 12px 12px;
       border-radius: 8px;
       border-left: 3px solid #0ea5e9;
-      position: relative;
     }
     
     .question-section {
