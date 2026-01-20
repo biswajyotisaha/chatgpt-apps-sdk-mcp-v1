@@ -2241,10 +2241,13 @@ server.registerResource(
     _meta: {
       'openai/widgetDomain': 'https://injection-instructions.onrender.com',
       'openai/widgetCSP': {
-        connect_domains: [],
+        connect_domains: [
+          'https://delivery-p137454-e1438138.adobeaemcloud.com'
+        ],
         resource_domains: [
           'https://upload.wikimedia.org',
           'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://*.adobeaemcloud.com',
           'https://uspl.lilly.com',
           'https://pi.lilly.com'
         ]
@@ -2788,11 +2791,14 @@ server.registerResource(
         _meta: {
           'openai/widgetDomain': 'https://injection-instructions.onrender.com',
           'openai/widgetCSP': {
-            connect_domains: [],
+            connect_domains: [
+              'https://delivery-p137454-e1438138.adobeaemcloud.com'
+            ],
             resource_domains: [
               'https://medicine-carousel.onrender.com',
               'https://upload.wikimedia.org',
               'https://delivery-p137454-e1438138.adobeaemcloud.com',
+              'https://*.adobeaemcloud.com',
               'https://uspl.lilly.com',
               'https://pi.lilly.com'
             ]
