@@ -1272,8 +1272,9 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
       \`;
       
       try {
-        // Submit to backend API
-        const response = await fetch('/api/product-quality-complaint', {
+        // Submit to backend API (use full URL for cross-origin widget)
+        const apiBaseUrl = 'https://medicine-carousel.onrender.com';
+        const response = await fetch(apiBaseUrl + '/api/product-quality-complaint', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -2972,7 +2973,9 @@ server.registerResource(
     _meta: {
       'openai/widgetDomain': 'https://interactive-troubleshooting.onrender.com',
       'openai/widgetCSP': {
-        connect_domains: [],
+        connect_domains: [
+          'https://medicine-carousel.onrender.com'
+        ],
         resource_domains: [
           'https://delivery-p137454-e1438138.adobeaemcloud.com',
           'https://uspl.lilly.com',
@@ -2995,7 +2998,9 @@ server.registerResource(
           _meta: {
             'openai/widgetDomain': 'https://interactive-troubleshooting.onrender.com',
             'openai/widgetCSP': {
-              connect_domains: [],
+              connect_domains: [
+                'https://medicine-carousel.onrender.com'
+              ],
               resource_domains: [
                 'https://delivery-p137454-e1438138.adobeaemcloud.com',
                 'https://uspl.lilly.com',
