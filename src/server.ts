@@ -1064,8 +1064,8 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
           <button class="choice-button" id="primary-action-btn" style="display: none;">
             Action
           </button>
-          <button class="choice-button no" onclick="restartFlow()">
-            Start Over
+          <button class="choice-button no" onclick="exitFlow()">
+            Exit
           </button>
         </div>
       </div>
@@ -1242,6 +1242,22 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
       // Show first step
       showStep(flowSteps[0].id);
       updateProgress();
+    }
+    
+    function exitFlow() {
+      // Signal exit to parent widget/ChatGPT
+      if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+        window.oai.widget.setState({
+          action: 'exit',
+          exitedFrom: 'troubleshooting',
+          medicineId: '${troubleshootingFlow.medicineId}',
+          medicineName: '${troubleshootingFlow.medicineName}',
+          troubleshootingCompleted: true,
+          userResponses: userResponses,
+          troubleshootingSummary: troubleshootingSummary
+        });
+      }
+      console.log('User exited troubleshooting flow');
     }
     
     // Handle complaint form submission
