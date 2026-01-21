@@ -1245,6 +1245,15 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     function exitFlow() {
+      // Show exit confirmation message
+      const outcomeSection = document.getElementById('outcome-section');
+      outcomeSection.innerHTML = \`
+        <div class="outcome-icon">👋</div>
+        <h3 class="outcome-title" style="color: #16a34a;">Thank You!</h3>
+        <p class="outcome-text">You have exited the troubleshooting flow. If you need further assistance, feel free to ask.</p>
+      \`;
+      outcomeSection.className = 'outcome-section show';
+      
       // Signal exit to parent widget/ChatGPT
       if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
         window.oai.widget.setState({
