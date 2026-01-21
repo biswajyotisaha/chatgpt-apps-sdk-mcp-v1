@@ -2538,13 +2538,6 @@ server.registerResource(
     .video-container video {
       width: 100%;
       max-height: 80vh;
-      border: none;
-    }
-
-    .video-container iframe {
-      width: 100%;
-      height: 500px;
-      border: none;
     }
 
     .video-close {
@@ -2672,7 +2665,7 @@ server.registerResource(
     <div class="video-modal" id="video-modal">
       <div class="video-container">
         <button class="video-close" id="video-close">&times;</button>
-        <video id="video-player" controls>
+        <video id="video-player" controls preload="metadata">
           <source id="video-source" src="" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -2809,7 +2802,7 @@ server.registerResource(
       videoSource.src = videoUrl;
       videoPlayer.load();
       videoModal.classList.add('active');
-      videoPlayer.play();
+      videoPlayer.play().catch(e => console.log('Autoplay prevented:', e));
     });
 
     // Close video modal
