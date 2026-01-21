@@ -1245,7 +1245,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     // Handle complaint form submission
-    document.getElementById('quality-complaint-form').addEventListener('submit', function(e) {
+    document.getElementById('quality-complaint-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       
       const formData = {
@@ -1257,32 +1257,75 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
         lotNumber: document.getElementById('lot-number').value,
         additionalDetails: document.getElementById('additional-details').value,
         troubleshootingSteps: troubleshootingSummary,
-        userResponses: userResponses,
-        timestamp: new Date().toISOString()
+        userResponses: userResponses
       };
       
-      // Show success message
       const complaintForm = document.getElementById('complaint-form');
+      
+      // Show loading state
       complaintForm.innerHTML = \`
         <div style="text-align: center; padding: 40px;">
-          <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
-          <h3 style="color: #16a34a; margin-bottom: 12px;">Report Submitted Successfully</h3>
-          <p style="color: #374151; margin-bottom: 20px;">
-            Your product quality report has been submitted. Reference ID: PQ-\${Date.now().toString().slice(-6)}
-          </p>
-          <p style="color: #6b7280; font-size: 14px;">
-            Do not use this pen. If you have concerns about your dose or symptoms, please contact your healthcare provider.
-          </p>
+          <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+          <h3 style="color: #374151; margin-bottom: 12px;">Submitting Report...</h3>
+          <p style="color: #6b7280;">Please wait while we process your complaint.</p>
         </div>
       \`;
       
-      // Update widget state
-      if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
-        window.oai.widget.setState({
-          complaintSubmitted: true,
-          complaintData: formData,
-          viewMode: 'interactive-troubleshooting'
+      try {
+        // Submit to backend API
+        const response = await fetch('/api/product-quality-complaint', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
         });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Show success message with real reference ID
+          complaintForm.innerHTML = \`
+            <div style="text-align: center; padding: 40px;">
+              <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+              <h3 style="color: #16a34a; margin-bottom: 12px;">Report Submitted Successfully</h3>
+              <p style="color: #374151; margin-bottom: 20px;">
+                Your product quality report has been submitted.<br>
+                <strong style="font-size: 18px;">Reference ID: \${result.referenceId}</strong>
+              </p>
+              <p style="color: #6b7280; font-size: 14px;">
+                Please save this reference ID for your records.<br>
+                Do not use this pen. If you have concerns about your dose or symptoms, please contact your healthcare provider.
+              </p>
+            </div>
+          \`;
+          
+          // Update widget state with real reference ID
+          if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+            window.oai.widget.setState({
+              complaintSubmitted: true,
+              complaintReferenceId: result.referenceId,
+              complaintData: formData,
+              viewMode: 'interactive-troubleshooting'
+            });
+          }
+        } else {
+          throw new Error(result.error || 'Failed to submit complaint');
+        }
+      } catch (error) {
+        // Show error message
+        complaintForm.innerHTML = \`
+          <div style="text-align: center; padding: 40px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+            <h3 style="color: #dc2626; margin-bottom: 12px;">Submission Failed</h3>
+            <p style="color: #374151; margin-bottom: 20px;">
+              We couldn't submit your report. Please try again or contact support.
+            </p>
+            <button onclick="location.reload()" style="background: #dc2626; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px;">
+              Try Again
+            </button>
+          </div>
+        \`;
       }
     });
     
@@ -3008,13 +3051,127 @@ server.registerTool(
 app.get('/health', async (_req: Request, res: Response) => {
   const redisHealthy = await sessionManager.isHealthy();
   const sessionCount = await sessionManager.getActiveSessionCount();
+  const complaintCount = await sessionManager.getProductQualityComplaintCount();
   
   res.json({
     status: redisHealthy ? 'healthy' : 'unhealthy',
     redis: redisHealthy,
     activeSessions: sessionCount,
+    productQualityComplaints: complaintCount,
     timestamp: new Date().toISOString()
   });
+});
+
+/**
+ * Product Quality Complaint Submission Endpoint
+ * Stores complaints in Redis and returns a unique reference ID.
+ */
+app.post('/api/product-quality-complaint', express.json(), async (req: Request, res: Response) => {
+  try {
+    const {
+      medicineId,
+      medicineName,
+      deviceName,
+      issueType,
+      occurrenceDate,
+      lotNumber,
+      additionalDetails,
+      troubleshootingSteps,
+      userResponses
+    } = req.body;
+
+    // Validate required fields
+    if (!medicineName || !deviceName || !issueType) {
+      return res.status(400).json({
+        error: 'Missing required fields',
+        required: ['medicineName', 'deviceName', 'issueType']
+      });
+    }
+
+    // Store complaint and get reference ID
+    const referenceId = await sessionManager.storeProductQualityComplaint({
+      medicineId: medicineId || '',
+      medicineName,
+      deviceName,
+      issueType,
+      occurrenceDate: occurrenceDate || '',
+      lotNumber: lotNumber || '',
+      additionalDetails: additionalDetails || '',
+      troubleshootingSteps: troubleshootingSteps || [],
+      userResponses: userResponses || {}
+    });
+
+    console.log(`📋 Product quality complaint submitted: ${referenceId}`);
+
+    res.json({
+      success: true,
+      referenceId,
+      message: 'Product quality complaint submitted successfully'
+    });
+  } catch (error) {
+    console.error('Failed to submit complaint:', error);
+    res.status(500).json({
+      error: 'Failed to submit complaint',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * Get All Product Quality Complaints Endpoint
+ * Returns list of all submitted complaints with pagination.
+ */
+app.get('/api/product-quality-complaints', async (req: Request, res: Response) => {
+  try {
+    const limit = parseInt(req.query.limit as string) || 100;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const complaints = await sessionManager.getAllProductQualityComplaints(limit, offset);
+    const totalCount = await sessionManager.getProductQualityComplaintCount();
+
+    res.json({
+      success: true,
+      complaints,
+      pagination: {
+        limit,
+        offset,
+        total: totalCount,
+        hasMore: offset + complaints.length < totalCount
+      }
+    });
+  } catch (error) {
+    console.error('Failed to get complaints:', error);
+    res.status(500).json({
+      error: 'Failed to retrieve complaints'
+    });
+  }
+});
+
+/**
+ * Get Single Product Quality Complaint by Reference ID
+ */
+app.get('/api/product-quality-complaint/:referenceId', async (req: Request, res: Response) => {
+  try {
+    const { referenceId } = req.params;
+    const complaint = await sessionManager.getProductQualityComplaint(referenceId);
+
+    if (!complaint) {
+      return res.status(404).json({
+        error: 'Complaint not found',
+        referenceId
+      });
+    }
+
+    res.json({
+      success: true,
+      complaint
+    });
+  } catch (error) {
+    console.error('Failed to get complaint:', error);
+    res.status(500).json({
+      error: 'Failed to retrieve complaint'
+    });
+  }
 });
 
 /**
