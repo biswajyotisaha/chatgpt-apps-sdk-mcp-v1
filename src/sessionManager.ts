@@ -11,6 +11,7 @@ import { jwtDecode } from 'jwt-decode';
  * - Session ID: Extracted from JWT 'sub' claim (unique per user)
  * - Redis Key: "session:{sessionId}" for each user
  * - TTL: 30 minutes, auto-renewed on each request
+ * - Product Quality Complaints: Stored with "pq:{referenceId}" keys
  */
 
 /**
@@ -30,6 +31,25 @@ interface UserSession {
 }
 
 /**
+ * Structure for Product Quality Complaints
+ */
+interface ProductQualityComplaint {
+  referenceId: string;
+  medicineId: string;
+  medicineName: string;
+  deviceName: string;
+  issueType: string;
+  occurrenceDate: string;
+  lotNumber: string;
+  additionalDetails: string;
+  troubleshootingSteps: string[];
+  userResponses: Record<string, string>;
+  submittedAt: string;
+  sessionId?: string;
+  userId?: string;
+}
+
+/**
  * JWT payload structure (what's inside the token)
  */
 interface JWTPayload {
@@ -46,6 +66,9 @@ class SessionManager {
   private redis: Redis;
   private readonly SESSION_TTL_SECONDS = 30 * 60; // 30 minutes
   private readonly SESSION_PREFIX = 'session:'; // Prefix for all session keys
+  private readonly PQ_PREFIX = 'pq:'; // Prefix for product quality complaints
+  private readonly PQ_LIST_KEY = 'pq:all'; // List to track all complaint IDs
+  private readonly PQ_TTL_SECONDS = 90 * 24 * 60 * 60; // 90 days for complaints
 
   constructor() {
     // Connect to Redis using URL from environment variable
@@ -248,6 +271,142 @@ class SessionManager {
       return true;
     } catch {
       return false;
+    }
+  }
+
+  /**
+   * Generate Unique Product Quality Reference ID
+   * 
+   * Format: PQ-YYYYMMDD-XXXXX (e.g., PQ-20260121-00001)
+   * Uses Redis counter to ensure uniqueness
+   * 
+   * @returns Unique reference ID
+   */
+  private async generatePQReferenceId(): Promise<string> {
+    const date = new Date();
+    const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
+    const counterKey = `pq:counter:${dateStr}`;
+    
+    // Increment daily counter (auto-expires after 2 days)
+    const count = await this.redis.incr(counterKey);
+    await this.redis.expire(counterKey, 2 * 24 * 60 * 60);
+    
+    // Format: PQ-YYYYMMDD-XXXXX
+    const paddedCount = count.toString().padStart(5, '0');
+    return `PQ-${dateStr}-${paddedCount}`;
+  }
+
+  /**
+   * Store Product Quality Complaint
+   * 
+   * Saves complaint data to Redis with unique reference ID.
+   * Also adds to a list for easy retrieval of all complaints.
+   * 
+   * @param complaintData - Complaint data without referenceId
+   * @param sessionId - Optional session ID of user submitting
+   * @param userId - Optional user ID
+   * @returns Generated reference ID
+   */
+  async storeProductQualityComplaint(
+    complaintData: Omit<ProductQualityComplaint, 'referenceId' | 'submittedAt'>,
+    sessionId?: string,
+    userId?: string
+  ): Promise<string> {
+    try {
+      const referenceId = await this.generatePQReferenceId();
+      const key = `${this.PQ_PREFIX}${referenceId}`;
+      
+      const complaint: ProductQualityComplaint = {
+        ...complaintData,
+        referenceId,
+        submittedAt: new Date().toISOString(),
+        sessionId,
+        userId
+      };
+
+      // Store complaint with 90-day TTL
+      await this.redis.setex(key, this.PQ_TTL_SECONDS, JSON.stringify(complaint));
+      
+      // Add reference ID to the list of all complaints
+      await this.redis.lpush(this.PQ_LIST_KEY, referenceId);
+      
+      console.log(`📋 Stored product quality complaint: ${referenceId}`);
+      return referenceId;
+    } catch (error) {
+      console.error('Failed to store complaint:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get Product Quality Complaint by Reference ID
+   * 
+   * @param referenceId - The PQ reference ID
+   * @returns Complaint data or null if not found
+   */
+  async getProductQualityComplaint(referenceId: string): Promise<ProductQualityComplaint | null> {
+    try {
+      const key = `${this.PQ_PREFIX}${referenceId}`;
+      const data = await this.redis.get(key);
+      
+      if (data) {
+        return JSON.parse(data) as ProductQualityComplaint;
+      }
+      return null;
+    } catch (error) {
+      console.error('Failed to get complaint:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get All Product Quality Complaints
+   * 
+   * Retrieves all stored complaints with optional pagination.
+   * 
+   * @param limit - Maximum number to return (default 100)
+   * @param offset - Number to skip (default 0)
+   * @returns Array of complaints
+   */
+  async getAllProductQualityComplaints(
+    limit: number = 100,
+    offset: number = 0
+  ): Promise<ProductQualityComplaint[]> {
+    try {
+      // Get reference IDs from list
+      const referenceIds = await this.redis.lrange(this.PQ_LIST_KEY, offset, offset + limit - 1);
+      
+      if (referenceIds.length === 0) {
+        return [];
+      }
+
+      // Fetch all complaints
+      const complaints: ProductQualityComplaint[] = [];
+      for (const refId of referenceIds) {
+        const complaint = await this.getProductQualityComplaint(refId);
+        if (complaint) {
+          complaints.push(complaint);
+        }
+      }
+
+      return complaints;
+    } catch (error) {
+      console.error('Failed to get complaints:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get Product Quality Complaint Count
+   * 
+   * @returns Total number of complaints stored
+   */
+  async getProductQualityComplaintCount(): Promise<number> {
+    try {
+      return await this.redis.llen(this.PQ_LIST_KEY);
+    } catch (error) {
+      console.error('Failed to count complaints:', error);
+      return 0;
     }
   }
 
