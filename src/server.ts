@@ -2253,10 +2253,6 @@ server.registerResource(
           'https://uspl.lilly.com',
           'https://pi.lilly.com'
         ],
-        frame_domains: [
-          'https://www.youtube.com',
-          'https://www.youtube-nocookie.com'
-        ],
         media_domains: [
           'https://delivery-p137454-e1438138.adobeaemcloud.com',
           'https://*.adobeaemcloud.com'
@@ -2274,7 +2270,7 @@ server.registerResource(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; media-src 'self' https://delivery-p137454-e1438138.adobeaemcloud.com https://*.adobeaemcloud.com blob: data:; img-src 'self' https://delivery-p137454-e1438138.adobeaemcloud.com https://*.adobeaemcloud.com https://upload.wikimedia.org data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://delivery-p137454-e1438138.adobeaemcloud.com https://*.adobeaemcloud.com blob: data:; img-src 'self' https://delivery-p137454-e1438138.adobeaemcloud.com https://*.adobeaemcloud.com https://upload.wikimedia.org data:;">
   <title>Injection Pen Instructions</title>
   <style>
     :root {
@@ -2541,10 +2537,9 @@ server.registerResource(
       position: relative;
     }
 
-    .video-container iframe {
+    .video-container video {
       width: 100%;
-      height: 500px;
-      border: none;
+      max-height: 80vh;
     }
 
     .video-close {
@@ -2672,14 +2667,10 @@ server.registerResource(
     <div class="video-modal" id="video-modal">
       <div class="video-container">
         <button class="video-close" id="video-close">&times;</button>
-        <iframe id="video-player" 
-          width="100%" 
-          height="500" 
-          src="" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
+        <video id="video-player" controls preload="metadata">
+          <source id="video-source" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   </div>
@@ -2716,7 +2707,7 @@ server.registerResource(
 
     let currentStep = 0;
     let steps = defaultSteps;
-    let videoUrl = "https://www.youtube-nocookie.com/embed/gobpQjjdBm8";
+    let videoUrl = "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4";
     let instructionsUrl = "https://uspl.lilly.com/zepbound/zepbound.html#ug";
 
     // DOM elements
@@ -2805,25 +2796,30 @@ server.registerResource(
     // Video modal elements
     const videoModal = document.getElementById('video-modal');
     const videoPlayer = document.getElementById('video-player');
+    const videoSource = document.getElementById('video-source');
     const videoCloseBtn = document.getElementById('video-close');
 
-    // Open video in modal (YouTube embed)
+    // Open video in modal
     watchVideoBtn.addEventListener('click', () => {
-      videoPlayer.src = videoUrl + '?autoplay=1&rel=0&modestbranding=1&enablejsapi=1';
+      videoSource.src = videoUrl;
+      videoPlayer.load();
       videoModal.classList.add('active');
+      videoPlayer.play().catch(e => console.log('Autoplay prevented:', e));
     });
 
     // Close video modal
     videoCloseBtn.addEventListener('click', () => {
       videoModal.classList.remove('active');
-      videoPlayer.src = '';
+      videoPlayer.pause();
+      videoPlayer.currentTime = 0;
     });
 
     // Close modal on backdrop click
     videoModal.addEventListener('click', (e) => {
       if (e.target === videoModal) {
         videoModal.classList.remove('active');
-        videoPlayer.src = '';
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
       }
     });
 
@@ -2868,10 +2864,6 @@ server.registerResource(
               'https://*.adobeaemcloud.com',
               'https://uspl.lilly.com',
               'https://pi.lilly.com'
-            ],
-            frame_domains: [
-              'https://www.youtube.com',
-              'https://www.youtube-nocookie.com'
             ],
             media_domains: [
               'https://delivery-p137454-e1438138.adobeaemcloud.com',
@@ -3016,7 +3008,7 @@ server.registerTool(
     }> = {
       'zepbound': {
         name: 'Zepbound®',
-        videoUrl: 'https://www.youtube-nocookie.com/embed/gobpQjjdBm8',
+        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
         instructionsUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
         steps: [
           {
@@ -3047,7 +3039,7 @@ server.registerTool(
       },
       'mounjaro': {
         name: 'Mounjaro®',
-        videoUrl: 'https://www.youtube-nocookie.com/embed/gobpQjjdBm8',
+        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
         instructionsUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
         steps: [
           {
