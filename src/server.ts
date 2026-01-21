@@ -640,7 +640,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .widget-header {
-      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
       color: white;
       padding: 24px;
       text-align: center;
@@ -684,7 +684,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     
     .progress-fill {
       height: 100%;
-      background: #3b82f6;
+      background: #dc2626;
       border-radius: 4px;
       transition: width 0.3s ease;
     }
@@ -713,7 +713,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     .step-number {
       width: 32px;
       height: 32px;
-      background: #3b82f6;
+      background: #dc2626;
       color: white;
       border-radius: 50%;
       display: flex;
@@ -736,17 +736,17 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .device-visual {
-      background: #f9fafb;
+      background: transparent;
       border-radius: 12px;
       padding: 20px;
       text-align: center;
       margin: 20px 0;
-      border: 2px solid #e5e7eb;
+      border: none;
     }
     
     .device-visual img {
-      width: 120px;
-      height: 120px;
+      width: 280px;
+      height: 280px;
       object-fit: contain;
       margin-bottom: 12px;
     }
@@ -825,7 +825,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .choice-button {
-      background: #3b82f6;
+      background: #dc2626;
       color: white;
       border: none;
       border-radius: 12px;
@@ -838,9 +838,9 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .choice-button:hover {
-      background: #2563eb;
+      background: #b91c1c;
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
     }
     
     .choice-button.yes {
@@ -941,8 +941,8 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     
     .form-input:focus, .form-textarea:focus {
       outline: none;
-      border-color: #3b82f6;
-      ring: 2px solid rgba(59, 130, 246, 0.1);
+      border-color: #dc2626;
+      ring: 2px solid rgba(220, 38, 38, 0.1);
     }
     
     .readonly {
@@ -951,8 +951,8 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .summary-section {
-      background: #eff6ff;
-      border: 1px solid #3b82f6;
+      background: #fef2f2;
+      border: 1px solid #dc2626;
       border-radius: 8px;
       padding: 16px;
       margin: 16px 0;
@@ -960,7 +960,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     
     .summary-title {
       font-weight: 600;
-      color: #1e40af;
+      color: #991b1b;
       margin-bottom: 8px;
     }
     
@@ -997,10 +997,8 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
       <p>Let's diagnose your ${troubleshootingFlow.deviceName} issue step by step</p>
       
       <div class="device-info">
-        <img src="${troubleshootingFlow.deviceImage}" alt="${troubleshootingFlow.deviceName}" class="device-image">
         <div>
           <strong>${troubleshootingFlow.medicineName}</strong>
-          <div style="opacity: 0.8;">${troubleshootingFlow.deviceName}</div>
         </div>
       </div>
     </div>
@@ -1022,7 +1020,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
           ${step.visual ? `
             <div class="device-visual">
               <img src="${step.visual}" alt="${step.title}">
-              <p style="color: #6b7280; font-size: 14px;">Visual reference for this step</p>
+              <p style="color: #6b7280; font-size: 14px;"></p>
             </div>
           ` : ''}
           
@@ -2895,6 +2893,7 @@ server.registerResource(
         connect_domains: [],
         resource_domains: [
           'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://uspl.lilly.com',
           'https://upload.wikimedia.org',
           'https://logosandtypes.com'
         ]
@@ -2917,6 +2916,7 @@ server.registerResource(
               connect_domains: [],
               resource_domains: [
                 'https://delivery-p137454-e1438138.adobeaemcloud.com',
+                'https://uspl.lilly.com',
                 'https://upload.wikimedia.org',
                 'https://logosandtypes.com'
               ]
@@ -2939,6 +2939,7 @@ server.registerResource(
         connect_domains: [],
         resource_domains: [
           'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://uspl.lilly.com',
           'https://upload.wikimedia.org',
           'https://logosandtypes.com'
         ]
@@ -2961,6 +2962,7 @@ server.registerResource(
               connect_domains: [],
               resource_domains: [
                 'https://delivery-p137454-e1438138.adobeaemcloud.com',
+                'https://uspl.lilly.com',
                 'https://upload.wikimedia.org',
                 'https://logosandtypes.com'
               ]
