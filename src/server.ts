@@ -2541,12 +2541,6 @@ server.registerResource(
       position: relative;
     }
 
-    .video-container video {
-      width: 100%;
-      max-height: 80vh;
-      border: none;
-    }
-
     .video-container iframe {
       width: 100%;
       height: 500px;
@@ -2815,7 +2809,7 @@ server.registerResource(
 
     // Open video in modal (YouTube embed)
     watchVideoBtn.addEventListener('click', () => {
-      videoPlayer.src = videoUrl + '?autoplay=1';
+      videoPlayer.src = videoUrl + '?autoplay=1&rel=0&modestbranding=1&enablejsapi=1';
       videoModal.classList.add('active');
     });
 
