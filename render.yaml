@@ -20,7 +20,7 @@ services:
       
       # Redis connection (paste your internal Redis URL here)
       - key: REDIS_URL
-        value: redis://red-d5eb4ijuibrs7389gpd0:6379  # REPLACE with your actual Redis internal URL
+        value: redis://red-d4rb98ogjchc73bpidb0:6379
       
       # Your existing environment variables
       - key: CAPI_GATEWAY_URL
