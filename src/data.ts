@@ -282,7 +282,7 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
     medicineId: "p1",
     medicineName: "Zepbound",
     deviceName: "Zepbound Pen",
-    deviceImage: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:a1271fbf-ac2b-4e68-aa87-cc4dc3011f02/as/WEB_3.0_howtouse_pen_white_bg.avif?assetname=WEB_3.0_howtouse_pen_white_bg.png&width=1200&format=webply",
+    deviceImage: "https://uspl.lilly.com/zepbound/zep-pen-ifu-2-v1.jpg",
     issueType: "pen-not-clicking",
     steps: [
       {

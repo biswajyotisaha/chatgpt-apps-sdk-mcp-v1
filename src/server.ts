@@ -736,17 +736,17 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
     }
     
     .device-visual {
-      background: #f9fafb;
+      background: transparent;
       border-radius: 12px;
       padding: 20px;
       text-align: center;
       margin: 20px 0;
-      border: 2px solid #e5e7eb;
+      border: none;
     }
     
     .device-visual img {
-      width: 120px;
-      height: 120px;
+      width: 280px;
+      height: 280px;
       object-fit: contain;
       margin-bottom: 12px;
     }
@@ -997,10 +997,8 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
       <p>Let's diagnose your ${troubleshootingFlow.deviceName} issue step by step</p>
       
       <div class="device-info">
-        <img src="${troubleshootingFlow.deviceImage}" alt="${troubleshootingFlow.deviceName}" class="device-image">
         <div>
           <strong>${troubleshootingFlow.medicineName}</strong>
-          <div style="opacity: 0.8;">${troubleshootingFlow.deviceName}</div>
         </div>
       </div>
     </div>
@@ -1022,7 +1020,7 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
           ${step.visual ? `
             <div class="device-visual">
               <img src="${step.visual}" alt="${step.title}">
-              <p style="color: #6b7280; font-size: 14px;">Visual reference for this step</p>
+              <p style="color: #6b7280; font-size: 14px;"></p>
             </div>
           ` : ''}
           
