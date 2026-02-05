@@ -1327,6 +1327,7 @@ server.registerResource(
   {
     _meta: {
       'openai/widgetDomain': 'https://medicine-carousel.onrender.com',
+      'openai/description': 'Browse all available Lilly medicines in an interactive carousel. Shows all 7 medicines with images, logos, and purchase links.',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
@@ -2262,6 +2263,7 @@ server.registerResource(
   {
     _meta: {
       'openai/widgetDomain': 'https://lilly-direct.onrender.com',
+      'openai/description': 'LillyDirect direct ordering platform for Zepbound and other Lilly medicines. Shows Zepbound product card with direct purchase link. Use this for ordering directly from Lilly with home delivery and telehealth support.',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
