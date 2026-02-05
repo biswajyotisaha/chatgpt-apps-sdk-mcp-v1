@@ -1307,7 +1307,8 @@ server.registerResource(
         connect_domains: [],
         resource_domains: [
           'https://upload.wikimedia.org',
-          'https://logosandtypes.com'
+          'https://logosandtypes.com',
+          'https://delivery-p137454-e1438138.adobeaemcloud.com'
         ]
       }
     }
@@ -1324,7 +1325,8 @@ server.registerResource(
             connect_domains: [],
             resource_domains: [
               'https://upload.wikimedia.org',
-              'https://logosandtypes.com'
+              'https://logosandtypes.com',
+              'https://delivery-p137454-e1438138.adobeaemcloud.com'
             ]
           }
         }
@@ -1344,7 +1346,8 @@ server.registerResource(
         connect_domains: [],
         resource_domains: [
           'https://upload.wikimedia.org',
-          'https://logosandtypes.com'
+          'https://logosandtypes.com',
+          'https://delivery-p137454-e1438138.adobeaemcloud.com'
         ]
       }
     }
@@ -1361,7 +1364,8 @@ server.registerResource(
             connect_domains: [],
             resource_domains: [
               'https://upload.wikimedia.org',
-              'https://logosandtypes.com'
+              'https://logosandtypes.com',
+              'https://delivery-p137454-e1438138.adobeaemcloud.com'
             ]
           }
         }
