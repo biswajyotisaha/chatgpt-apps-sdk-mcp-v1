@@ -2284,123 +2284,364 @@ server.registerResource(
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LillyDirect</title>
   <style>
-    :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --brand: #e81f26;
-      --brand-dark: #c41922;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --info: #3b82f6;
-      --shadow: 0 8px 24px rgba(0,0,0,.08);
-      --radius: 16px;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 16px;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #fef7f7 0%, #fff5f5 50%, #ffffff 100%);
+      min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 420px;
       margin: 0 auto;
     }
 
-    .hero-card {
-      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-      border-radius: var(--radius);
-      padding: 24px;
-      color: white;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
+    /* Main Card */
+    .main-card {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(232, 31, 38, 0.12), 0 8px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease-out;
     }
 
-    .hero-header {
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #e81f26 0%, #b91c22 50%, #8b161a 100%);
+      padding: 32px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ffd700, #ff6b6b, #ffd700);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .brand-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .hero-header img {
-      height: 36px;
-      width: auto;
-      filter: brightness(0) invert(1);
-    }
-
-    .hero-title {
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .hero-subtitle {
-      font-size: 15px;
-      opacity: 0.9;
       margin-bottom: 20px;
-      line-height: 1.5;
+      position: relative;
+      z-index: 1;
     }
 
-    .cta-button {
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      background: white;
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: auto;
+    }
+
+    .brand-text {
+      color: white;
+    }
+
+    .brand-text h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .brand-text span {
+      font-size: 13px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .hero-desc {
+      color: rgba(255,255,255,0.95);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: white;
-      color: var(--brand);
-      padding: 12px 24px;
-      border-radius: 8px;
+      color: #e81f26;
+      padding: 14px 28px;
+      border-radius: 50px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 15px;
-      transition: all 0.2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 1;
     }
 
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
     }
 
-    .cta-button svg {
+    .cta-btn svg {
       width: 18px;
       height: 18px;
+      transition: transform 0.3s;
     }
 
-    .benefits-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
+    .cta-btn:hover svg {
+      transform: translateX(4px);
     }
 
-    .benefits-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: var(--text);
-    }
-
-    .benefit-item {
-      display: flex;
-      align-items: flex-start;
+    /* Features Grid */
+    .features {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid #e5e7eb;
     }
 
-    .benefit-item:last-child {
-      border-bottom: none;
+    .feature {
+      background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: all 0.3s;
+      border: 1px solid #eee;
     }
 
-    .benefit-icon {
-      width: 40px;
-      height: 40px;
-      background: #f0fdf4;
+    .feature:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border-color: #e81f26;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, #e81f26 0%, #c41922 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(232, 31, 38, 0.3);
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .feature h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .feature p {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
+    /* Zepbound Section */
+    .zepbound-section {
+      padding: 0 24px 24px;
+    }
+
+    .zepbound-card {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .zepbound-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(232, 31, 38, 0.3) 0%, transparent 70%);
+    }
+
+    .zepbound-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .zepbound-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffd700;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .zepbound-label svg {
+      width: 16px;
+      height: 16px;
+      fill: #ffd700;
+    }
+
+    .availability-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .availability-pill::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .zepbound-content {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .zepbound-image {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 16px;
+      padding: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .zepbound-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .zepbound-info {
+      flex: 1;
+    }
+
+    .zepbound-name {
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .zepbound-desc {
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .shop-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #e81f26 0%, #c41922 100%);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(232, 31, 38, 0.4);
+    }
+
+    .shop-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(232, 31, 38, 0.5);
+    }
+
+    .shop-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: white;
+    }
+
+    /* Info Footer */
+    .info-footer {
+      padding: 20px 24px;
+      background: #fef7f7;
+      border-top: 1px solid #fee2e2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .info-icon {
+      width: 36px;
+      height: 36px;
+      background: #fee2e2;
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -2408,244 +2649,151 @@ server.registerResource(
       flex-shrink: 0;
     }
 
-    .benefit-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--success);
+    .info-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #e81f26;
     }
 
-    .benefit-content h4 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .benefit-content p {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .medicine-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-    }
-
-    .medicine-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .medicine-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .availability-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 20px;
+    .info-text {
       font-size: 12px;
-      font-weight: 600;
+      color: #6b7280;
+      line-height: 1.5;
     }
 
-    .availability-badge.available {
-      background: #dcfce7;
-      color: #166534;
+    .info-text strong {
+      color: #e81f26;
     }
 
-    .availability-badge.limited {
-      background: #fef3c7;
-      color: #92400e;
+    /* Support Footer */
+    .support-footer {
+      padding: 16px 24px;
+      text-align: center;
+      border-top: 1px solid #f3f4f6;
     }
 
-    .medicine-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: #f9fafb;
-      border-radius: 12px;
-      margin-bottom: 12px;
-    }
-
-    .medicine-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .medicine-image {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 8px;
-      background: white;
-      padding: 8px;
-    }
-
-    .medicine-info {
-      flex: 1;
-    }
-
-    .medicine-name {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .medicine-desc {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .shop-link {
+    .support-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      color: var(--brand);
-      font-size: 14px;
-      font-weight: 600;
+      gap: 8px;
+      color: #6b7280;
       text-decoration: none;
-    }
-
-    .shop-link:hover {
-      text-decoration: underline;
-    }
-
-    .info-banner {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .info-banner svg {
-      width: 24px;
-      height: 24px;
-      fill: var(--info);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .info-banner-content h4 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #1e40af;
-      margin-bottom: 4px;
-    }
-
-    .info-banner-content p {
       font-size: 13px;
-      color: #1e40af;
-      line-height: 1.4;
+      font-weight: 500;
+      transition: color 0.2s;
     }
 
-    .info-banner-content a {
-      color: #1e40af;
-      font-weight: 600;
+    .support-link:hover {
+      color: #e81f26;
+    }
+
+    .support-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Hero Section -->
-    <div class="hero-card">
-      <div class="hero-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly" />
-        <span class="hero-title">LillyDirect</span>
-      </div>
-      <p class="hero-subtitle">
-        Get Lilly medicines delivered directly to your door. Skip the pharmacy lines and enjoy convenient home delivery with telehealth support.
-      </p>
-      <a href="https://www.lilly.com/lillydirect/" target="_blank" class="cta-button">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-        Visit LillyDirect
-      </a>
-    </div>
-
-    <!-- Benefits Section -->
-    <div class="benefits-card">
-      <h3 class="benefits-title">✨ Why Choose LillyDirect?</h3>
-      
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></svg>
+    <div class="main-card">
+      <!-- Hero Section -->
+      <div class="hero">
+        <div class="brand-row">
+          <div class="brand-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly" />
+          </div>
+          <div class="brand-text">
+            <h1>LillyDirect</h1>
+            <span>Your Direct Path to Better Health</span>
+          </div>
         </div>
-        <div class="benefit-content">
-          <h4>Direct from Lilly</h4>
-          <p>Get authentic Lilly medicines shipped directly from our trusted pharmacy partners.</p>
-        </div>
+        <p class="hero-desc">
+          Skip the pharmacy lines. Get FDA-approved Lilly medicines delivered directly to your door with telehealth support and exclusive savings.
+        </p>
+        <a href="https://www.lilly.com/lillydirect/" target="_blank" class="cta-btn">
+          Get Started Now
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+        </a>
       </div>
 
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <!-- Features Grid -->
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+          </div>
+          <h4>Exclusive Savings</h4>
+          <p>Access discounts not found elsewhere</p>
         </div>
-        <div class="benefit-content">
-          <h4>Savings & Discounts</h4>
-          <p>Access exclusive savings programs and discount offers not available elsewhere.</p>
-        </div>
-      </div>
 
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+          </div>
+          <h4>Telehealth</h4>
+          <p>Connect with licensed providers</p>
         </div>
-        <div class="benefit-content">
-          <h4>Telehealth Access</h4>
-          <p>Connect with licensed healthcare providers for consultations and prescriptions.</p>
-        </div>
-      </div>
 
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><path d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z"/></svg>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 7c0-1.1-.9-2-2-2h-3v2h3v2.65L13.52 14H10V9H6c-2.21 0-4 1.79-4 4v3h2c0 1.66 1.34 3 3 3s3-1.34 3-3h4.48L19 10.35V7zM7 17c-.55 0-1-.45-1-1h2c0 .55-.45 1-1 1z"/><path d="M5 6h5v2H5zm14 7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+          </div>
+          <h4>Free Delivery</h4>
+          <p>Temperature-controlled shipping</p>
         </div>
-        <div class="benefit-content">
-          <h4>Home Delivery</h4>
-          <p>Free shipping on eligible orders. Delivered in temperature-controlled packaging.</p>
-        </div>
-      </div>
-    </div>
 
-    <!-- Zepbound Availability Section -->
-    <div class="medicine-card">
-      <div class="medicine-header">
-        <h3 class="medicine-title">🏥 Featured Medicine</h3>
-        <span class="availability-badge available">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-          Check Availability
-        </span>
-      </div>
-
-      <div class="medicine-item">
-        <img class="medicine-image" src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" />
-        <div class="medicine-info">
-          <div class="medicine-name">Zepbound® (tirzepatide)</div>
-          <div class="medicine-desc">FDA-approved for chronic weight management in adults with obesity or overweight.</div>
-          <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-link">
-            Shop Zepbound
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-          </a>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          </div>
+          <h4>Authentic Meds</h4>
+          <p>Direct from Lilly partners</p>
         </div>
       </div>
 
-      <div class="info-banner">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        <div class="info-banner-content">
-          <h4>Zepbound Availability</h4>
-          <p>Due to high demand, Zepbound may have limited availability at some pharmacies. Visit <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank">LillyDirect</a> to check current stock and order directly.</p>
+      <!-- Zepbound Section -->
+      <div class="zepbound-section">
+        <div class="zepbound-card">
+          <div class="zepbound-header">
+            <div class="zepbound-label">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Featured
+            </div>
+            <div class="availability-pill">Available Now</div>
+          </div>
+          <div class="zepbound-content">
+            <div class="zepbound-image">
+              <img src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" />
+            </div>
+            <div class="zepbound-info">
+              <div class="zepbound-name">Zepbound®</div>
+              <div class="zepbound-desc">FDA-approved for chronic weight management in adults</div>
+              <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-btn">
+                Shop Now
+                <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Info Footer -->
+      <div class="info-footer">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        </div>
+        <div class="info-text">
+          <strong>High Demand:</strong> Zepbound availability varies. Visit LillyDirect for real-time stock updates and ordering.
+        </div>
+      </div>
+
+      <!-- Support Footer -->
+      <div class="support-footer">
+        <a href="tel:1-800-545-5979" class="support-link">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          1-800-LillyRx (1-800-545-5979)
+        </a>
       </div>
     </div>
   </div>
