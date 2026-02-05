@@ -2258,12 +2258,12 @@ server.registerResource(
 
 // Lilly Direct Resource - Order medications directly from Lilly
 server.registerResource(
-  'lilly-direct',
+  'lillydirect-zepbound-order',
   'ui://widget/lilly-direct-v1.html',
   {
     _meta: {
       'openai/widgetDomain': 'https://lilly-direct.onrender.com',
-      'openai/description': 'LillyDirect direct ordering platform for Zepbound and other Lilly medicines. Shows Zepbound product card with direct purchase link. Use this for ordering directly from Lilly with home delivery and telehealth support.',
+      'openai/description': 'LillyDirect ordering card - ONLY use this when user specifically asks about LillyDirect, direct ordering, home delivery, or buying Zepbound directly from Lilly. Shows simple Zepbound product card.',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
