@@ -2255,6 +2255,418 @@ server.registerResource(
   })
 );
 
+// Lilly Direct Resource - Order medications directly from Lilly
+server.registerResource(
+  'lilly-direct',
+  'ui://widget/lilly-direct-v1.html',
+  {
+    _meta: {
+      'openai/widgetDomain': 'https://lilly-direct.onrender.com',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://upload.wikimedia.org',
+          'https://delivery-p137454-e1438138.adobeaemcloud.com',
+          'https://*.adobeaemcloud.com'
+        ]
+      }
+    }
+  },
+  async () => ({
+    contents: [
+      {
+        uri: 'ui://widget/lilly-direct-v1.html',
+        mimeType: 'text/html+skybridge',
+        text: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LillyDirect</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --brand: #e81f26;
+      --brand-dark: #c41922;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .hero-card {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+      border-radius: var(--radius);
+      padding: 24px;
+      color: white;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .hero-header img {
+      height: 36px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .hero-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      opacity: 0.9;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: var(--brand);
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .cta-button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .benefits-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .benefits-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .benefit-item:last-child {
+      border-bottom: none;
+    }
+
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      background: #f0fdf4;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .benefit-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--success);
+    }
+
+    .benefit-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .benefit-content p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .medicine-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .medicine-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .medicine-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .availability-badge.available {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .availability-badge.limited {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .medicine-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: #f9fafb;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .medicine-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .medicine-image {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: white;
+      padding: 8px;
+    }
+
+    .medicine-info {
+      flex: 1;
+    }
+
+    .medicine-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .medicine-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .shop-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .shop-link:hover {
+      text-decoration: underline;
+    }
+
+    .info-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .info-banner svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--info);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-banner-content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 4px;
+    }
+
+    .info-banner-content p {
+      font-size: 13px;
+      color: #1e40af;
+      line-height: 1.4;
+    }
+
+    .info-banner-content a {
+      color: #1e40af;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero-card">
+      <div class="hero-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly" />
+        <span class="hero-title">LillyDirect</span>
+      </div>
+      <p class="hero-subtitle">
+        Get Lilly medicines delivered directly to your door. Skip the pharmacy lines and enjoy convenient home delivery with telehealth support.
+      </p>
+      <a href="https://www.lilly.com/lillydirect/" target="_blank" class="cta-button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+        Visit LillyDirect
+      </a>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="benefits-card">
+      <h3 class="benefits-title">✨ Why Choose LillyDirect?</h3>
+      
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></svg>
+        </div>
+        <div class="benefit-content">
+          <h4>Direct from Lilly</h4>
+          <p>Get authentic Lilly medicines shipped directly from our trusted pharmacy partners.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <div class="benefit-content">
+          <h4>Savings & Discounts</h4>
+          <p>Access exclusive savings programs and discount offers not available elsewhere.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        </div>
+        <div class="benefit-content">
+          <h4>Telehealth Access</h4>
+          <p>Connect with licensed healthcare providers for consultations and prescriptions.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 8l-1.41 1.41L17.17 11H9v2h8.17l-1.58 1.58L17 16l4-4-4-4zM5 5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V5z"/></svg>
+        </div>
+        <div class="benefit-content">
+          <h4>Home Delivery</h4>
+          <p>Free shipping on eligible orders. Delivered in temperature-controlled packaging.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zepbound Availability Section -->
+    <div class="medicine-card">
+      <div class="medicine-header">
+        <h3 class="medicine-title">🏥 Featured Medicine</h3>
+        <span class="availability-badge available">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          Check Availability
+        </span>
+      </div>
+
+      <div class="medicine-item">
+        <img class="medicine-image" src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" />
+        <div class="medicine-info">
+          <div class="medicine-name">Zepbound® (tirzepatide)</div>
+          <div class="medicine-desc">FDA-approved for chronic weight management in adults with obesity or overweight.</div>
+          <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-link">
+            Shop Zepbound
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="info-banner">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <div class="info-banner-content">
+          <h4>Zepbound Availability</h4>
+          <p>Due to high demand, Zepbound may have limited availability at some pharmacies. Visit <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank">LillyDirect</a> to check current stock and order directly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+        _meta: {
+          'openai/widgetDomain': 'https://lilly-direct.onrender.com',
+          'openai/widgetCSP': {
+            connect_domains: [],
+            resource_domains: [
+              'https://upload.wikimedia.org',
+              'https://delivery-p137454-e1438138.adobeaemcloud.com',
+              'https://*.adobeaemcloud.com'
+            ]
+          }
+        }
+      },
+    ]
+  })
+);
+
 // Injection Pen Instructions Resource
 server.registerResource(
   'injection-instructions',

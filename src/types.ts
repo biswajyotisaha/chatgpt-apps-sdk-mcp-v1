@@ -113,3 +113,32 @@ export interface ProductQualityComplaint {
   timestamp: string;
   status: 'submitted' | 'under-review' | 'resolved';
 }
+
+// Lilly Direct types
+export interface LillyDirectBenefit {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface LillyDirectFeaturedMedicine {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  shopUrl: string;
+  availabilityNote: string;
+}
+
+export interface LillyDirectAvailabilityInfo {
+  checkAvailabilityUrl: string;
+  note: string;
+}
+
+export interface LillyDirectConfig {
+  mainUrl: string;
+  benefits: LillyDirectBenefit[];
+  featuredMedicines: LillyDirectFeaturedMedicine[];
+  supportPhone: string;
+  availabilityInfo: Record<string, LillyDirectAvailabilityInfo>;
+}

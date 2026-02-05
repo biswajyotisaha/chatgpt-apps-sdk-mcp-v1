@@ -443,3 +443,47 @@ export const DEVICE_TROUBLESHOOTING_FLOWS: Record<string, DeviceTroubleshootingF
     }
   }
 };
+
+// Lilly Direct Configuration
+export const LILLY_DIRECT_CONFIG = {
+  mainUrl: "https://www.lilly.com/lillydirect/",
+  benefits: [
+    {
+      title: "Direct from Lilly",
+      description: "Get authentic Lilly medicines shipped directly from our trusted pharmacy partners.",
+      icon: "package"
+    },
+    {
+      title: "Savings & Discounts",
+      description: "Access exclusive savings programs and discount offers not available elsewhere.",
+      icon: "savings"
+    },
+    {
+      title: "Telehealth Access",
+      description: "Connect with licensed healthcare providers for consultations and prescriptions.",
+      icon: "telehealth"
+    },
+    {
+      title: "Home Delivery",
+      description: "Free shipping on eligible orders. Delivered in temperature-controlled packaging.",
+      icon: "delivery"
+    }
+  ],
+  featuredMedicines: [
+    {
+      id: "zepbound",
+      name: "Zepbound® (tirzepatide)",
+      description: "FDA-approved for chronic weight management in adults with obesity or overweight.",
+      image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c",
+      shopUrl: "https://www.lilly.com/lillydirect/medicines/zepbound",
+      availabilityNote: "Due to high demand, Zepbound may have limited availability at some pharmacies. Visit LillyDirect to check current stock and order directly."
+    }
+  ],
+  supportPhone: "1-800-LillyRx (1-800-545-5979)",
+  availabilityInfo: {
+    zepbound: {
+      checkAvailabilityUrl: "https://www.lilly.com/lillydirect/medicines/zepbound",
+      note: "Zepbound availability varies by location and dosage. Check LillyDirect for the most up-to-date stock information."
+    }
+  }
+};
