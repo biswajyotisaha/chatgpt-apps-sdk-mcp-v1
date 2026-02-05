@@ -3208,6 +3208,14 @@ server.registerTool(
       margin-bottom: 20px;
     }
 
+    .product-description {
+      font-size: 14px;
+      color: #4b5563;
+      margin-bottom: 20px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
     .shop-btn {
       display: inline-block;
       background: #e81f26;
@@ -3234,6 +3242,7 @@ server.registerTool(
     </div>
     <div class="brand-name">Zepbound®</div>
     <div class="brand-subtitle">tirzepatide</div>
+    <div class="product-description">Order prescription medications directly from Lilly with home delivery</div>
     <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-btn">Shop Zepbound</a>
   </div>
 </body>
