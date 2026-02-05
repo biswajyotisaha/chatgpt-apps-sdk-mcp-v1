@@ -2365,6 +2365,8 @@ server.registerResource(
     </div>
     <div class="brand-name">Zepbound®</div>
     <div class="brand-subtitle">tirzepatide</div>
+    <div class="product-description">Order prescription medications directly from Lilly with home delivery</div>
+    <div class="benefits-list">✓ Direct from Manufacturer</div>
     <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-btn">Shop Zepbound</a>
   </div>
 </body>
