@@ -2302,10 +2302,32 @@ server.registerResource(
       background: #ffffff;
       border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      padding: 24px;
+      padding: 0;
+      overflow: hidden;
       text-align: center;
       max-width: 280px;
       width: 100%;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #e81f26 0%, #c41922 100%);
+      height: 4px;
+    }
+
+    .card-content {
+      padding: 24px;
+    }
+
+    .delivery-badge {
+      background: #f0f9ff;
+      border: 1px solid #0ea5e9;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: #0369a1;
+      margin-bottom: 16px;
+      display: inline-block;
+      font-weight: 500;
     }
 
     .product-image {
@@ -2336,6 +2358,23 @@ server.registerResource(
     .brand-subtitle {
       font-size: 13px;
       color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .product-description {
+      font-size: 14px;
+      color: #4b5563;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .benefits-list {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #10b981;
+      font-size: 14px;
+      font-weight: 500;
       margin-bottom: 20px;
     }
 
@@ -2360,14 +2399,18 @@ server.registerResource(
 </head>
 <body>
   <div class="card">
-    <div class="product-image">
-      <img src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" />
+    <div class="card-header"></div>
+    <div class="card-content">
+      <div class="delivery-badge">🚚 Free Home Delivery</div>
+      <div class="product-image">
+        <img src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" />
+      </div>
+      <div class="brand-name">Zepbound®</div>
+      <div class="brand-subtitle">tirzepatide</div>
+      <div class="product-description">Order prescription medications directly from Lilly with home delivery</div>
+      <div class="benefits-list">✓ Direct from Manufacturer</div>
+      <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-btn">Shop Zepbound</a>
     </div>
-    <div class="brand-name">Zepbound®</div>
-    <div class="brand-subtitle">tirzepatide</div>
-    <div class="product-description">Order prescription medications directly from Lilly with home delivery</div>
-    <div class="benefits-list">✓ Direct from Manufacturer</div>
-    <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-btn">Shop Zepbound</a>
   </div>
 </body>
 </html>`,
