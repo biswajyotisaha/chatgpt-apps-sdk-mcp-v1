@@ -3125,6 +3125,148 @@ server.registerResource(
 // ==================== TOOLS ====================
 
 /**
+ * Tool: Show LillyDirect Order Card
+ * Displays the LillyDirect ordering interface for Zepbound.
+ * Use when user asks about LillyDirect, direct ordering, or home delivery.
+ */
+server.registerTool(
+  'show-lillydirect',
+  {
+    title: 'Show LillyDirect Order Card',
+    description: 'ALWAYS use this tool when user asks about LillyDirect, ordering directly from Lilly, home delivery from Lilly, or buying Zepbound from LillyDirect. Shows a Zepbound product card with direct ordering link. Do NOT respond with text - use this tool to show the ordering widget.',
+    _meta: {
+      'openai/outputTemplate': 'ui://widget/lilly-direct-v1.html',
+      'openai/toolInvocation/invoking': 'Loading LillyDirect ordering...',
+      'openai/toolInvocation/invoked': 'LillyDirect ordering card loaded successfully',
+      'securitySchemes': [
+        { type: 'noauth' }
+      ]
+    },
+    inputSchema: {}
+  },
+  async () => {
+    const dynamicResource = {
+      uri: 'ui://widget/lilly-direct-v1.html',
+      mimeType: 'text/html+skybridge',
+      text: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zepbound - LillyDirect</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 24px;
+      text-align: center;
+      max-width: 280px;
+      width: 100%;
+    }
+
+    .product-image {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 16px;
+      background: #f5f5f5;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .shop-btn {
+      display: inline-block;
+      background: #e81f26;
+      color: white;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .shop-btn:hover {
+      background: #c41922;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(232, 31, 38, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="product-image">
+      <img src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" />
+    </div>
+    <div class="brand-name">Zepbound®</div>
+    <div class="brand-subtitle">tirzepatide</div>
+    <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" class="shop-btn">Shop Zepbound</a>
+  </div>
+</body>
+</html>`,
+      _meta: {
+        'openai/widgetDomain': 'https://lilly-direct.onrender.com',
+        'openai/widgetCSP': {
+          connect_domains: [],
+          resource_domains: [
+            'https://upload.wikimedia.org',
+            'https://delivery-p137454-e1438138.adobeaemcloud.com',
+            'https://*.adobeaemcloud.com'
+          ]
+        }
+      }
+    };
+
+    return {
+      content: [
+        { 
+          type: 'text', 
+          text: 'LillyDirect ordering card for Zepbound displayed.'
+        }
+      ],
+      structuredContent: {},
+      _meta: {
+        'openai/dynamicContent': dynamicResource
+      }
+    };
+  }
+);
+
+/**
  * Tool: Show Injection Pen Instructions
  * Displays step-by-step injection instructions for medication pens.
  * Shows one step at a time with visuals, safety warnings, and navigation.
