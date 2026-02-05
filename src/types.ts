@@ -120,25 +120,3 @@ export interface LillyDirectBenefit {
   description: string;
   icon: string;
 }
-
-export interface LillyDirectFeaturedMedicine {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  shopUrl: string;
-  availabilityNote: string;
-}
-
-export interface LillyDirectAvailabilityInfo {
-  checkAvailabilityUrl: string;
-  note: string;
-}
-
-export interface LillyDirectConfig {
-  mainUrl: string;
-  benefits: LillyDirectBenefit[];
-  featuredMedicines: LillyDirectFeaturedMedicine[];
-  supportPhone: string;
-  availabilityInfo: Record<string, LillyDirectAvailabilityInfo>;
-}
