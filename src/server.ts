@@ -1296,13 +1296,13 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
 
 // ==================== UI RESOURCES ====================
 
-// Medicine Carousel Resource (All medicines)
+// Lilly Direct Store Resource (All medicines available for purchase)
 server.registerResource(
-  'medicine-carousel',
-  'ui://widget/medicine-carousel-v1.html',
+  'lilly-direct-store',
+  'ui://widget/lilly-direct-store-v1.html',
   {
     _meta: {
-      'openai/widgetDomain': 'https://medicine-carousel.onrender.com',
+      'openai/widgetDomain': 'https://lilly-direct-store.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
@@ -1316,11 +1316,11 @@ server.registerResource(
   async () => ({
     contents: [
       {
-        uri: 'ui://widget/medicine-carousel-v1.html',
+        uri: 'ui://widget/lilly-direct-store-v1.html',
         mimeType: 'text/html+skybridge',
         text: createMedicineCarouselHTML(),
         _meta: {
-          'openai/widgetDomain': 'https://medicine-carousel.onrender.com',
+          'openai/widgetDomain': 'https://lilly-direct-store.onrender.com',
           'openai/widgetCSP': {
             connect_domains: [],
             resource_domains: [
@@ -1335,13 +1335,13 @@ server.registerResource(
   })
 );
 
-// Single Medicine Resource  
+// Lilly Direct Single Medicine Resource (Individual medicine purchase page)
 server.registerResource(
-  'single-medicine',
-  'ui://widget/single-medicine-v1.html',
+  'lilly-direct-medicine',
+  'ui://widget/lilly-direct-medicine-v1.html',
   {
     _meta: {
-      'openai/widgetDomain': 'https://single-medicine.onrender.com',
+      'openai/widgetDomain': 'https://lilly-direct-medicine.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [],
         resource_domains: [
@@ -1355,11 +1355,11 @@ server.registerResource(
   async () => ({
     contents: [
       {
-        uri: 'ui://widget/single-medicine-v1.html',
+        uri: 'ui://widget/lilly-direct-medicine-v1.html',
         mimeType: 'text/html+skybridge',
         text: createMedicineCarouselHTML([AVAILABLE_MEDICINES[0]]),
         _meta: {
-          'openai/widgetDomain': 'https://single-medicine.onrender.com',
+          'openai/widgetDomain': 'https://lilly-direct-medicine.onrender.com',
           'openai/widgetCSP': {
             connect_domains: [],
             resource_domains: [
@@ -3099,19 +3099,20 @@ server.registerTool(
 );
 
 /**
- * Tool: Show All Medicines
- * Displays all available FDA-approved medicines in an interactive carousel.
+ * Tool: Buy Medicines Online
+ * Shows all FDA-approved medicines available for purchase on Lilly Direct online store.
+ * Provides direct links to shop and buy medicines from Lilly Direct.
  * No authentication required - public tool accessible to all users.
  */
 server.registerTool(
-  'show-all-medicines',
+  'buy-medicines-online',
   {
-    title: 'Show All Available Medicines',
-    description: 'Display all available FDA-approved medicines in a carousel view',
+    title: 'Buy Medicines Online from Lilly Direct',
+    description: 'Browse and shop FDA-approved medicines available for purchase on Lilly Direct online pharmacy. Use this when a user wants to buy, purchase, order, or shop for medicines online, or needs links to the Lilly Direct store.',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/medicine-carousel-v1.html',
-      'openai/toolInvocation/invoking': 'Loading available medicines...',
-      'openai/toolInvocation/invoked': 'Medicines carousel loaded successfully',
+      'openai/outputTemplate': 'ui://widget/lilly-direct-store-v1.html',
+      'openai/toolInvocation/invoking': 'Loading Lilly Direct online store...',
+      'openai/toolInvocation/invoked': 'Lilly Direct store loaded successfully',
       'securitySchemes': [
         { type: 'oauth2', scopes: ['openid', 'profile'] }
       ]
@@ -3128,7 +3129,7 @@ server.registerTool(
       content: [
         { 
           type: 'text', 
-          text: `Displaying ${AVAILABLE_MEDICINES.length} FDA-approved medicines available for purchase.`
+          text: `Here are ${AVAILABLE_MEDICINES.length} FDA-approved medicines you can buy online from Lilly Direct. Click on any medicine to shop directly from the Lilly Direct online pharmacy.`
         }
       ],
       structuredContent: medicineData
@@ -3348,20 +3349,20 @@ server.registerTool(
 );
 
 /**
- * Tool: Show Single Medicine
- * Displays detailed information about a specific medicine by name.
+ * Tool: Shop Medicine on Lilly Direct
+ * Shows a specific medicine available for purchase on Lilly Direct online store.
+ * Provides direct link to buy the medicine from Lilly Direct pharmacy.
  * Supports optional authentication for personalized experience.
- * Creates dynamic HTML resource with the selected medicine details.
  */
 server.registerTool(
-  'show-medicine',
+  'shop-medicine',
   {
-    title: 'Show Specific Medicine',
-    description: 'Display information about a specific medicine',
+    title: 'Shop Medicine on Lilly Direct',
+    description: 'Get purchase link for a specific medicine on Lilly Direct online pharmacy. Use this when a user wants to buy, purchase, order, or shop for a specific medicine like Zepbound, Humalog, Humulin, Emgality, Basaglar, Lyumjev, or Rezvoglar.',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/single-medicine-v1.html',
-      'openai/toolInvocation/invoking': 'Loading medicine information...',
-      'openai/toolInvocation/invoked': 'Medicine information loaded successfully',
+      'openai/outputTemplate': 'ui://widget/lilly-direct-medicine-v1.html',
+      'openai/toolInvocation/invoking': 'Loading Lilly Direct purchase options...',
+      'openai/toolInvocation/invoked': 'Medicine purchase options loaded successfully',
       'securitySchemes': [
         { type: 'noauth' },
         { type: 'oauth2', scopes: ['openid', 'profile'] }
@@ -3388,12 +3389,12 @@ server.registerTool(
       };
     }
 
-    // Update the single medicine resource with the selected medicine
+    // Generate HTML for the medicine purchase page
     const singleMedicineHTML = createMedicineCarouselHTML([medicine]);
     
-    // Create a dynamic resource
+    // Create a dynamic resource for Lilly Direct medicine page
     const dynamicResource = {
-      uri: 'ui://widget/single-medicine-v1.html',
+      uri: 'ui://widget/lilly-direct-medicine-v1.html',
       mimeType: 'text/html+skybridge',
       text: singleMedicineHTML
     };
@@ -3408,7 +3409,7 @@ server.registerTool(
       content: [
         { 
           type: 'text' as const, 
-          text: `Displaying information for ${medicine.name} - FDA-approved medicine available for purchase.`
+          text: `Here's ${medicine.name} - available for purchase on Lilly Direct online pharmacy. Click the button to buy directly from Lilly Direct.`
         }
       ],
       structuredContent: medicineData,
