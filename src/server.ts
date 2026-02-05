@@ -267,7 +267,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
             <div class="medicine-content">
               <div class="medicine-header">
                 <div>
-                  <img src="${medicine.logo}" alt="${medicine.name}" class="medicine-logo">
+                  <img src="${medicine.logo}" alt="${medicine.name}" class="medicine-logo" crossorigin="anonymous" referrerpolicy="no-referrer">
                 </div>
                 <div class="badge">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256" class="badge-icon">
@@ -278,7 +278,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
               </div>
               <div class="fda-text">FDA-approved</div>
               <div class="product-image-container">
-                <img src="${medicine.image}" alt="${medicine.name}" class="product-image">
+                <img src="${medicine.image}" alt="${medicine.name}" class="product-image" crossorigin="anonymous" referrerpolicy="no-referrer">
               </div>
             </div>
             <div class="cta-bar">
