@@ -1807,7 +1807,8 @@ server.registerResource(
         resource_domains: [
           'https://unpkg.com',
           'https://tile.openstreetmap.org',
-          'https://upload.wikimedia.org'
+          'https://upload.wikimedia.org',
+          'https://delivery-p137454-e1438138.adobeaemcloud.com'
         ]
       }
     }
@@ -2039,6 +2040,134 @@ server.registerResource(
       #map { height: 300px; }
       .header h1 { font-size: 18px; }
     }
+    
+    /* Lilly Direct medicine banner styles */
+    .lilly-direct-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .lilly-direct-section h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    
+    .medicine-single {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+    
+    .medicine-single img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    
+    .medicine-single-info {
+      flex: 1;
+    }
+    
+    .medicine-single-name {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    
+    .medicine-single-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    
+    .medicine-buy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      background: var(--brand);
+      color: white;
+      text-decoration: none;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    
+    .medicine-buy-btn:hover {
+      background: #c41922;
+    }
+    
+    .medicine-carousel {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .medicine-carousel::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    .medicine-carousel::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 2px;
+    }
+    
+    .medicine-card {
+      flex: 0 0 160px;
+      scroll-snap-align: start;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px;
+      background: #fafafa;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    
+    .medicine-card:hover {
+      border-color: var(--brand);
+    }
+    
+    .medicine-card img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+    
+    .medicine-card-name {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    
+    .medicine-card-btn {
+      display: inline-block;
+      padding: 5px 12px;
+      background: var(--brand);
+      color: white;
+      text-decoration: none;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .medicine-card-btn:hover {
+      background: #c41922;
+    }
   </style>
 </head>
 <body>
@@ -2055,6 +2184,8 @@ server.registerResource(
       </div>
       
       <div id="error-container"></div>
+      
+      <div id="lilly-direct-container"></div>
       
       <div class="map-container">
         <div id="map"></div>
@@ -2186,11 +2317,14 @@ server.registerResource(
       const pharmacies = out.pharmacies || [];
       const userLocation = out.userLocation || null;
       const error = out.error || null;
+      const lillyDirect = out.lillyDirect || null;
       
       if (error) {
         skeleton.hidden = true;
         root.hidden = false;
         showError(error);
+        // Still render Lilly Direct even on error
+        if (lillyDirect) renderLillyDirect(lillyDirect);
         return;
       }
       
@@ -2198,6 +2332,9 @@ server.registerResource(
       
       skeleton.hidden = true;
       root.hidden = false;
+      
+      // Render Lilly Direct medicine section above the map
+      if (lillyDirect) renderLillyDirect(lillyDirect);
       
       initMap(userLocation.lat, userLocation.lng, pharmacies);
       renderPharmacyList(pharmacies, userLocation.lat, userLocation.lng);
@@ -2208,6 +2345,41 @@ server.registerResource(
           pharmacyCount: pharmacies.length,
           userLocation: userLocation
         });
+      }
+    }
+    
+    function renderLillyDirect(data) {
+      const container = document.getElementById('lilly-direct-container');
+      if (!container || !data || !data.items || !data.items.length) return;
+      
+      if (data.type === 'single') {
+        const med = data.items[0];
+        container.innerHTML = '<div class="lilly-direct-section">' +
+          '<h2>\uD83D\uDED2 Buy ' + med.name + ' Online from Lilly Direct</h2>' +
+          '<div class="medicine-single">' +
+            '<img src="' + med.image + '" alt="' + med.name + '" crossorigin="anonymous" referrerpolicy="no-referrer" />' +
+            '<div class="medicine-single-info">' +
+              '<div class="medicine-single-name">' + med.name + '</div>' +
+              '<div class="medicine-single-label">FDA-approved \u2022 Free delivery</div>' +
+              '<a href="' + med.buyLink + '" target="_blank" class="medicine-buy-btn">' +
+                med.buyLinkText + ' \u2192' +
+              '</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      } else {
+        container.innerHTML = '<div class="lilly-direct-section">' +
+          '<h2>\uD83D\uDED2 Buy Medicines Online from Lilly Direct</h2>' +
+          '<div class="medicine-carousel">' +
+            data.items.map(function(med) {
+              return '<div class="medicine-card">' +
+                '<img src="' + med.image + '" alt="' + med.name + '" crossorigin="anonymous" referrerpolicy="no-referrer" />' +
+                '<div class="medicine-card-name">' + med.name + '</div>' +
+                '<a href="' + med.buyLink + '" target="_blank" class="medicine-card-btn">' + med.buyLinkText + '</a>' +
+              '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>';
       }
     }
     
@@ -2226,7 +2398,8 @@ server.registerResource(
             resource_domains: [
               'https://unpkg.com',
               'https://tile.openstreetmap.org',
-              'https://upload.wikimedia.org'
+              'https://upload.wikimedia.org',
+              'https://delivery-p137454-e1438138.adobeaemcloud.com'
             ]
           }
         }
@@ -2975,6 +3148,66 @@ server.registerResource(
 // ==================== TOOLS ====================
 
 /**
+ * Tool: What Can This App Do
+ * Returns a summary of all available tools and capabilities in this Lilly Direct app.
+ * Helps users understand the full range of features they can use.
+ * No authentication required - accessible to all users.
+ * 
+ * Triggered when a user asks:
+ * - What can this app do?
+ * - What features are available?
+ * - What tools do you have?
+ * - Help / How can you help me?
+ * - What can I do here?
+ * - Show me what's available
+ */
+server.registerTool(
+  'what-can-this-app-do',
+  {
+    title: 'What Can This App Do',
+    description: 'Summarizes all available features and tools in this Lilly app. Use this when a user asks what this app can do, what features or tools are available, what help is offered, or wants an overview of capabilities.',
+    _meta: {
+      'openai/toolInvocation/invoking': 'Gathering available features...',
+      'openai/toolInvocation/invoked': 'Here\'s everything this app can do'
+    },
+    inputSchema: {}
+  },
+  async () => {
+    const summary = `
+Here's everything you can do with the Lilly app:
+
+🛒 **Shop & Buy Medicines**
+• **Buy Medicines Online** — Browse all FDA-approved medicines available on the Lilly online pharmacy and get direct purchase links.
+• **Shop a Specific Medicine** — Look up a specific medicine (Zepbound, Humalog, Humulin, Emgality, Basaglar, Lyumjev, or Rezvoglar) and get a direct link to buy it on Lilly.
+💉 **Injection Help**
+• **Injection Pen Instructions** — Get a step-by-step visual guide on how to use your injection pen, including safety warnings, images, and a training video.
+
+👤 **Your Account**
+• **View Your Profile** — See your personal profile information linked to your Lilly account.
+• **View Your Savings Card** — Check your copay savings card details and benefits.
+
+🔧 **Troubleshooting & Support**
+• **Troubleshooting Guide** — Look up common issues, side effects, and emergency information for your medicine.
+• **Interactive Device Troubleshooting** — Get guided step-by-step help for device issues (e.g., pen not clicking or not working), with the option to report a product quality issue.
+
+📍 **Find a Pharmacy**
+• **Find Nearby Pharmacies** — Search for pharmacies near any address, city, or zip code and view them on an interactive map. Also shows options to buy your medicine online from Lilly Direct.
+
+Just ask me about any of these and I'll get started!
+`.trim();
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: summary
+        }
+      ]
+    };
+  }
+);
+
+/**
  * Tool: Show Injection Pen Instructions
  * Displays step-by-step injection instructions for medication pens.
  * Shows one step at a time with visuals, safety warnings, and navigation.
@@ -3608,24 +3841,45 @@ server.registerTool(
  * Tool: Find Nearby Pharmacies
  * Finds pharmacies near a given location and displays them on an interactive map.
  * Uses OpenStreetMap/Nominatim for geocoding and pharmacy search.
- * Returns pharmacy locations to render in the nearby-pharmacy-map widget.
+ * If a specific medicine is mentioned, shows a Lilly Direct purchase banner for that medicine above the map.
+ * If no specific medicine is mentioned, shows a carousel of all available Lilly Direct medicines above the map.
+ * Returns pharmacy locations and medicine data to render in the nearby-pharmacy-map widget.
  */
 server.registerTool(
   'find-nearby-pharmacies',
   {
     title: 'Find Nearby Pharmacies',
-    description: 'Find pharmacies near a location and display them on an interactive map. You can provide an address, city, or zip code.',
+    description: 'Find pharmacies near a location and display them on an interactive map. You can provide an address, city, or zip code. Also shows options to buy medicines online from Lilly Direct. If the user mentions a specific medicine, it highlights that medicine with a direct purchase link.',
     _meta: {
       'openai/outputTemplate': 'ui://widget/nearby-pharmacy-map-v1.html',
       'openai/toolInvocation/invoking': 'Searching for nearby pharmacies...',
       'openai/toolInvocation/invoked': 'Nearby pharmacies found'
     },
     inputSchema: {
-      location: z.string().describe('Address, city name, or zip code to search near (e.g., "Indianapolis, IN" or "46225")')
+      location: z.string().describe('Address, city name, or zip code to search near (e.g., "Indianapolis, IN" or "46225")'),
+      medicineName: z.string().optional().describe('Optional: name of a specific medicine the user is looking for (e.g., "Zepbound", "Humalog"). If provided, shows a direct buy link for that medicine from Lilly Direct.')
     } as any
   },
   async (args: any) => {
     const location = args.location;
+    const requestedMedicine = args.medicineName?.toLowerCase() || null;
+    
+    console.log(`🏥 Searching for pharmacies near: ${location}${requestedMedicine ? ` (looking for ${requestedMedicine})` : ''}`);
+    
+    // Resolve medicine data
+    let medicineInfo: any = null;
+    if (requestedMedicine) {
+      const found = AVAILABLE_MEDICINES.find(med => 
+        med.name.toLowerCase().includes(requestedMedicine)
+      );
+      if (found) {
+        medicineInfo = { type: 'single', items: [found] };
+      }
+    }
+    // If no specific medicine found or none requested, show all
+    if (!medicineInfo) {
+      medicineInfo = { type: 'all', items: AVAILABLE_MEDICINES };
+    }
     
     console.log(`🏥 Searching for pharmacies near: ${location}`);
     
@@ -3657,7 +3911,8 @@ server.registerTool(
           structuredContent: { 
             error: 'Location not found. Please try a different address.',
             pharmacies: [],
-            userLocation: null
+            userLocation: null,
+            lillyDirect: medicineInfo
           }
         };
       }
@@ -3729,10 +3984,14 @@ server.registerTool(
       
       console.log(`✅ Found ${pharmacies.length} pharmacies near ${location}`);
       
+      const medicineText = medicineInfo.type === 'single' 
+        ? ` You can also buy ${medicineInfo.items[0].name} online from Lilly Direct.`
+        : ' You can also browse and buy medicines online from Lilly Direct.';
+      
       return {
         content: [{ 
           type: 'text' as const, 
-          text: `Found ${pharmacies.length} pharmacies near ${displayName.split(',').slice(0, 2).join(', ')}.` 
+          text: `Found ${pharmacies.length} pharmacies near ${displayName.split(',').slice(0, 2).join(', ')}.${medicineText}` 
         }],
         structuredContent: {
           pharmacies: pharmacies,
@@ -3742,7 +4001,8 @@ server.registerTool(
             displayName: displayName
           },
           searchLocation: location,
-          pharmacyCount: pharmacies.length
+          pharmacyCount: pharmacies.length,
+          lillyDirect: medicineInfo
         }
       };
       
@@ -3755,7 +4015,8 @@ server.registerTool(
           structuredContent: { 
             error: 'Search timed out. Please try again.',
             pharmacies: [],
-            userLocation: null
+            userLocation: null,
+            lillyDirect: medicineInfo
           }
         };
       }
@@ -3765,7 +4026,8 @@ server.registerTool(
         structuredContent: { 
           error: error.message,
           pharmacies: [],
-          userLocation: null
+          userLocation: null,
+          lillyDirect: medicineInfo
         }
       };
     }
