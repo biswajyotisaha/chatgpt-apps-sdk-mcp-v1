@@ -2975,6 +2975,67 @@ server.registerResource(
 // ==================== TOOLS ====================
 
 /**
+ * Tool: What Can This App Do
+ * Returns a summary of all available tools and capabilities in this Lilly Direct app.
+ * Helps users understand the full range of features they can use.
+ * No authentication required - accessible to all users.
+ * 
+ * Triggered when a user asks:
+ * - What can this app do?
+ * - What features are available?
+ * - What tools do you have?
+ * - Help / How can you help me?
+ * - What can I do here?
+ * - Show me what's available
+ */
+server.registerTool(
+  'what-can-this-app-do',
+  {
+    title: 'What Can This App Do',
+    description: 'Summarizes all available features and tools in this Lilly app. Use this when a user asks what this app can do, what features or tools are available, what help is offered, or wants an overview of capabilities.',
+    _meta: {
+      'openai/toolInvocation/invoking': 'Gathering available features...',
+      'openai/toolInvocation/invoked': 'Here\'s everything this app can do'
+    },
+    inputSchema: {}
+  },
+  async () => {
+    const summary = `
+Here's everything you can do with the Lilly Direct app:
+
+🛒 **Shop & Buy Medicines**
+• **Buy Medicines Online** — Browse all FDA-approved medicines available on the Lilly Direct online pharmacy and get direct purchase links.
+• **Shop a Specific Medicine** — Look up a specific medicine (Zepbound, Humalog, Humulin, Emgality, Basaglar, Lyumjev, or Rezvoglar) and get a direct link to buy it on Lilly Direct.
+
+💉 **Injection Help**
+• **Injection Pen Instructions** — Get a step-by-step visual guide on how to use your injection pen, including safety warnings, images, and a training video.
+
+👤 **Your Account**
+• **View Your Profile** — See your personal profile information linked to your Lilly account.
+• **View Your Savings Card** — Check your copay savings card details and benefits.
+
+🔧 **Troubleshooting & Support**
+• **Troubleshooting Guide** — Look up common issues, side effects, and emergency information for your medicine.
+• **Interactive Device Troubleshooting** — Get guided step-by-step help for device issues (e.g., pen not clicking or not working), with the option to report a product quality issue.
+
+📍 **Find a Pharmacy**
+• **Find Nearby Pharmacies** — Search for pharmacies near any address, city, or zip code and view them on an interactive map.
+
+Just ask me about any of these and I'll get started!
+`.trim();
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: summary
+        }
+      ]
+    };
+  }
+);
+
+/**
  * Tool: Show Injection Pen Instructions
  * Displays step-by-step injection instructions for medication pens.
  * Shows one step at a time with visuals, safety warnings, and navigation.
