@@ -1296,7 +1296,10 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
 
 /**
  * Generates HTML for the Product Support widget.
- * Creates an interactive support page with three tabs for different support resources.
+ * Creates an interactive support page with three tabs matching the Lilly product help page:
+ * - Product support: For product issues and questions
+ * - Shipping-related issues: For delivery/handling concerns
+ * - Report a possible side effect: For reporting side effects
  * 
  * @returns Complete HTML string ready for rendering in ChatGPT widget
  */
@@ -1328,44 +1331,51 @@ function createProductSupportWidgetHTML(): string {
     }
     
     .widget-header {
-      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-      color: white;
-      padding: 24px;
-      text-align: center;
+      background: white;
+      padding: 32px;
+      text-align: left;
+    }
+    
+    .eyebrow {
+      font-size: 14px;
+      color: #dc2626;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
     
     .widget-header h1 {
-      font-size: 24px;
+      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 8px;
+      color: #1f2937;
+      margin-bottom: 12px;
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.2;
     }
     
-    .widget-header p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-    
-    .hero-image {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
+    .widget-header .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      line-height: 1.5;
     }
     
     .content-area {
-      padding: 32px;
+      padding: 0 32px 32px;
     }
     
     .tab-navigation {
       display: flex;
       border-bottom: 2px solid #e5e7eb;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
       overflow-x: auto;
+      gap: 8px;
     }
     
     .tab-button {
       background: none;
       border: none;
-      padding: 12px 24px;
+      padding: 16px 24px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
@@ -1373,6 +1383,7 @@ function createProductSupportWidgetHTML(): string {
       transition: all 0.2s;
       white-space: nowrap;
       color: #6b7280;
+      margin-bottom: -2px;
     }
     
     .tab-button:hover {
@@ -1398,341 +1409,170 @@ function createProductSupportWidgetHTML(): string {
       to { opacity: 1; transform: translateY(0); }
     }
     
-    .support-card {
-      background: #f9fafb;
+    .tab-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: start;
+    }
+    
+    @media (max-width: 768px) {
+      .tab-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .tab-image {
+      width: 100%;
       border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 20px;
-      border: 1px solid #e5e7eb;
-      transition: box-shadow 0.2s;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     
-    .support-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    
-    .support-card h3 {
-      font-size: 18px;
-      font-weight: 600;
+    .tab-text h2 {
+      font-size: 24px;
+      font-weight: 700;
       color: #1f2937;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .support-card p {
-      color: #6b7280;
       margin-bottom: 16px;
     }
     
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-    
-    .contact-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      border: 1px solid #e5e7eb;
-      transition: all 0.2s;
-    }
-    
-    .contact-card:hover {
-      border-color: #dc2626;
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
-    }
-    
-    .contact-card .icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-    
-    .contact-card h4 {
+    .tab-text .bold-text {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       color: #1f2937;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
     }
     
-    .contact-card a {
-      color: #dc2626;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 18px;
-    }
-    
-    .contact-card a:hover {
-      text-decoration: underline;
-    }
-    
-    .contact-card p {
-      color: #6b7280;
-      font-size: 13px;
-      margin-top: 8px;
-    }
-    
-    .faq-item {
-      background: white;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #e5e7eb;
-      overflow: hidden;
-    }
-    
-    .faq-question {
-      padding: 16px 20px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-      color: #1f2937;
-    }
-    
-    .faq-question:hover {
-      background: #f9fafb;
-    }
-    
-    .faq-arrow {
-      transition: transform 0.2s;
-    }
-    
-    .faq-item.expanded .faq-arrow {
-      transform: rotate(180deg);
-    }
-    
-    .faq-answer {
-      padding: 0 20px;
-      max-height: 0;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .faq-item.expanded .faq-answer {
-      padding: 0 20px 16px;
-      max-height: 500px;
-    }
-    
-    .faq-answer p {
-      color: #6b7280;
+    .tab-text p {
+      font-size: 16px;
+      color: #4b5563;
+      margin-bottom: 16px;
       line-height: 1.6;
     }
     
-    .resource-link {
+    .tab-text .small-text {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    
+    .action-button {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: #dc2626;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    
-    .resource-link:hover {
-      background: #b91c1c;
-    }
-    
-    .resource-list {
-      list-style: none;
-      margin: 16px 0;
-    }
-    
-    .resource-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .resource-list li:last-child {
-      border-bottom: none;
-    }
-    
-    .resource-list a {
+      background: transparent;
       color: #dc2626;
+      padding: 12px 0;
+      font-size: 16px;
+      font-weight: 600;
       text-decoration: none;
-      font-weight: 500;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
     }
     
-    .resource-list a:hover {
+    .action-button:hover {
+      color: #b91c1c;
       text-decoration: underline;
     }
     
-    .hero-image-container {
-      position: relative;
-      width: 100%;
-      max-height: 300px;
-      overflow: hidden;
+    .action-button svg {
+      transition: transform 0.2s;
     }
     
-    .hero-image {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      display: none;
+    .action-button:hover svg {
+      transform: translateX(4px);
     }
     
-    .hero-image.active {
-      display: block;
+    .section-divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 24px 0;
     }
   </style>
 </head>
 <body>
   <div class="widget-container">
-    <div class="hero-image-container">
-      <img id="hero-contact" src="https://qa.unex.lilly.com/producthelp/assets/product-support-image-CiK20MOm.jpeg" alt="Contact Support" class="hero-image active" crossorigin="anonymous" referrerpolicy="no-referrer">
-      <img id="hero-faq" src="https://qa.unex.lilly.com/producthelp/assets/shipping-issues-image-Dwq-0tku.jpeg" alt="FAQ" class="hero-image" crossorigin="anonymous" referrerpolicy="no-referrer">
-      <img id="hero-resources" src="https://qa.unex.lilly.com/producthelp/assets/side-effects-image-DdQ_UcU5.jpeg" alt="Resources" class="hero-image" crossorigin="anonymous" referrerpolicy="no-referrer">
-    </div>
-    
     <div class="widget-header">
-      <h1>🛟 Product Support</h1>
-      <p>Get help with your Lilly medications and devices</p>
+      <p class="eyebrow">Product support</p>
+      <h1>Have an issue with your medicine? We're here to help.</h1>
+      <p class="subtitle">Get help with your Mounjaro® (tirzepatide) or Zepbound® (tirzepatide) product here. Select your concern below.</p>
     </div>
     
     <div class="content-area">
       <div class="tab-navigation">
-        <button class="tab-button active" onclick="showTab('contact')">📞 Contact Us</button>
-        <button class="tab-button" onclick="showTab('faq')">❓ FAQ</button>
-        <button class="tab-button" onclick="showTab('resources')">📚 Resources</button>
+        <button class="tab-button active" onclick="showTab('product-support')">Product support</button>
+        <button class="tab-button" onclick="showTab('shipping-issues')">Shipping-related issues</button>
+        <button class="tab-button" onclick="showTab('side-effects')">Report a possible side effect</button>
       </div>
       
-      <!-- Contact Us Tab -->
-      <div id="contact" class="tab-content active">
-        <h2 style="margin-bottom: 16px; font-size: 20px;">Get in Touch</h2>
-        <p style="color: #6b7280; margin-bottom: 24px;">Our support team is here to help you with any questions about your Lilly products.</p>
-        
-        <div class="contact-grid">
-          <div class="contact-card">
-            <div class="icon">📞</div>
-            <h4>Lilly Customer Support</h4>
-            <a href="tel:1-800-545-5979">1-800-LillyRx</a>
-            <p>Mon-Fri: 8AM - 8PM ET</p>
+      <!-- Product Support Tab -->
+      <div id="product-support" class="tab-content active">
+        <div class="tab-layout">
+          <div class="tab-image-container">
+            <img src="https://qa.unex.lilly.com/producthelp/assets/product-support-image-CiK20MOm.jpeg" alt="Product Support" class="tab-image" crossorigin="anonymous" referrerpolicy="no-referrer">
           </div>
-          
-          <div class="contact-card">
-            <div class="icon">💊</div>
-            <h4>Lilly Direct Pharmacy</h4>
-            <a href="tel:1-833-808-1234">1-833-808-1234</a>
-            <p>For prescription orders</p>
-          </div>
-          
-          <div class="contact-card">
-            <div class="icon">🆘</div>
-            <h4>Medical Emergency</h4>
-            <a href="tel:911">911</a>
-            <p>For urgent medical situations</p>
-          </div>
-        </div>
-        
-        <div class="support-card" style="margin-top: 24px;">
-          <h3>💬 Need More Help?</h3>
-          <p>If you have questions about your medication, side effects, or device usage, our team is ready to assist you.</p>
-          <a href="https://www.lilly.com/contact-us" target="_blank" class="resource-link">
-            Visit Lilly Support Center
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 256 256">
-              <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.32-11.32L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-      
-      <!-- FAQ Tab -->
-      <div id="faq" class="tab-content">
-        <h2 style="margin-bottom: 16px; font-size: 20px;">Frequently Asked Questions</h2>
-        
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span>How do I store my medication properly?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">
-            <p>Most Lilly injectable medications should be stored in the refrigerator at 36°F to 46°F (2°C to 8°C). Do not freeze. Once in use, some medications can be kept at room temperature for a limited time. Always check the specific storage instructions for your medication on the packaging or patient information leaflet.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span>What should I do if I miss a dose?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">
-            <p>If you miss a dose, take it as soon as you remember unless it's close to your next scheduled dose. Do not take two doses at the same time. If you're unsure, contact your healthcare provider or pharmacist for guidance specific to your medication.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span>How do I report a side effect or adverse event?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">
-            <p>You can report side effects to Lilly by calling 1-800-LillyRx (1-800-545-5979). You can also report adverse events directly to the FDA's MedWatch program at 1-800-FDA-1088 or online at www.fda.gov/medwatch.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span>Where can I find patient assistance programs?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">
-            <p>Lilly offers various patient assistance programs including the Lilly Cares Foundation and savings cards. Visit lillycares.com or call 1-800-545-6962 to learn about eligibility and enrollment for assistance programs that may help reduce your medication costs.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span>How do I dispose of used needles and pens?</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">
-            <p>Used needles and injection pens should be placed in an FDA-cleared sharps disposal container. Never throw loose needles in the trash. Many pharmacies and hospitals have sharps disposal programs. Contact your local waste management for disposal options in your area.</p>
+          <div class="tab-text">
+            <h2>Product Support</h2>
+            <p class="bold-text">For issues and questions related to Mounjaro® (tirzepatide), or Zepbound® (tirzepatide) products</p>
+            <p>If something doesn't seem right with your product or you have questions, we're here to help. Our team can look into concerns related to quality, usability, appearance, or safety. If you need support with your Lilly product, connect with us below.</p>
+            <p class="small-text">Please report per local country requirements. Visit a region or country specific Lilly-owned site via the globe icon in the menu for more information.</p>
+            <a href="https://qa.unex.lilly.com/producthelp/before-we-begin" target="_blank" class="action-button">
+              Get product support
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
       
-      <!-- Resources Tab -->
-      <div id="resources" class="tab-content">
-        <h2 style="margin-bottom: 16px; font-size: 20px;">Helpful Resources</h2>
-        
-        <div class="support-card">
-          <h3>📋 Patient Guides & Instructions</h3>
-          <p>Download detailed guides for your Lilly medications and devices.</p>
-          <ul class="resource-list">
-            <li>📄 <a href="https://www.lilly.com/resources" target="_blank">Medication Patient Information Leaflets</a></li>
-            <li>📄 <a href="https://www.lilly.com/resources" target="_blank">Injection Pen User Guides</a></li>
-            <li>📄 <a href="https://www.lilly.com/resources" target="_blank">Storage & Handling Instructions</a></li>
-          </ul>
+      <!-- Shipping-related Issues Tab -->
+      <div id="shipping-issues" class="tab-content">
+        <div class="tab-layout">
+          <div class="tab-image-container">
+            <img src="https://qa.unex.lilly.com/producthelp/assets/shipping-issues-image-Dwq-0tku.jpeg" alt="Shipping Issues" class="tab-image" crossorigin="anonymous" referrerpolicy="no-referrer">
+          </div>
+          <div class="tab-text">
+            <h2>Shipping-related issues</h2>
+            <p>These are concerns you may experience during delivery or handling of your medicine. For example, problems with temperature, damaged containers, or missed or lost shipments.</p>
+            
+            <div class="section-divider"></div>
+            
+            <p class="bold-text">Pen or KwikPen shipping issues</p>
+            <p>For concerns related to the shipping of your pen or KwikPen, reach out to your dispensing pharmacy for help.</p>
+            
+            <div class="section-divider"></div>
+            
+            <p class="bold-text">Vial and/or syringe shipping issues</p>
+            <p>For concerns related to the shipping of your vial, contact Gifthealth below.</p>
+            <a href="https://gifthealth.zendesk.com/hc/en-us/categories/28401912557211-LillyDirect-Zepbound" target="_blank" class="action-button">
+              Contact Gifthealth
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </a>
+          </div>
         </div>
-        
-        <div class="support-card">
-          <h3>🎬 Training Videos</h3>
-          <p>Watch step-by-step video tutorials on how to use your medication devices.</p>
-          <ul class="resource-list">
-            <li>▶️ <a href="https://www.lilly.com/resources" target="_blank">How to Use Your Injection Pen</a></li>
-            <li>▶️ <a href="https://www.lilly.com/resources" target="_blank">Proper Injection Technique</a></li>
-            <li>▶️ <a href="https://www.lilly.com/resources" target="_blank">Troubleshooting Common Issues</a></li>
-          </ul>
-        </div>
-        
-        <div class="support-card">
-          <h3>💰 Savings & Assistance Programs</h3>
-          <p>Learn about programs that may help reduce your medication costs.</p>
-          <ul class="resource-list">
-            <li>💳 <a href="https://www.lillycares.com" target="_blank">Lilly Cares Patient Assistance</a></li>
-            <li>💳 <a href="https://www.lilly.com/savings" target="_blank">Copay Savings Cards</a></li>
-            <li>💳 <a href="https://www.insulinaffordability.com" target="_blank">Insulin Affordability Programs</a></li>
-          </ul>
+      </div>
+      
+      <!-- Report Side Effects Tab -->
+      <div id="side-effects" class="tab-content">
+        <div class="tab-layout">
+          <div class="tab-image-container">
+            <img src="https://qa.unex.lilly.com/producthelp/assets/side-effects-image-DdQ_UcU5.jpeg" alt="Report Side Effects" class="tab-image" crossorigin="anonymous" referrerpolicy="no-referrer">
+          </div>
+          <div class="tab-text">
+            <h2>Report a possible side effect</h2>
+            <p>Side effect(s) are any undesirable or unintended experience associated with the use of a medicinal product in a patient.</p>
+            <p>If you're experiencing a side effect after or while using a Lilly medicine — such as a new or unexpected symptom — you can report it here. Sharing this information helps us monitor the safety of our products.</p>
+            <a href="https://val-safety-reporting-public.lilly.com" target="_blank" class="action-button">
+              Report a Lilly safety concern
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1748,13 +1588,7 @@ function createProductSupportWidgetHTML(): string {
         button.classList.remove('active');
       });
       
-      // Switch hero images
-      document.querySelectorAll('.hero-image').forEach(img => {
-        img.classList.remove('active');
-      });
-      
       document.getElementById(tabId).classList.add('active');
-      document.getElementById('hero-' + tabId).classList.add('active');
       event.target.classList.add('active');
       
       // Update widget state
@@ -1763,20 +1597,6 @@ function createProductSupportWidgetHTML(): string {
           activeTab: tabId,
           viewMode: 'product-support'
         });
-      }
-    }
-    
-    function toggleFaq(element) {
-      const isExpanded = element.classList.contains('expanded');
-      
-      // Close all FAQs
-      document.querySelectorAll('.faq-item').forEach(item => {
-        item.classList.remove('expanded');
-      });
-      
-      // Toggle clicked FAQ
-      if (!isExpanded) {
-        element.classList.add('expanded');
       }
     }
     
@@ -3647,9 +3467,8 @@ server.registerResource(
         connect_domains: [],
         resource_domains: [
           'https://qa.unex.lilly.com',
-          'https://www.lilly.com',
-          'https://www.lillycares.com',
-          'https://www.insulinaffordability.com'
+          'https://gifthealth.zendesk.com',
+          'https://val-safety-reporting-public.lilly.com'
         ]
       }
     }
@@ -3667,9 +3486,8 @@ server.registerResource(
               connect_domains: [],
               resource_domains: [
                 'https://qa.unex.lilly.com',
-                'https://www.lilly.com',
-                'https://www.lillycares.com',
-                'https://www.insulinaffordability.com'
+                'https://gifthealth.zendesk.com',
+                'https://val-safety-reporting-public.lilly.com'
               ]
             }
           }
@@ -3724,7 +3542,7 @@ Here's everything you can do with the Lilly app:
 🔧 **Troubleshooting & Support**
 • **Troubleshooting Guide** — Look up common issues, side effects, and emergency information for your medicine.
 • **Interactive Device Troubleshooting** — Get guided step-by-step help for device issues (e.g., pen not clicking or not working), with the option to report a product quality issue.
-• **Product Support** — Get contact information, FAQs, and helpful resources for your Lilly products.
+• **Product Support** — Get help with Mounjaro or Zepbound product issues, shipping problems, or report a side effect.
 
 📍 **Find a Pharmacy**
 • **Find Nearby Pharmacies** — Search for pharmacies near any address, city, or zip code and view them on an interactive map. Also shows options to buy your medicine online from Lilly Direct.
@@ -4572,23 +4390,26 @@ server.registerTool(
 
 /**
  * Tool: Product Support
- * Shows product support resources with three tabs: Contact Us, FAQ, and Resources.
- * Provides contact information, frequently asked questions, and helpful links.
+ * Shows product support resources with three tabs matching the Lilly product help page:
+ * - Product support: For product issues and questions
+ * - Shipping-related issues: For delivery/handling concerns  
+ * - Report a possible side effect: For reporting side effects
  * No authentication required - accessible to all users.
  * 
  * Triggered when a user asks:
- * - Product support
- * - Help with my product
- * - Contact Lilly
- * - Customer support
- * - FAQ / Frequently asked questions
- * - How to contact customer service
+ * - Product support / Product help
+ * - Issue with my medicine / Issue with my product
+ * - Shipping problem / Shipping issue / Delivery issue
+ * - Report side effect / Side effects
+ * - Problem with my Mounjaro / Zepbound
+ * - Help with my medication
+ * - Contact Lilly about product
  */
 server.registerTool(
   'product-support',
   {
     title: 'Product Support',
-    description: 'Shows product support resources including contact information, FAQs, and helpful resources. Use this when a user needs help with their Lilly products, wants to contact customer support, has questions about their medication, or needs support resources.',
+    description: 'Shows product support resources for Mounjaro and Zepbound medications. Use this when a user has an issue with their medicine, needs product support, has shipping problems, wants to report a side effect, or needs help with their Lilly product. Covers product quality concerns, shipping/delivery issues, and side effect reporting.',
     _meta: {
       'openai/outputTemplate': 'ui://widget/product-support-v1.html',
       'openai/toolInvocation/invoking': 'Loading product support resources...',
@@ -4615,14 +4436,13 @@ server.registerTool(
       content: [
         { 
           type: 'text' as const, 
-          text: 'Here are the product support resources for Lilly medications. You can find contact information, frequently asked questions, and helpful resources in the tabs above.'
+          text: 'Here are the product support resources for Mounjaro® and Zepbound®. Select your concern from the tabs: Product support for quality/usability issues, Shipping-related issues for delivery problems, or Report a possible side effect.'
         }
       ],
       structuredContent: {
         supportType: 'product-support',
-        tabs: ['Contact Us', 'FAQ', 'Resources'],
-        contactPhone: '1-800-LillyRx (1-800-545-5979)',
-        hours: 'Mon-Fri: 8AM - 8PM ET'
+        tabs: ['Product support', 'Shipping-related issues', 'Report a possible side effect'],
+        products: ['Mounjaro® (tirzepatide)', 'Zepbound® (tirzepatide)']
       },
       _meta: {
         'openai/dynamicContent': dynamicResource
