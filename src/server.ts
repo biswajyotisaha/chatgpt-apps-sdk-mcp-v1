@@ -1309,7 +1309,7 @@ function createProductSupportWidgetHTML(): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://mcp-server.onrender.com blob: data:; img-src 'self' https://mcp-server.onrender.com data:; connect-src 'self' https://gifthealth.zendesk.com https://val-safety-reporting-public.lilly.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://mcp-server-ekh0.onrender.com blob: data:; img-src 'self' https://mcp-server-ekh0.onrender.com data:; connect-src 'self' https://gifthealth.zendesk.com https://val-safety-reporting-public.lilly.com;">
   <title>Product Support - Lilly</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1511,7 +1511,7 @@ function createProductSupportWidgetHTML(): string {
       <div id="product-support" class="tab-content active">
         <div class="tab-layout">
           <div class="tab-image-container">
-            <img src="https://mcp-server.onrender.com/public/images/product-support.jpeg" alt="Product Support" class="tab-image">
+            <img src="https://mcp-server-ekh0.onrender.com/public/images/product-support.jpeg" alt="Product Support" class="tab-image">
           </div>
           <div class="tab-text">
             <h2>Product Support</h2>
@@ -1532,7 +1532,7 @@ function createProductSupportWidgetHTML(): string {
       <div id="shipping-issues" class="tab-content">
         <div class="tab-layout">
           <div class="tab-image-container">
-            <img src="https://mcp-server.onrender.com/public/images/shipping-issues.jpeg" alt="Shipping Issues" class="tab-image">
+            <img src="https://mcp-server-ekh0.onrender.com/public/images/shipping-issues.jpeg" alt="Shipping Issues" class="tab-image">
           </div>
           <div class="tab-text">
             <h2>Shipping-related issues</h2>
@@ -1561,7 +1561,7 @@ function createProductSupportWidgetHTML(): string {
       <div id="side-effects" class="tab-content">
         <div class="tab-layout">
           <div class="tab-image-container">
-            <img src="https://mcp-server.onrender.com/public/images/side-effects.jpeg" alt="Report Side Effects" class="tab-image">
+            <img src="https://mcp-server-ekh0.onrender.com/public/images/side-effects.jpeg" alt="Report Side Effects" class="tab-image">
           </div>
           <div class="tab-text">
             <h2>Report a possible side effect</h2>
@@ -3466,17 +3466,17 @@ server.registerResource(
       'openai/widgetDomain': 'https://product-support.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [
-          'https://mcp-server.onrender.com',
+          'https://mcp-server-ekh0.onrender.com',
           'https://gifthealth.zendesk.com',
           'https://val-safety-reporting-public.lilly.com'
         ],
         resource_domains: [
-          'https://mcp-server.onrender.com',
+          'https://mcp-server-ekh0.onrender.com',
           'https://gifthealth.zendesk.com',
           'https://val-safety-reporting-public.lilly.com'
         ],
         media_domains: [
-          'https://mcp-server.onrender.com'
+          'https://mcp-server-ekh0.onrender.com'
         ]
       }
     }
@@ -3492,17 +3492,17 @@ server.registerResource(
             'openai/widgetDomain': 'https://product-support.onrender.com',
             'openai/widgetCSP': {
               connect_domains: [
-                'https://mcp-server.onrender.com',
+                'https://mcp-server-ekh0.onrender.com',
                 'https://gifthealth.zendesk.com',
                 'https://val-safety-reporting-public.lilly.com'
               ],
               resource_domains: [
-                'https://mcp-server.onrender.com',
+                'https://mcp-server-ekh0.onrender.com',
                 'https://gifthealth.zendesk.com',
                 'https://val-safety-reporting-public.lilly.com'
               ],
               media_domains: [
-                'https://mcp-server.onrender.com'
+                'https://mcp-server-ekh0.onrender.com'
               ]
             }
           }
