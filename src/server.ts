@@ -1309,7 +1309,7 @@ function createProductSupportWidgetHTML(): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' https://qa.unex.lilly.com https://*.lilly.com data:; connect-src 'self' https://qa.unex.lilly.com https://gifthealth.zendesk.com https://val-safety-reporting-public.lilly.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://qa.unex.lilly.com https://*.lilly.com blob: data:; img-src 'self' https://qa.unex.lilly.com https://*.lilly.com data:; connect-src 'self' https://qa.unex.lilly.com https://gifthealth.zendesk.com https://val-safety-reporting-public.lilly.com;">
   <title>Product Support - Lilly</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
