@@ -1294,6 +1294,470 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
 </html>`;
 }
 
+/**
+ * Generates HTML for the Product Support widget.
+ * Creates an interactive support page with three tabs for different support resources.
+ * 
+ * @returns Complete HTML string ready for rendering in ChatGPT widget
+ */
+function createProductSupportWidgetHTML(): string {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Support - Lilly</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: #f8fafc;
+      color: #1f2937;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .widget-container { 
+      width: 100%; 
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .widget-header {
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .widget-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .widget-header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .hero-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+    }
+    
+    .content-area {
+      padding: 32px;
+    }
+    
+    .tab-navigation {
+      display: flex;
+      border-bottom: 2px solid #e5e7eb;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    
+    .tab-button {
+      background: none;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    
+    .tab-button:hover {
+      color: #dc2626;
+    }
+    
+    .tab-button.active {
+      color: #dc2626;
+      border-bottom-color: #dc2626;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .support-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid #e5e7eb;
+      transition: box-shadow 0.2s;
+    }
+    
+    .support-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    .support-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .support-card p {
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    
+    .contact-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid #e5e7eb;
+      transition: all 0.2s;
+    }
+    
+    .contact-card:hover {
+      border-color: #dc2626;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+    }
+    
+    .contact-card .icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    
+    .contact-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+    
+    .contact-card a {
+      color: #dc2626;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .contact-card a:hover {
+      text-decoration: underline;
+    }
+    
+    .contact-card p {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    
+    .faq-item {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .faq-question:hover {
+      background: #f9fafb;
+    }
+    
+    .faq-arrow {
+      transition: transform 0.2s;
+    }
+    
+    .faq-item.expanded .faq-arrow {
+      transform: rotate(180deg);
+    }
+    
+    .faq-answer {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .faq-item.expanded .faq-answer {
+      padding: 0 20px 16px;
+      max-height: 500px;
+    }
+    
+    .faq-answer p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #dc2626;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    
+    .resource-link:hover {
+      background: #b91c1c;
+    }
+    
+    .resource-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+    
+    .resource-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .resource-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .resource-list a {
+      color: #dc2626;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .resource-list a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <img src="https://qa.unex.lilly.com/producthelp/assets/product-support-image-CiK20MOm.jpeg" alt="Product Support" class="hero-image" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <div class="widget-header">
+      <h1>🛟 Product Support</h1>
+      <p>Get help with your Lilly medications and devices</p>
+    </div>
+    
+    <div class="content-area">
+      <div class="tab-navigation">
+        <button class="tab-button active" onclick="showTab('contact')">📞 Contact Us</button>
+        <button class="tab-button" onclick="showTab('faq')">❓ FAQ</button>
+        <button class="tab-button" onclick="showTab('resources')">📚 Resources</button>
+      </div>
+      
+      <!-- Contact Us Tab -->
+      <div id="contact" class="tab-content active">
+        <h2 style="margin-bottom: 16px; font-size: 20px;">Get in Touch</h2>
+        <p style="color: #6b7280; margin-bottom: 24px;">Our support team is here to help you with any questions about your Lilly products.</p>
+        
+        <div class="contact-grid">
+          <div class="contact-card">
+            <div class="icon">📞</div>
+            <h4>Lilly Customer Support</h4>
+            <a href="tel:1-800-545-5979">1-800-LillyRx</a>
+            <p>Mon-Fri: 8AM - 8PM ET</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="icon">💊</div>
+            <h4>Lilly Direct Pharmacy</h4>
+            <a href="tel:1-833-808-1234">1-833-808-1234</a>
+            <p>For prescription orders</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="icon">🆘</div>
+            <h4>Medical Emergency</h4>
+            <a href="tel:911">911</a>
+            <p>For urgent medical situations</p>
+          </div>
+        </div>
+        
+        <div class="support-card" style="margin-top: 24px;">
+          <h3>💬 Need More Help?</h3>
+          <p>If you have questions about your medication, side effects, or device usage, our team is ready to assist you.</p>
+          <a href="https://www.lilly.com/contact-us" target="_blank" class="resource-link">
+            Visit Lilly Support Center
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 256 256">
+              <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.32-11.32L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <!-- FAQ Tab -->
+      <div id="faq" class="tab-content">
+        <h2 style="margin-bottom: 16px; font-size: 20px;">Frequently Asked Questions</h2>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>How do I store my medication properly?</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Most Lilly injectable medications should be stored in the refrigerator at 36°F to 46°F (2°C to 8°C). Do not freeze. Once in use, some medications can be kept at room temperature for a limited time. Always check the specific storage instructions for your medication on the packaging or patient information leaflet.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>What should I do if I miss a dose?</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>If you miss a dose, take it as soon as you remember unless it's close to your next scheduled dose. Do not take two doses at the same time. If you're unsure, contact your healthcare provider or pharmacist for guidance specific to your medication.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>How do I report a side effect or adverse event?</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>You can report side effects to Lilly by calling 1-800-LillyRx (1-800-545-5979). You can also report adverse events directly to the FDA's MedWatch program at 1-800-FDA-1088 or online at www.fda.gov/medwatch.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>Where can I find patient assistance programs?</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Lilly offers various patient assistance programs including the Lilly Cares Foundation and savings cards. Visit lillycares.com or call 1-800-545-6962 to learn about eligibility and enrollment for assistance programs that may help reduce your medication costs.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>How do I dispose of used needles and pens?</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Used needles and injection pens should be placed in an FDA-cleared sharps disposal container. Never throw loose needles in the trash. Many pharmacies and hospitals have sharps disposal programs. Contact your local waste management for disposal options in your area.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Resources Tab -->
+      <div id="resources" class="tab-content">
+        <h2 style="margin-bottom: 16px; font-size: 20px;">Helpful Resources</h2>
+        
+        <div class="support-card">
+          <h3>📋 Patient Guides & Instructions</h3>
+          <p>Download detailed guides for your Lilly medications and devices.</p>
+          <ul class="resource-list">
+            <li>📄 <a href="https://www.lilly.com/resources" target="_blank">Medication Patient Information Leaflets</a></li>
+            <li>📄 <a href="https://www.lilly.com/resources" target="_blank">Injection Pen User Guides</a></li>
+            <li>📄 <a href="https://www.lilly.com/resources" target="_blank">Storage & Handling Instructions</a></li>
+          </ul>
+        </div>
+        
+        <div class="support-card">
+          <h3>🎬 Training Videos</h3>
+          <p>Watch step-by-step video tutorials on how to use your medication devices.</p>
+          <ul class="resource-list">
+            <li>▶️ <a href="https://www.lilly.com/resources" target="_blank">How to Use Your Injection Pen</a></li>
+            <li>▶️ <a href="https://www.lilly.com/resources" target="_blank">Proper Injection Technique</a></li>
+            <li>▶️ <a href="https://www.lilly.com/resources" target="_blank">Troubleshooting Common Issues</a></li>
+          </ul>
+        </div>
+        
+        <div class="support-card">
+          <h3>💰 Savings & Assistance Programs</h3>
+          <p>Learn about programs that may help reduce your medication costs.</p>
+          <ul class="resource-list">
+            <li>💳 <a href="https://www.lillycares.com" target="_blank">Lilly Cares Patient Assistance</a></li>
+            <li>💳 <a href="https://www.lilly.com/savings" target="_blank">Copay Savings Cards</a></li>
+            <li>💳 <a href="https://www.insulinaffordability.com" target="_blank">Insulin Affordability Programs</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+      
+      // Update widget state
+      if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+        window.oai.widget.setState({
+          activeTab: tabId,
+          viewMode: 'product-support'
+        });
+      }
+    }
+    
+    function toggleFaq(element) {
+      const isExpanded = element.classList.contains('expanded');
+      
+      // Close all FAQs
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('expanded');
+      });
+      
+      // Toggle clicked FAQ
+      if (!isExpanded) {
+        element.classList.add('expanded');
+      }
+    }
+    
+    console.log('Product Support widget loaded');
+  </script>
+</body>
+</html>`;
+}
+
 // ==================== UI RESOURCES ====================
 
 // Lilly Direct Store Resource (All medicines available for purchase)
@@ -3144,6 +3608,49 @@ server.registerResource(
   }
 );
 
+// Product Support Widget Resource
+server.registerResource(
+  'product-support-widget',
+  'ui://widget/product-support-v1.html',
+  {
+    _meta: {
+      'openai/widgetDomain': 'https://product-support.onrender.com',
+      'openai/widgetCSP': {
+        connect_domains: [],
+        resource_domains: [
+          'https://qa.unex.lilly.com',
+          'https://www.lilly.com',
+          'https://www.lillycares.com',
+          'https://www.insulinaffordability.com'
+        ]
+      }
+    }
+  },
+  async () => {
+    return {
+      contents: [
+        {
+          uri: 'ui://widget/product-support-v1.html',
+          mimeType: 'text/html+skybridge',
+          text: createProductSupportWidgetHTML(),
+          _meta: {
+            'openai/widgetDomain': 'https://product-support.onrender.com',
+            'openai/widgetCSP': {
+              connect_domains: [],
+              resource_domains: [
+                'https://qa.unex.lilly.com',
+                'https://www.lilly.com',
+                'https://www.lillycares.com',
+                'https://www.insulinaffordability.com'
+              ]
+            }
+          }
+        },
+      ]
+    };
+  }
+);
+
 
 // ==================== TOOLS ====================
 
@@ -3189,6 +3696,7 @@ Here's everything you can do with the Lilly app:
 🔧 **Troubleshooting & Support**
 • **Troubleshooting Guide** — Look up common issues, side effects, and emergency information for your medicine.
 • **Interactive Device Troubleshooting** — Get guided step-by-step help for device issues (e.g., pen not clicking or not working), with the option to report a product quality issue.
+• **Product Support** — Get contact information, FAQs, and helpful resources for your Lilly products.
 
 📍 **Find a Pharmacy**
 • **Find Nearby Pharmacies** — Search for pharmacies near any address, city, or zip code and view them on an interactive map. Also shows options to buy your medicine online from Lilly Direct.
@@ -4031,6 +4539,67 @@ server.registerTool(
         }
       };
     }
+  }
+);
+
+/**
+ * Tool: Product Support
+ * Shows product support resources with three tabs: Contact Us, FAQ, and Resources.
+ * Provides contact information, frequently asked questions, and helpful links.
+ * No authentication required - accessible to all users.
+ * 
+ * Triggered when a user asks:
+ * - Product support
+ * - Help with my product
+ * - Contact Lilly
+ * - Customer support
+ * - FAQ / Frequently asked questions
+ * - How to contact customer service
+ */
+server.registerTool(
+  'product-support',
+  {
+    title: 'Product Support',
+    description: 'Shows product support resources including contact information, FAQs, and helpful resources. Use this when a user needs help with their Lilly products, wants to contact customer support, has questions about their medication, or needs support resources.',
+    _meta: {
+      'openai/outputTemplate': 'ui://widget/product-support-v1.html',
+      'openai/toolInvocation/invoking': 'Loading product support resources...',
+      'openai/toolInvocation/invoked': 'Product support resources loaded successfully',
+      'securitySchemes': [
+        { type: 'noauth' }
+      ]
+    },
+    inputSchema: {}
+  },
+  async () => {
+    console.log('🛟 Product Support tool invoked');
+    
+    // Create dynamic product support widget
+    const productSupportHTML = createProductSupportWidgetHTML();
+    
+    const dynamicResource = {
+      uri: 'ui://widget/product-support-v1.html',
+      mimeType: 'text/html+skybridge',
+      text: productSupportHTML
+    };
+
+    return {
+      content: [
+        { 
+          type: 'text' as const, 
+          text: 'Here are the product support resources for Lilly medications. You can find contact information, frequently asked questions, and helpful resources in the tabs above.'
+        }
+      ],
+      structuredContent: {
+        supportType: 'product-support',
+        tabs: ['Contact Us', 'FAQ', 'Resources'],
+        contactPhone: '1-800-LillyRx (1-800-545-5979)',
+        hours: 'Mon-Fri: 8AM - 8PM ET'
+      },
+      _meta: {
+        'openai/dynamicContent': dynamicResource
+      }
+    };
   }
 );
 
