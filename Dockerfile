@@ -13,6 +13,7 @@ RUN npm ci --only=production
 # Copy source code and config
 COPY tsconfig.json ./
 COPY src ./src
+COPY public ./public
 
 # Build TypeScript to JavaScript
 RUN npm run build
