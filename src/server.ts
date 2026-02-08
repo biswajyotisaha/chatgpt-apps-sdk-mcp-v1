@@ -3475,6 +3475,10 @@ server.registerResource(
           'https://*.lilly.com',
           'https://gifthealth.zendesk.com',
           'https://val-safety-reporting-public.lilly.com'
+        ],
+        media_domains: [
+          'https://qa.unex.lilly.com',
+          'https://*.lilly.com'
         ]
       }
     }
@@ -3499,6 +3503,10 @@ server.registerResource(
                 'https://*.lilly.com',
                 'https://gifthealth.zendesk.com',
                 'https://val-safety-reporting-public.lilly.com'
+              ],
+              media_domains: [
+                'https://qa.unex.lilly.com',
+                'https://*.lilly.com'
               ]
             }
           }
