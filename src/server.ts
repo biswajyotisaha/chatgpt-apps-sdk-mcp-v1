@@ -1566,11 +1566,33 @@ function createProductSupportWidgetHTML(): string {
     .resource-list a:hover {
       text-decoration: underline;
     }
+    
+    .hero-image-container {
+      position: relative;
+      width: 100%;
+      max-height: 300px;
+      overflow: hidden;
+    }
+    
+    .hero-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      display: none;
+    }
+    
+    .hero-image.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
   <div class="widget-container">
-    <img src="https://qa.unex.lilly.com/producthelp/assets/product-support-image-CiK20MOm.jpeg" alt="Product Support" class="hero-image" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <div class="hero-image-container">
+      <img id="hero-contact" src="https://qa.unex.lilly.com/producthelp/assets/product-support-image-CiK20MOm.jpeg" alt="Contact Support" class="hero-image active" crossorigin="anonymous" referrerpolicy="no-referrer">
+      <img id="hero-faq" src="https://qa.unex.lilly.com/producthelp/assets/shipping-issues-image-Dwq-0tku.jpeg" alt="FAQ" class="hero-image" crossorigin="anonymous" referrerpolicy="no-referrer">
+      <img id="hero-resources" src="https://qa.unex.lilly.com/producthelp/assets/side-effects-image-DdQ_UcU5.jpeg" alt="Resources" class="hero-image" crossorigin="anonymous" referrerpolicy="no-referrer">
+    </div>
     
     <div class="widget-header">
       <h1>🛟 Product Support</h1>
@@ -1726,7 +1748,13 @@ function createProductSupportWidgetHTML(): string {
         button.classList.remove('active');
       });
       
+      // Switch hero images
+      document.querySelectorAll('.hero-image').forEach(img => {
+        img.classList.remove('active');
+      });
+      
       document.getElementById(tabId).classList.add('active');
+      document.getElementById('hero-' + tabId).classList.add('active');
       event.target.classList.add('active');
       
       // Update widget state
