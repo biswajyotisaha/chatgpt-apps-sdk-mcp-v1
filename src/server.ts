@@ -3043,18 +3043,18 @@ function createProductSupportWidgetHTML(): string {
             <div class="form-row">
               <div class="form-field">
                 <label for="firstName">First name *</label>
-                <input type="text" id="firstName" placeholder="Enter first name" oninput="updateUserInfoContinueButton()">
+                <input type="text" id="firstName" placeholder="Enter first name" oninput="userInfo.firstName = this.value; updateUserInfoContinueButton()">
               </div>
               <div class="form-field">
                 <label for="lastName">Last name *</label>
-                <input type="text" id="lastName" placeholder="Enter last name" oninput="updateUserInfoContinueButton()">
+                <input type="text" id="lastName" placeholder="Enter last name" oninput="userInfo.lastName = this.value; updateUserInfoContinueButton()">
               </div>
             </div>
             
             <div class="form-row single">
               <div class="form-field">
                 <label for="dateOfBirth">Date of birth *</label>
-                <input type="date" id="dateOfBirth" oninput="updateUserInfoContinueButton()">
+                <input type="date" id="dateOfBirth" oninput="userInfo.dateOfBirth = this.value; updateUserInfoContinueButton()">
               </div>
             </div>
             
@@ -3076,11 +3076,11 @@ function createProductSupportWidgetHTML(): string {
             <div class="form-row">
               <div class="form-field">
                 <label for="email">Email address</label>
-                <input type="email" id="email" placeholder="Enter email" disabled oninput="updateUserInfoContinueButton()">
+                <input type="email" id="email" placeholder="Enter email" disabled oninput="userInfo.email = this.value; updateUserInfoContinueButton()">
               </div>
               <div class="form-field">
                 <label for="phone">Phone number</label>
-                <input type="tel" id="phone" placeholder="Enter phone number" disabled oninput="updateUserInfoContinueButton()">
+                <input type="tel" id="phone" placeholder="Enter phone number" disabled oninput="userInfo.phone = this.value; updateUserInfoContinueButton()">
               </div>
             </div>
             
@@ -3091,25 +3091,25 @@ function createProductSupportWidgetHTML(): string {
               <div class="form-row single">
                 <div class="form-field">
                   <label for="address">Street address *</label>
-                  <input type="text" id="address" placeholder="Enter street address" oninput="updateUserInfoContinueButton()">
+                  <input type="text" id="address" placeholder="Enter street address" oninput="userInfo.address = this.value; updateUserInfoContinueButton()">
                 </div>
               </div>
               
               <div class="form-row single">
                 <div class="form-field">
                   <label for="apartment">Apartment, suite, etc. (optional)</label>
-                  <input type="text" id="apartment" placeholder="Enter apartment, suite, etc.">
+                  <input type="text" id="apartment" placeholder="Enter apartment, suite, etc." oninput="userInfo.apartment = this.value">
                 </div>
               </div>
               
               <div class="form-row">
                 <div class="form-field">
                   <label for="city">City *</label>
-                  <input type="text" id="city" placeholder="Enter city" oninput="updateUserInfoContinueButton()">
+                  <input type="text" id="city" placeholder="Enter city" oninput="userInfo.city = this.value; updateUserInfoContinueButton()">
                 </div>
                 <div class="form-field">
                   <label for="state">State *</label>
-                  <select id="state" onchange="updateUserInfoContinueButton()">
+                  <select id="state" onchange="userInfo.state = this.value; updateUserInfoContinueButton()">
                     <option value="">Select state</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
@@ -3168,7 +3168,7 @@ function createProductSupportWidgetHTML(): string {
               <div class="form-row single">
                 <div class="form-field">
                   <label for="zipCode">ZIP code *</label>
-                  <input type="text" id="zipCode" placeholder="Enter ZIP code" oninput="updateUserInfoContinueButton()">
+                  <input type="text" id="zipCode" placeholder="Enter ZIP code" oninput="userInfo.zipCode = this.value; updateUserInfoContinueButton()">
                 </div>
               </div>
             </div>
@@ -3879,6 +3879,9 @@ function createProductSupportWidgetHTML(): string {
           userInfo.zipCode = profile.address.zipCode;
         }
       }
+      
+      // Trigger validation after populating fields
+      updateUserInfoContinueButton();
     }
     
     function selectPermissionToContact(value) {
