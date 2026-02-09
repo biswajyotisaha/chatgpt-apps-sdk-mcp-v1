@@ -1368,33 +1368,34 @@ function createProductSupportWidgetHTML(): string {
     
     .tab-navigation {
       display: flex;
-      border-bottom: 2px solid #e5e7eb;
       margin-bottom: 32px;
       overflow-x: auto;
       gap: 8px;
+      padding-bottom: 4px;
     }
     
     .tab-button {
-      background: none;
-      border: none;
-      padding: 16px 24px;
-      font-size: 16px;
+      background: transparent;
+      border: 1px solid #d1d5db;
+      padding: 12px 24px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      border-bottom: 3px solid transparent;
+      border-radius: 30px;
       transition: all 0.2s;
       white-space: nowrap;
-      color: #6b7280;
-      margin-bottom: -2px;
+      color: #1f2937;
     }
     
     .tab-button:hover {
-      color: #dc2626;
+      background: #f3f4f6;
+      border-color: #9ca3af;
     }
     
     .tab-button.active {
-      color: #dc2626;
-      border-bottom-color: #dc2626;
+      color: white;
+      background: #dc2626;
+      border-color: #dc2626;
     }
     
     .tab-content {
@@ -1499,6 +1500,7 @@ function createProductSupportWidgetHTML(): string {
       align-items: center;
       padding: 24px 0;
       margin-top: 32px;
+      margin-bottom: 8px;
       border-top: 1px solid #e5e7eb;
     }
     
@@ -1925,14 +1927,20 @@ function createProductSupportWidgetHTML(): string {
     .form-select {
       width: 100%;
       max-width: 300px;
-      padding: 14px 16px;
+      padding: 16px 40px 16px 16px;
       font-size: 16px;
       border: 1px solid #d1d5db;
-      border-radius: 8px;
+      border-radius: 12px;
       background: white;
       outline: none;
       cursor: pointer;
       transition: border-color 0.2s;
+      height: 52px;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
     }
     
     .form-select:focus {
@@ -2745,7 +2753,13 @@ function createProductSupportWidgetHTML(): string {
           <div class="info-section no-product-section">
             <h6>If you do not have the individual product or medicine package</h6>
             <p>Please contact your dispensing pharmacy for the lot/batch number. You may continue without the lot/batch number, but you will not be eligible for replacement product.</p>
-            <button type="button" class="action-btn filled" onclick="continueWithoutBatch()">
+            
+            <label class="disclaimer-checkbox" style="display: flex; align-items: flex-start; gap: 12px; margin: 24px 0 20px 0; cursor: pointer;">
+              <input type="checkbox" id="noProductCheckbox" onchange="updateContinueWithoutBatch()" style="width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: #dc2626; cursor: pointer;">
+              <span style="font-size: 14px; color: #4b5563; line-height: 1.5;">I understand that support is limited if I don't scan or provide product information when submitting this form</span>
+            </label>
+            
+            <button type="button" class="action-btn filled" id="continueWithoutBatchBtn" disabled onclick="continueWithoutBatch()" style="opacity: 0.5; pointer-events: none;">
               Continue without lot/batch number
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
                 <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
@@ -4058,6 +4072,20 @@ function createProductSupportWidgetHTML(): string {
     
     function scanBarcode() {
       alert('Barcode scanning feature coming soon!');
+    }
+    
+    function updateContinueWithoutBatch() {
+      const checkbox = document.getElementById('noProductCheckbox');
+      const btn = document.getElementById('continueWithoutBatchBtn');
+      if (checkbox.checked) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+      }
     }
     
     function continueWithoutBatch() {
