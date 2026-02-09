@@ -3928,20 +3928,28 @@ function createProductSupportWidgetHTML(): string {
       const firstName = document.getElementById('firstName').value.trim();
       const lastName = document.getElementById('lastName').value.trim();
       const dateOfBirth = document.getElementById('dateOfBirth').value;
-      const permissionToContact = userInfo.permissionToContact;
       const address = document.getElementById('address').value.trim();
       const city = document.getElementById('city').value.trim();
       const state = document.getElementById('state').value;
       const zipCode = document.getElementById('zipCode').value.trim();
-      const deviceReturn = userInfo.deviceReturn;
+      
+      // Check if permission to contact radio is selected
+      const permissionYes = document.getElementById('permission-yes').checked;
+      const permissionNo = document.getElementById('permission-no').checked;
+      const permissionSelected = permissionYes || permissionNo;
+      
+      // Check if device return radio is selected
+      const deviceYes = document.getElementById('device-yes').checked;
+      const deviceNo = document.getElementById('device-no').checked;
+      const deviceReturnSelected = deviceYes || deviceNo;
       
       // Check if all required fields are filled
       let allRequiredFilled = firstName && lastName && dateOfBirth && 
-                              permissionToContact && address && city && 
-                              state && zipCode && deviceReturn;
+                              permissionSelected && address && city && 
+                              state && zipCode && deviceReturnSelected;
       
       // If permission to contact is 'yes', email or phone is required
-      if (permissionToContact === 'yes') {
+      if (permissionYes) {
         const email = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
         allRequiredFilled = allRequiredFilled && (email || phone);
