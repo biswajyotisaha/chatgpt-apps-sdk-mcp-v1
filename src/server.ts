@@ -3647,11 +3647,11 @@ function createProductSupportWidgetHTML(): string {
         userInfo.lastName = profile.familyName;
       }
       if (profile.email) {
-        document.getElementById('userEmail').value = profile.email;
+        document.getElementById('email').value = profile.email;
         userInfo.email = profile.email;
       }
       if (profile.phoneNumber) {
-        document.getElementById('userPhone').value = profile.phoneNumber;
+        document.getElementById('phone').value = profile.phoneNumber;
         userInfo.phone = profile.phoneNumber;
       }
       if (profile.dateOfBirth) {
@@ -3660,19 +3660,19 @@ function createProductSupportWidgetHTML(): string {
       }
       if (profile.address) {
         if (profile.address.street) {
-          document.getElementById('streetAddress').value = profile.address.street;
+          document.getElementById('address').value = profile.address.street;
           userInfo.address = profile.address.street;
         }
         if (profile.address.city) {
-          document.getElementById('userCity').value = profile.address.city;
+          document.getElementById('city').value = profile.address.city;
           userInfo.city = profile.address.city;
         }
         if (profile.address.state) {
-          document.getElementById('userState').value = profile.address.state;
+          document.getElementById('state').value = profile.address.state;
           userInfo.state = profile.address.state;
         }
         if (profile.address.zipCode) {
-          document.getElementById('userZipCode').value = profile.address.zipCode;
+          document.getElementById('zipCode').value = profile.address.zipCode;
           userInfo.zipCode = profile.address.zipCode;
         }
       }
