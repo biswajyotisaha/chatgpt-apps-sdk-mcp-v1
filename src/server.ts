@@ -2001,21 +2001,52 @@ function createProductSupportWidgetHTML(): string {
     }
     
     /* Issue Information Page */
+    .dropdown-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
     .issue-select {
       width: 100%;
-      padding: 14px 16px;
+      height: 56px;
+      padding: 16px 48px 16px 20px;
       font-size: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       border: 1px solid #d1d5db;
-      border-radius: 8px;
+      border-radius: 12px;
       background: white;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23374151' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 20px;
       outline: none;
       cursor: pointer;
-      transition: border-color 0.2s;
-      margin-bottom: 16px;
+      transition: all 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      color: #1f2937;
+    }
+    
+    .issue-select:hover {
+      border-color: #9ca3af;
     }
     
     .issue-select:focus {
       border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+    
+    .issue-select:disabled {
+      background-color: #f9fafb;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    .issue-select option {
+      padding: 12px;
     }
     
     /* Expired Product Messages */
@@ -2478,22 +2509,24 @@ function createProductSupportWidgetHTML(): string {
           <h1>Tell us what happened</h1>
           <p class="subtitle">Please select your issue type followed by your product concern. Your selections will help us understand what went wrong and how to help.</p>
           
-          <div class="form-section">
-            <label class="form-label">Issue type</label>
-            <select class="issue-select" id="issueTypeSelect" onchange="updateIssueType()">
-              <option value="">Select issue type</option>
-              <option value="pen_issue">Pen Issue</option>
-              <option value="needle_issue">Needle Issue</option>
-              <option value="packaging_issue">Packaging Issue</option>
-              <option value="experience_not_captured">Experience not captured</option>
-            </select>
-          </div>
-          
-          <div class="form-section">
-            <label class="form-label">Product concern</label>
-            <select class="issue-select" id="productConcernSelect" disabled onchange="updateProductConcern()">
-              <option value="">Select product concern</option>
-            </select>
+          <div class="dropdown-wrapper">
+            <div class="form-section">
+              <label class="form-label">Issue type</label>
+              <select class="issue-select" id="issueTypeSelect" onchange="updateIssueType()">
+                <option value="">Select issue type</option>
+                <option value="pen_issue">Pen Issue</option>
+                <option value="needle_issue">Needle Issue</option>
+                <option value="packaging_issue">Packaging Issue</option>
+                <option value="experience_not_captured">Experience not captured</option>
+              </select>
+            </div>
+            
+            <div class="form-section">
+              <label class="form-label">Product concern</label>
+              <select class="issue-select" id="productConcernSelect" disabled onchange="updateProductConcern()">
+                <option value="">Select product concern</option>
+              </select>
+            </div>
           </div>
           
           <div class="nav-buttons">
