@@ -2017,6 +2017,86 @@ function createProductSupportWidgetHTML(): string {
     .issue-select:focus {
       border-color: #dc2626;
     }
+    
+    /* Expired Product Messages */
+    .expired-message-box {
+      display: none;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .expired-message-box.warning {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-left: 4px solid #d97706;
+    }
+    
+    .expired-message-box.info {
+      background: #eff6ff;
+      border: 1px solid #93c5fd;
+      border-left: 4px solid #3b82f6;
+    }
+    
+    .expired-message-box.active {
+      display: block;
+    }
+    
+    .expired-message-box h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #92400e;
+      margin: 0 0 12px 0;
+    }
+    
+    .expired-message-box.info h3 {
+      color: #1e40af;
+    }
+    
+    .expired-message-box p {
+      font-size: 16px;
+      color: #78350f;
+      margin: 0 0 16px 0;
+      line-height: 1.5;
+    }
+    
+    .expired-message-box.info p {
+      color: #1e3a8a;
+    }
+    
+    .expired-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    
+    .expired-action-btn.safety {
+      background: #dc2626;
+      color: white;
+      border: none;
+    }
+    
+    .expired-action-btn.safety:hover {
+      background: #b91c1c;
+    }
+    
+    .expired-action-btn.continue {
+      background: #dc2626;
+      color: white;
+      border: none;
+    }
+    
+    .expired-action-btn.continue:hover {
+      background: #b91c1c;
+    }
   </style>
 </head>
 <body>
@@ -2343,18 +2423,35 @@ function createProductSupportWidgetHTML(): string {
             </div>
           </fieldset>
           
+          <!-- Warning message for YES -->
+          <div id="expiredYesMessage" class="expired-message-box warning">
+            <h3>Action needed</h3>
+            <p>If you have taken the expired medication, please report this on Lilly Safety Reporting Tool.</p>
+            <a href="https://val-safety-reporting-public.lilly.com" target="_blank" class="expired-action-btn safety">
+              Report a Lilly safety concern
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </a>
+          </div>
+          
+          <!-- Info message for NO -->
+          <div id="expiredNoMessage" class="expired-message-box info">
+            <p>Do not take expired product. If you were issued expired product, contact your distributing pharmacy for help.</p>
+            <button type="button" class="expired-action-btn continue" onclick="showPage('issue-info')">
+              Continue
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+          
           <div class="nav-buttons">
             <button class="nav-button back" onclick="showPage('product-details')">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
                 <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
               </svg>
               Go back
-            </button>
-            <button class="nav-button continue" id="expiredContinueBtn" disabled onclick="continueFromExpired()">
-              Continue
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
-                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
-              </svg>
             </button>
           </div>
         </div>
@@ -2559,18 +2656,20 @@ function createProductSupportWidgetHTML(): string {
     
     function selectExpiredAnswer(answer) {
       expiredAnswer = answer;
-      document.querySelectorAll('.radio-item').forEach(item => {
+      document.querySelectorAll('#expired-product .radio-item').forEach(item => {
         item.classList.remove('selected');
       });
       event.currentTarget.classList.add('selected');
-      document.getElementById('expiredContinueBtn').disabled = false;
-    }
-    
-    function continueFromExpired() {
-      if (expiredAnswer === 'no') {
-        showPage('issue-info');
-      } else {
-        alert('Since you have already taken the medication, please contact your healthcare provider for guidance.');
+      
+      // Hide both messages first
+      document.getElementById('expiredYesMessage').classList.remove('active');
+      document.getElementById('expiredNoMessage').classList.remove('active');
+      
+      // Show appropriate message based on selection
+      if (answer === 'yes') {
+        document.getElementById('expiredYesMessage').classList.add('active');
+      } else if (answer === 'no') {
+        document.getElementById('expiredNoMessage').classList.add('active');
       }
     }
     
