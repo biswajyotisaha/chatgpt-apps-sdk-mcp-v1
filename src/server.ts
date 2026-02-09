@@ -1677,89 +1677,23 @@ function createProductSupportWidgetHTML(): string {
       background: #dc2626;
     }
     
-    /* Step List Styles */
-    .step-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px 0;
-    }
-    
-    .step-list-item {
+    .progress-labels {
       display: flex;
-      align-items: flex-start;
-      position: relative;
-      padding-bottom: 24px;
+      gap: 8px;
+      margin-top: 8px;
     }
     
-    .step-list-item:last-child {
-      padding-bottom: 0;
-    }
-    
-    .step-list-item:not(:last-child) .step-pill::after {
-      content: '';
-      position: absolute;
-      left: 15px;
-      top: 32px;
-      width: 2px;
-      height: calc(100% + 0px);
-      background: #e5e7eb;
-    }
-    
-    .step-list-item.complete:not(:last-child) .step-pill::after {
-      background: #22c55e;
-    }
-    
-    .step-pill {
-      position: relative;
-      margin-right: 16px;
-      flex-shrink: 0;
-    }
-    
-    .step-content {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+    .progress-labels span {
       flex: 1;
-    }
-    
-    .step-counter {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #e5e7eb;
+      font-size: 11px;
       color: #6b7280;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+      text-align: center;
+      line-height: 1.3;
+    }
+    
+    .progress-labels span.active {
+      color: #dc2626;
       font-weight: 600;
-      flex-shrink: 0;
-    }
-    
-    .step-list-item.complete .step-counter {
-      background: #22c55e;
-      color: white;
-    }
-    
-    .step-complete-icon {
-      width: 16px;
-      height: 16px;
-    }
-    
-    .step-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 2px;
-    }
-    
-    .step-description {
-      font-size: 12px;
-      color: #6b7280;
-    }
-    
-    .step-list-item.complete .step-description {
-      color: #22c55e;
     }
     
     /* Product Info Page */
@@ -2776,6 +2710,12 @@ function createProductSupportWidgetHTML(): string {
             <div class="progress-step"></div>
             <div class="progress-step"></div>
           </div>
+          <div class="progress-labels">
+            <span class="active">Product information</span>
+            <span>Issue information</span>
+            <span>Your information</span>
+            <span>Report &amp; submit</span>
+          </div>
         </div>
         
         <div class="product-info-content">
@@ -2840,6 +2780,12 @@ function createProductSupportWidgetHTML(): string {
             <div class="progress-step"></div>
             <div class="progress-step"></div>
             <div class="progress-step"></div>
+          </div>
+          <div class="progress-labels">
+            <span class="active">Product information</span>
+            <span>Issue information</span>
+            <span>Your information</span>
+            <span>Report &amp; submit</span>
           </div>
         </div>
         
@@ -2988,6 +2934,12 @@ function createProductSupportWidgetHTML(): string {
             <div class="progress-step"></div>
             <div class="progress-step"></div>
           </div>
+          <div class="progress-labels">
+            <span class="active">Product information</span>
+            <span class="active">Issue information</span>
+            <span>Your information</span>
+            <span>Report &amp; submit</span>
+          </div>
         </div>
         
         <div class="product-info-content">
@@ -3046,6 +2998,12 @@ function createProductSupportWidgetHTML(): string {
             <div class="progress-step active"></div>
             <div class="progress-step"></div>
           </div>
+          <div class="progress-labels">
+            <span class="active">Product information</span>
+            <span class="active">Issue information</span>
+            <span class="active">Your information</span>
+            <span>Report &amp; submit</span>
+          </div>
         </div>
         
         <div class="product-info-content">
@@ -3098,63 +3056,21 @@ function createProductSupportWidgetHTML(): string {
   <div id="your-info" class="page-view">
     <div class="widget-container" style="display: block;">
       <div class="content-area">
-        <!-- Step List -->
+        <!-- Progress Bar -->
         <div class="progress-section">
           <p class="progress-label">Your progress</p>
-          <ol class="step-list">
-            <li class="step-list-item complete" aria-current="false">
-              <div class="step-pill"></div>
-              <div class="step-content" aria-hidden="true">
-                <div class="step-counter">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div class="step-label">Product information</div>
-                  <div class="step-description">Completed</div>
-                </div>
-              </div>
-            </li>
-            <li class="step-list-item complete" aria-current="false">
-              <div class="step-pill"></div>
-              <div class="step-content" aria-hidden="true">
-                <div class="step-counter">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div class="step-label">Issue information</div>
-                  <div class="step-description">Completed</div>
-                </div>
-              </div>
-            </li>
-            <li class="step-list-item complete" aria-current="false">
-              <div class="step-pill"></div>
-              <div class="step-content" aria-hidden="true">
-                <div class="step-counter">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div class="step-label">Your information</div>
-                  <div class="step-description">In progress</div>
-                </div>
-              </div>
-            </li>
-            <li class="step-list-item" aria-current="false">
-              <div class="step-pill"></div>
-              <div class="step-content" aria-hidden="true">
-                <div class="step-counter">4</div>
-                <div>
-                  <div class="step-label">Report &amp; submit</div>
-                  <div class="step-description">Not started</div>
-                </div>
-              </div>
-            </li>
-          </ol>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+          </div>
+          <div class="progress-labels">
+            <span class="active">Product information</span>
+            <span class="active">Issue information</span>
+            <span class="active">Your information</span>
+            <span>Report &amp; submit</span>
+          </div>
         </div>
         
         <div class="product-info-content">
@@ -3355,6 +3271,12 @@ function createProductSupportWidgetHTML(): string {
             <div class="progress-step active"></div>
             <div class="progress-step active"></div>
             <div class="progress-step active"></div>
+          </div>
+          <div class="progress-labels">
+            <span class="active">Product information</span>
+            <span class="active">Issue information</span>
+            <span class="active">Your information</span>
+            <span class="active">Report &amp; submit</span>
           </div>
         </div>
         
