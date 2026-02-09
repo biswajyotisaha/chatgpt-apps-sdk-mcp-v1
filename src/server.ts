@@ -2715,23 +2715,6 @@ function createProductSupportWidgetHTML(): string {
             </div>
           </div>
           
-          <!-- Medicine Package Section -->
-          <div class="info-section barcode-section">
-            <div class="info-content">
-              <h6>If you have your medicine package</h6>
-              <p>Scan the 2D barcode printed on the outside of the medication package. <strong>Do not</strong> scan any other barcode on the package or individual products.</p>
-              <button type="button" class="action-btn filled" onclick="scanBarcode()">
-                Scan medicine package
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
-                  <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
-                </svg>
-              </button>
-            </div>
-            <div class="info-image">
-              <img src="https://mcp-server-ekh0.onrender.com/public/images/serial_number-DN6HT7jN.svg" alt="Barcode example" />
-            </div>
-          </div>
-          
           <!-- No Product Section -->
           <div class="info-section no-product-section">
             <h6>If you do not have the individual product or medicine package</h6>
