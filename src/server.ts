@@ -2396,6 +2396,153 @@ function createProductSupportWidgetHTML(): string {
       font-style: italic;
       margin-top: 4px;
     }
+    
+    /* Report Submitted Page Styles */
+    .report-submitted-header {
+      margin-bottom: 24px;
+    }
+    
+    .report-submitted-header h1 {
+      font-size: 48px;
+      font-weight: 400;
+      font-family: Georgia, serif;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+    
+    .report-submitted-header h6 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 16px 0;
+    }
+    
+    .report-submitted-header p {
+      font-size: 18px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .report-submitted-header ul {
+      font-size: 18px;
+      color: #4b5563;
+      line-height: 1.8;
+      margin: 16px 0 24px 24px;
+      padding: 0;
+    }
+    
+    .report-submitted-header ul li {
+      margin-bottom: 8px;
+    }
+    
+    .resources-section {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+    
+    .resources-section h6 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+    
+    .resources-section p {
+      font-size: 16px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .resource-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    
+    .resource-links a {
+      color: #dc2626;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .resource-links a:hover {
+      text-decoration: underline;
+    }
+    
+    .resource-divider {
+      height: 2px;
+      background: #e5e7eb;
+      margin: 32px 0;
+      border: none;
+    }
+    
+    .additional-resources h6 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 16px 0;
+    }
+    
+    .product-links-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    .product-link-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .product-link-column .primary-link {
+      font-size: 18px;
+      font-weight: 600;
+      color: #dc2626;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+    
+    .product-link-column .primary-link:hover {
+      text-decoration: underline;
+    }
+    
+    .product-link-column .secondary-link {
+      font-size: 14px;
+      color: #4b5563;
+      text-decoration: none;
+    }
+    
+    .product-link-column .secondary-link:hover {
+      text-decoration: underline;
+    }
+    
+    .take-home-button {
+      background: #dc2626;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    
+    .take-home-button:hover {
+      background: #b91c1c;
+    }
   </style>
 </head>
 <body>
@@ -3079,6 +3226,79 @@ function createProductSupportWidgetHTML(): string {
     </div>
   </div>
   
+  <!-- Report Submitted Page -->
+  <div id="report-submitted" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <p class="progress-label">Your progress</p>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+          </div>
+        </div>
+        
+        <div class="product-info-content">
+          <!-- Report Submitted Header -->
+          <div class="report-submitted-header">
+            <h1>Report submitted</h1>
+            <h6>Confirmation: <span id="confirmationNumber">LY-020926-035200</span></h6>
+            <p>Thank you for your feedback, your concern has been submitted. However, we're currently unable to offer full support for your request due to one or more of the following:</p>
+            <ul>
+              <li>A valid lot or batch number was not provided.</li>
+              <li>The product appears to be a sample, which is not eligible for replacement.</li>
+              <li>Contact information was not provided (report submitted anonymously).</li>
+            </ul>
+            <p>Thank you for your understanding. If you decide to share this information later, we'll be better able to assist you.</p>
+          </div>
+          
+          <!-- Resources Section -->
+          <div class="resources-section">
+            <div>
+              <h6>Review our training resources</h6>
+              <p>Whether you're new to injections or have been using them for a while, take a moment to review our How to Use videos. They can help you feel more confident and avoid issues in the future.</p>
+              <div class="resource-links">
+                <a href="https://www.mounjaro.com/how-to-take" target="_blank">See how to use Mounjaro® (tirzepatide)</a>
+                <a href="https://www.zepbound.com/how-to-take" target="_blank">See how to use Zepbound® (tirzepatide)</a>
+              </div>
+            </div>
+            
+            <hr class="resource-divider">
+            
+            <div class="additional-resources">
+              <h6>Additional resources</h6>
+              <div class="product-links-container">
+                <div class="product-link-column">
+                  <a href="https://mounjaro.lilly.com" class="primary-link" target="_blank">Mounjaro</a>
+                  <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#pi" class="secondary-link" target="_blank">Prescribing Information with Boxed Warnings</a>
+                  <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#mg" class="secondary-link" target="_blank">Medication Guide</a>
+                  <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#ug0" class="secondary-link" target="_blank">Instructions for Use - Pen</a>
+                </div>
+                <div class="product-link-column">
+                  <a href="https://zepbound.lilly.com" class="primary-link" target="_blank">Zepbound</a>
+                  <a href="https://uspl.lilly.com/zepbound/zepbound.html#pi" class="secondary-link" target="_blank">Prescribing Information with Boxed Warnings</a>
+                  <a href="https://uspl.lilly.com/zepbound/zepbound.html#mg" class="secondary-link" target="_blank">Medication Guide</a>
+                  <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug" class="secondary-link" target="_blank">Instructions for Use - Pen</a>
+                  <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug2" class="secondary-link" target="_blank">Instructions for Use - KwikPen</a>
+                </div>
+              </div>
+            </div>
+            
+            <button class="take-home-button" onclick="window.location.reload()">
+              Take me home
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(content => {
@@ -3688,8 +3908,8 @@ function createProductSupportWidgetHTML(): string {
       event.currentTarget.querySelector('input').checked = true;
       
       // Enable/disable contact fields based on selection
-      const emailField = document.getElementById('userEmail');
-      const phoneField = document.getElementById('userPhone');
+      const emailField = document.getElementById('email');
+      const phoneField = document.getElementById('phone');
       
       if (value === 'yes') {
         emailField.disabled = false;
@@ -3697,7 +3917,13 @@ function createProductSupportWidgetHTML(): string {
       } else {
         emailField.disabled = true;
         phoneField.disabled = true;
+        emailField.value = '';
+        phoneField.value = '';
+        userInfo.email = '';
+        userInfo.phone = '';
       }
+      
+      updateUserInfoContinueButton();
     }
     
     function selectDeviceReturn(value) {
@@ -3708,6 +3934,35 @@ function createProductSupportWidgetHTML(): string {
       });
       event.currentTarget.classList.add('selected');
       event.currentTarget.querySelector('input').checked = true;
+      
+      updateUserInfoContinueButton();
+    }
+    
+    function updateUserInfoContinueButton() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const dateOfBirth = document.getElementById('dateOfBirth').value;
+      const permissionToContact = userInfo.permissionToContact;
+      const address = document.getElementById('address').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const state = document.getElementById('state').value;
+      const zipCode = document.getElementById('zipCode').value.trim();
+      const deviceReturn = userInfo.deviceReturn;
+      
+      // Check if all required fields are filled
+      let allRequiredFilled = firstName && lastName && dateOfBirth && 
+                              permissionToContact && address && city && 
+                              state && zipCode && deviceReturn;
+      
+      // If permission to contact is 'yes', email or phone is required
+      if (permissionToContact === 'yes') {
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        allRequiredFilled = allRequiredFilled && (email || phone);
+      }
+      
+      const continueBtn = document.getElementById('yourInfoContinueBtn');
+      continueBtn.disabled = !allRequiredFilled;
     }
     
     function submitReport() {
@@ -3715,21 +3970,32 @@ function createProductSupportWidgetHTML(): string {
       userInfo.firstName = document.getElementById('firstName').value;
       userInfo.lastName = document.getElementById('lastName').value;
       userInfo.dateOfBirth = document.getElementById('dateOfBirth').value;
-      userInfo.email = document.getElementById('userEmail').value;
-      userInfo.phone = document.getElementById('userPhone').value;
-      userInfo.address = document.getElementById('streetAddress').value;
-      userInfo.apartment = document.getElementById('userApartment').value;
-      userInfo.city = document.getElementById('userCity').value;
-      userInfo.state = document.getElementById('userState').value;
-      userInfo.zipCode = document.getElementById('userZipCode').value;
+      userInfo.email = document.getElementById('email').value;
+      userInfo.phone = document.getElementById('phone').value;
+      userInfo.address = document.getElementById('address').value;
+      userInfo.apartment = document.getElementById('apartment').value;
+      userInfo.city = document.getElementById('city').value;
+      userInfo.state = document.getElementById('state').value;
+      userInfo.zipCode = document.getElementById('zipCode').value;
+      
+      // Generate confirmation number
+      const today = new Date();
+      const dateStr = today.getFullYear().toString().slice(-2) + 
+                      String(today.getMonth() + 1).padStart(2, '0') + 
+                      String(today.getDate()).padStart(2, '0');
+      const randomNum = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+      const confirmationNum = 'LY-' + dateStr + '-' + randomNum;
       
       console.log('Report submitted:', {
         formState,
         issueState,
-        userInfo
+        userInfo,
+        confirmationNumber: confirmationNum
       });
       
-      alert('Your report has been submitted successfully!\\n\\nThank you for contacting Lilly Product Support.');
+      // Show report submitted page
+      document.getElementById('confirmationNumber').textContent = confirmationNum;
+      showPage('report-submitted');
     }
     
     // Allow ChatGPT to set user profile data
