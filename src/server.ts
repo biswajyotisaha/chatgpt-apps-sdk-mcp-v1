@@ -1490,6 +1490,163 @@ function createProductSupportWidgetHTML(): string {
       background: #e5e7eb;
       margin: 24px 0;
     }
+    
+    /* Navigation Buttons */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      margin-top: 32px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .nav-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .nav-button.back {
+      background: transparent;
+      color: #dc2626;
+    }
+    
+    .nav-button.back:hover {
+      text-decoration: underline;
+    }
+    
+    .nav-button.continue {
+      background: #dc2626;
+      color: white;
+    }
+    
+    .nav-button.continue:hover {
+      background: #b91c1c;
+    }
+    
+    .nav-button svg {
+      transition: transform 0.2s;
+    }
+    
+    .nav-button.continue:hover svg {
+      transform: translateX(4px);
+    }
+    
+    .nav-button.back:hover svg {
+      transform: translateX(-4px);
+    }
+    
+    /* Before We Begin Page */
+    .page-view {
+      display: none;
+    }
+    
+    .page-view.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .before-begin-content h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1f2937;
+      font-family: Georgia, 'Times New Roman', serif;
+      margin-bottom: 24px;
+    }
+    
+    .before-begin-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+      font-family: Georgia, 'Times New Roman', serif;
+      margin-bottom: 16px;
+    }
+    
+    .before-begin-content h6 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    
+    .before-begin-content p {
+      font-size: 18px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .before-begin-content ul {
+      list-style: disc;
+      padding-left: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .before-begin-content li {
+      font-size: 18px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    
+    .sub-section {
+      margin-top: 32px;
+    }
+    
+    .resources-section {
+      margin-top: 32px;
+    }
+    
+    .resources-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+    
+    @media (max-width: 640px) {
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .resource-column a {
+      display: block;
+      margin-bottom: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .resource-column a.primary-link {
+      font-size: 18px;
+      font-weight: 700;
+      color: #dc2626;
+      margin-bottom: 16px;
+    }
+    
+    .resource-column a.secondary-link {
+      font-size: 16px;
+      color: #dc2626;
+    }
+    
+    .resource-column a:hover {
+      text-decoration: underline;
+    }
+    
+    .thick-divider {
+      height: 3px;
+      background: #e5e7eb;
+      margin: 32px 0;
+    }
   </style>
 </head>
 <body>
@@ -1579,6 +1736,72 @@ function createProductSupportWidgetHTML(): string {
     </div>
   </div>
   
+  <!-- Before We Begin Page -->
+  <div id="before-we-begin" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area before-begin-content">
+        <h1>Before we begin...</h1>
+        <p>Please have your product and its packaging ready. This tool is intended for self-reports only and may be used by U.S. residents who are 18 years or older. If you are submitting a report on someone else's behalf, please use the <a href="https://val-safety-reporting-public.lilly.com" target="_blank" style="color: #dc2626; text-decoration: underline;">Lilly Safety Reporting Tool.</a></p>
+        
+        <div class="sub-section">
+          <h2>Helpful information to gather</h2>
+          <p>Please note that our ability to assist may be limited without the following information:</p>
+          <ul>
+            <li>Medication package with 2D barcode or valid lot number/batch number (your pharmacy can provide the lot number if you don't have it available)</li>
+            <li>Product strength and dosing information</li>
+            <li>Description of the device issue or quality concern</li>
+            <li>Your contact information that matches the prescription</li>
+          </ul>
+        </div>
+        
+        <div class="sub-section">
+          <h2>Supported medications</h2>
+          <p>If you do not see your medication below, use the <a href="https://val-safety-reporting-public.lilly.com" target="_blank" style="color: #dc2626; text-decoration: underline;">Lilly Safety Reporting Tool</a> instead of this form.</p>
+          <ul>
+            <li>Mounjaro® (tirzepatide) pens</li>
+            <li>Zepbound® (tirzepatide) pens and KwikPens</li>
+          </ul>
+        </div>
+        
+        <div class="thick-divider"></div>
+        
+        <div class="resources-section">
+          <h6>Additional resources</h6>
+          <div class="resources-grid">
+            <div class="resource-column">
+              <a href="https://mounjaro.lilly.com" target="_blank" class="primary-link">Mounjaro</a>
+              <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#pi" target="_blank" class="secondary-link">Prescribing Information with Boxed Warnings</a>
+              <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#mg" target="_blank" class="secondary-link">Medication Guide</a>
+              <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#ug0" target="_blank" class="secondary-link">Instructions for Use - Pen</a>
+            </div>
+            <div class="resource-column">
+              <a href="https://zepbound.lilly.com" target="_blank" class="primary-link">Zepbound</a>
+              <a href="https://uspl.lilly.com/zepbound/zepbound.html#pi" target="_blank" class="secondary-link">Prescribing Information with Boxed Warnings</a>
+              <a href="https://uspl.lilly.com/zepbound/zepbound.html#mg" target="_blank" class="secondary-link">Medication Guide</a>
+              <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug" target="_blank" class="secondary-link">Instructions for Use - Pen</a>
+              <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug" target="_blank" class="secondary-link">Instructions for Use - KwikPen</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="nav-buttons">
+          <button class="nav-button back" onclick="showPage('main')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+            </svg>
+            Go back
+          </button>
+          <button class="nav-button continue" onclick="showPage('form')">
+            Continue
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(content => {
@@ -1600,6 +1823,39 @@ function createProductSupportWidgetHTML(): string {
         });
       }
     }
+    
+    function showPage(pageId) {
+      // Hide all page views and main container
+      document.querySelectorAll('.page-view').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      const mainContainer = document.querySelector('.widget-container');
+      
+      if (pageId === 'main') {
+        // Show main product support view
+        mainContainer.style.display = 'block';
+        document.getElementById('before-we-begin').classList.remove('active');
+      } else if (pageId === 'before-we-begin') {
+        // Show before we begin page
+        mainContainer.style.display = 'none';
+        document.getElementById('before-we-begin').classList.add('active');
+      } else if (pageId === 'form') {
+        // Continue to next step (placeholder for future form)
+        alert('Form step coming soon!');
+      }
+    }
+    
+    // Update the Get product support button to navigate to before-we-begin page
+    document.addEventListener('DOMContentLoaded', function() {
+      const productSupportBtn = document.querySelector('#product-support .action-button');
+      if (productSupportBtn) {
+        productSupportBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          showPage('before-we-begin');
+        });
+      }
+    });
     
     console.log('Product Support widget loaded');
   </script>
