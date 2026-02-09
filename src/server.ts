@@ -2734,8 +2734,9 @@ function createProductSupportWidgetHTML(): string {
             </a>
           </div>
           
-          <!-- Info message for NO -->
-          <div id="expiredNoMessage" class="expired-message-box info">
+          <!-- Warning message for NO -->
+          <div id="expiredNoMessage" class="expired-message-box error">
+            <h3>Warning:</h3>
             <p>Do not take expired product. If you were issued expired product, contact your distributing pharmacy for help.</p>
             <button type="button" class="expired-action-btn continue" onclick="showPage('issue-info')">
               Continue
