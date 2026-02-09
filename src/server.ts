@@ -1933,6 +1933,90 @@ function createProductSupportWidgetHTML(): string {
       background: #fecaca;
       cursor: not-allowed;
     }
+    
+    /* Expired Product Page */
+    .expired-heading {
+      font-size: 32px;
+      font-weight: 400;
+      font-family: Georgia, serif;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    
+    .expired-message {
+      font-size: 18px;
+      color: #4b5563;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    
+    .radio-fieldset {
+      border: none;
+      padding: 0;
+      margin: 0 0 32px 0;
+    }
+    
+    .radio-legend {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .radio-item:hover {
+      border-color: #dc2626;
+    }
+    
+    .radio-item.selected {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+    
+    .radio-item input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #dc2626;
+    }
+    
+    .radio-item span {
+      font-size: 16px;
+      color: #1f2937;
+    }
+    
+    /* Issue Information Page */
+    .issue-select {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: white;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+    }
+    
+    .issue-select:focus {
+      border-color: #dc2626;
+    }
   </style>
 </head>
 <body>
@@ -2237,6 +2321,103 @@ function createProductSupportWidgetHTML(): string {
     </div>
   </div>
   
+  <!-- Expired Product Page -->
+  <div id="expired-product" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <div class="product-info-content">
+          <h1 class="expired-heading">Expired product</h1>
+          <p class="expired-message">It appears that your medicine is expired, please answer the below question to know how to best proceed.</p>
+          
+          <fieldset class="radio-fieldset">
+            <legend class="radio-legend">Did you take the medication already?</legend>
+            <div class="radio-group">
+              <label class="radio-item" onclick="selectExpiredAnswer('yes')">
+                <input type="radio" name="expired-medication" value="yes" />
+                <span>Yes</span>
+              </label>
+              <label class="radio-item" onclick="selectExpiredAnswer('no')">
+                <input type="radio" name="expired-medication" value="no" />
+                <span>No</span>
+              </label>
+            </div>
+          </fieldset>
+          
+          <div class="nav-buttons">
+            <button class="nav-button back" onclick="showPage('product-details')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+              </svg>
+              Go back
+            </button>
+            <button class="nav-button continue" id="expiredContinueBtn" disabled onclick="continueFromExpired()">
+              Continue
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Issue Information Page -->
+  <div id="issue-info" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <p class="progress-label">Your progress</p>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+          </div>
+        </div>
+        
+        <div class="product-info-content">
+          <h1>Tell us what happened</h1>
+          <p class="subtitle">Please select your issue type followed by your product concern. Your selections will help us understand what went wrong and how to help.</p>
+          
+          <div class="form-section">
+            <label class="form-label">Issue type</label>
+            <select class="issue-select" id="issueTypeSelect" onchange="updateIssueType()">
+              <option value="">Select issue type</option>
+              <option value="pen_issue">Pen Issue</option>
+              <option value="needle_issue">Needle Issue</option>
+              <option value="packaging_issue">Packaging Issue</option>
+              <option value="experience_not_captured">Experience not captured</option>
+            </select>
+          </div>
+          
+          <div class="form-section">
+            <label class="form-label">Product concern</label>
+            <select class="issue-select" id="productConcernSelect" disabled onchange="updateProductConcern()">
+              <option value="">Select product concern</option>
+            </select>
+          </div>
+          
+          <div class="nav-buttons">
+            <button class="nav-button back" onclick="showPage('expired-product')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+              </svg>
+              Go back
+            </button>
+            <button class="nav-button continue" id="issueContinueBtn" disabled onclick="continueFromIssue()">
+              Continue
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(content => {
@@ -2266,7 +2447,7 @@ function createProductSupportWidgetHTML(): string {
       });
       
       const mainContainer = document.querySelector('.widget-container');
-      const allPages = ['before-we-begin', 'product-info', 'product-details'];
+      const allPages = ['before-we-begin', 'product-info', 'product-details', 'expired-product', 'issue-info'];
       
       if (pageId === 'main') {
         // Show main product support view
@@ -2297,8 +2478,14 @@ function createProductSupportWidgetHTML(): string {
       const batchNumber = document.getElementById('batchNumber').value;
       if (batchNumber.trim()) {
         formState.batchNumber = batchNumber.trim();
+        formState.hasBatchNumber = true;
         document.getElementById('displayBatchNumber').textContent = formState.batchNumber;
         showPage('product-details');
+        // Auto-select Zepbound and Pen when batch number is entered
+        setTimeout(function() {
+          selectProduct('zepbound');
+          selectProductType('pen');
+        }, 100);
       } else {
         alert('Please enter a lot/batch number');
       }
@@ -2364,7 +2551,82 @@ function createProductSupportWidgetHTML(): string {
     
     function continueToNextStep() {
       console.log('Form submitted:', formState);
-      alert('Product Details submitted!\\nBatch: ' + formState.batchNumber + '\\nProduct: ' + formState.productName + '\\nType: ' + formState.productType + '\\nStrength: ' + formState.strength + ' mg\\n\\nNext step coming soon!');
+      showPage('expired-product');
+    }
+    
+    // Expired Product Page functions
+    let expiredAnswer = '';
+    
+    function selectExpiredAnswer(answer) {
+      expiredAnswer = answer;
+      document.querySelectorAll('.radio-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      event.currentTarget.classList.add('selected');
+      document.getElementById('expiredContinueBtn').disabled = false;
+    }
+    
+    function continueFromExpired() {
+      if (expiredAnswer === 'no') {
+        showPage('issue-info');
+      } else {
+        alert('Since you have already taken the medication, please contact your healthcare provider for guidance.');
+      }
+    }
+    
+    // Issue Information Page functions
+    const issueOptions = {
+      pen_issue: ['Pen did not work', 'Pen jammed', 'Dose window issue', 'Leaking', 'Other pen issue'],
+      needle_issue: ['Needle bent', 'Needle missing', 'Needle contaminated', 'Other needle issue'],
+      packaging_issue: ['Damaged box', 'Missing items', 'Wrong product', 'Other packaging issue'],
+      experience_not_captured: ['Side effect', 'Unexpected reaction', 'No effect', 'Other experience']
+    };
+    
+    let issueState = {
+      issueType: '',
+      productConcern: ''
+    };
+    
+    function updateIssueType() {
+      const issueType = document.getElementById('issueTypeSelect').value;
+      issueState.issueType = issueType;
+      issueState.productConcern = '';
+      
+      const concernSelect = document.getElementById('productConcernSelect');
+      concernSelect.innerHTML = '<option value="">Select product concern</option>';
+      
+      if (issueType && issueOptions[issueType]) {
+        issueOptions[issueType].forEach(option => {
+          const opt = document.createElement('option');
+          opt.value = option.toLowerCase().replace(/\\s+/g, '_');
+          opt.textContent = option;
+          concernSelect.appendChild(opt);
+        });
+        concernSelect.disabled = false;
+      } else {
+        concernSelect.disabled = true;
+      }
+      
+      updateIssueContinueButton();
+    }
+    
+    function updateProductConcern() {
+      issueState.productConcern = document.getElementById('productConcernSelect').value;
+      updateIssueContinueButton();
+    }
+    
+    function updateIssueContinueButton() {
+      const continueBtn = document.getElementById('issueContinueBtn');
+      if (issueState.issueType && issueState.productConcern) {
+        continueBtn.disabled = false;
+      } else {
+        continueBtn.disabled = true;
+      }
+    }
+    
+    function continueFromIssue() {
+      console.log('Issue submitted:', issueState);
+      alert('Issue Information submitted!\\nType: ' + issueState.issueType + '\\nConcern: ' + issueState.productConcern + '\\n\\nNext step coming soon!');
     }
     
     function scanBarcode() {
@@ -2372,7 +2634,10 @@ function createProductSupportWidgetHTML(): string {
     }
     
     function continueWithoutBatch() {
-      alert('Continuing without batch number. Next step coming soon!');
+      formState.batchNumber = '';
+      formState.hasBatchNumber = false;
+      document.getElementById('displayBatchNumber').textContent = 'Not provided';
+      showPage('product-details');
     }
     
     // Update the Get product support button to navigate to before-we-begin page
