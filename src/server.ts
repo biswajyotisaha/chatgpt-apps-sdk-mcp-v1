@@ -2128,6 +2128,274 @@ function createProductSupportWidgetHTML(): string {
     .expired-action-btn.continue:hover {
       background: #b91c1c;
     }
+    
+    /* Questions Page Styles */
+    .questions-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1.5px solid #e5e7eb;
+    }
+    
+    .questions-header-text h1 {
+      font-size: 28px;
+      font-weight: 400;
+      font-family: Georgia, serif;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+    
+    .questions-header-text p {
+      font-size: 16px;
+      color: #4b5563;
+      margin: 0;
+    }
+    
+    .questions-header-image {
+      flex-shrink: 0;
+    }
+    
+    .questions-header-image img {
+      width: 120px;
+      height: auto;
+    }
+    
+    .questions-wrapper {
+      margin-bottom: 24px;
+    }
+    
+    .fields-required {
+      font-size: 16px;
+      color: #4b5563;
+      margin-bottom: 24px;
+    }
+    
+    .question-group {
+      margin-bottom: 24px;
+    }
+    
+    .question-label {
+      display: block;
+      font-size: 16px;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    
+    .question-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .question-radio-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .question-radio-item:hover:not(.disabled) {
+      border-color: #dc2626;
+    }
+    
+    .question-radio-item.selected {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+    
+    .question-radio-item.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f9fafb;
+    }
+    
+    .question-radio-item input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #dc2626;
+      margin: 0;
+    }
+    
+    .question-radio-item label {
+      font-size: 16px;
+      color: #1f2937;
+      cursor: pointer;
+      flex: 1;
+    }
+    
+    .question-radio-item.disabled label {
+      cursor: not-allowed;
+    }
+    
+    .confirmation-section {
+      background: #f9fafb;
+      padding: 24px;
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+    
+    .confirmation-section h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f2937;
+      margin: 0 0 12px 0;
+    }
+    
+    .confirmation-section p {
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin: 0 0 12px 0;
+    }
+    
+    .confirmation-section a {
+      color: #dc2626;
+      text-decoration: underline;
+    }
+    
+    /* Your Information Page Styles */
+    .your-info-header {
+      margin-bottom: 16px;
+    }
+    
+    .your-info-header h1 {
+      font-size: 32px;
+      font-weight: 400;
+      font-family: Georgia, serif;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+    
+    .your-info-header p {
+      font-size: 16px;
+      color: #4b5563;
+      margin: 0;
+    }
+    
+    .info-alert {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .info-alert svg {
+      flex-shrink: 0;
+      color: #dc2626;
+    }
+    
+    .info-alert p {
+      font-size: 14px;
+      color: #991b1b;
+      margin: 0;
+    }
+    
+    .info-alert strong {
+      font-weight: 700;
+    }
+    
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .form-field label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+    }
+    
+    .form-field input,
+    .form-field select {
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    
+    .form-field input:focus,
+    .form-field select:focus {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+    
+    .form-field input:disabled {
+      background: #f9fafb;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    .form-field input::placeholder {
+      color: #9ca3af;
+    }
+    
+    .permission-question {
+      margin-bottom: 24px;
+    }
+    
+    .permission-question .question-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    
+    .address-section {
+      margin-top: 24px;
+    }
+    
+    .address-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    
+    .device-return-question {
+      margin-top: 24px;
+    }
+    
+    .device-return-question .hint-text {
+      font-size: 14px;
+      color: #6b7280;
+      font-style: italic;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -2548,6 +2816,268 @@ function createProductSupportWidgetHTML(): string {
     </div>
   </div>
   
+  <!-- Questions Page -->
+  <div id="questions-page" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <p class="progress-label">Your progress</p>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+          </div>
+        </div>
+        
+        <div class="product-info-content">
+          <!-- Questions Header -->
+          <div class="questions-header">
+            <div class="questions-header-text">
+              <h1 id="questionsTitle">Questions</h1>
+              <p>Please answer the question(s) below to help us better understand your concern.</p>
+            </div>
+            <div class="questions-header-image">
+              <img src="https://mcp-server-ekh0.onrender.com/public/images/pen-diagram.svg" alt="Product Diagram" onerror="this.style.display='none'">
+            </div>
+          </div>
+          
+          <!-- Questions Wrapper -->
+          <div class="questions-wrapper">
+            <p class="fields-required">All fields required unless otherwise indicated</p>
+            <div id="questionsContainer">
+              <!-- Questions will be dynamically rendered here -->
+            </div>
+          </div>
+          
+          <!-- Confirmation Section -->
+          <div class="confirmation-section">
+            <h2>Confirmation</h2>
+            <p>Once you submit, your answers can't be changed. Please review all your answers before submitting.</p>
+            <p>Eli Lilly and Company has legal obligations to record and/or report adverse events and product complaints. Your personal information will be processed in accordance with specific pharmacovigilance legislation. We will process the information that you provide for purposes such as responding and following up on your inquiry, storing the information for reference and complying with our legal and regulatory recording and reporting obligations. By clicking "Submit" you agree to our <a href="https://privacynotice.lilly.com/" target="_blank" rel="noopener noreferrer">Privacy Statement</a> and <a href="https://www.lillyhub.com/legal/lillyusa/chpn.html" target="_blank" rel="noopener noreferrer">Consumer Health Privacy Notice</a>.</p>
+          </div>
+          
+          <div class="nav-buttons">
+            <button class="nav-button back" onclick="showPage('issue-info')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+              </svg>
+              Go back
+            </button>
+            <button class="nav-button continue" id="questionsContinueBtn" disabled onclick="continueFromQuestions()">
+              Continue
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Your Information Page -->
+  <div id="your-info" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <p class="progress-label">Your progress</p>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+          </div>
+        </div>
+        
+        <div class="product-info-content">
+          <!-- Your Information Header -->
+          <div class="your-info-header">
+            <h1>Your Information</h1>
+            <p>Please provide your contact information so we can follow up with you about your concern.</p>
+          </div>
+          
+          <!-- Error Alert -->
+          <div class="info-alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm-4,48a12,12,0,1,1-12,12A12,12,0,0,1,124,72Zm12,112a16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40a8,8,0,0,1,0,16Z"></path>
+            </svg>
+            <p><strong>Important:</strong> Please ensure all information is accurate. We will use this information to contact you about your product concern.</p>
+          </div>
+          
+          <!-- Form Fields -->
+          <div class="form-grid">
+            <div class="form-row">
+              <div class="form-field">
+                <label for="firstName">First name *</label>
+                <input type="text" id="firstName" placeholder="Enter first name" oninput="updateUserInfoContinueButton()">
+              </div>
+              <div class="form-field">
+                <label for="lastName">Last name *</label>
+                <input type="text" id="lastName" placeholder="Enter last name" oninput="updateUserInfoContinueButton()">
+              </div>
+            </div>
+            
+            <div class="form-row single">
+              <div class="form-field">
+                <label for="dateOfBirth">Date of birth *</label>
+                <input type="date" id="dateOfBirth" oninput="updateUserInfoContinueButton()">
+              </div>
+            </div>
+            
+            <!-- Permission to Contact -->
+            <div class="permission-question">
+              <span class="question-label">May we contact you for additional information? *</span>
+              <div class="question-radio-group">
+                <div class="question-radio-item" data-value="yes" onclick="selectPermissionToContact('yes')">
+                  <input type="radio" name="permissionToContact" id="permission-yes" value="yes">
+                  <label for="permission-yes">Yes</label>
+                </div>
+                <div class="question-radio-item" data-value="no" onclick="selectPermissionToContact('no')">
+                  <input type="radio" name="permissionToContact" id="permission-no" value="no">
+                  <label for="permission-no">No</label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-field">
+                <label for="email">Email address</label>
+                <input type="email" id="email" placeholder="Enter email" disabled oninput="updateUserInfoContinueButton()">
+              </div>
+              <div class="form-field">
+                <label for="phone">Phone number</label>
+                <input type="tel" id="phone" placeholder="Enter phone number" disabled oninput="updateUserInfoContinueButton()">
+              </div>
+            </div>
+            
+            <!-- Address Section -->
+            <div class="address-section">
+              <h3 class="address-section-title">Address</h3>
+              
+              <div class="form-row single">
+                <div class="form-field">
+                  <label for="address">Street address *</label>
+                  <input type="text" id="address" placeholder="Enter street address" oninput="updateUserInfoContinueButton()">
+                </div>
+              </div>
+              
+              <div class="form-row single">
+                <div class="form-field">
+                  <label for="apartment">Apartment, suite, etc. (optional)</label>
+                  <input type="text" id="apartment" placeholder="Enter apartment, suite, etc.">
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="city">City *</label>
+                  <input type="text" id="city" placeholder="Enter city" oninput="updateUserInfoContinueButton()">
+                </div>
+                <div class="form-field">
+                  <label for="state">State *</label>
+                  <select id="state" onchange="updateUserInfoContinueButton()">
+                    <option value="">Select state</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row single">
+                <div class="form-field">
+                  <label for="zipCode">ZIP code *</label>
+                  <input type="text" id="zipCode" placeholder="Enter ZIP code" oninput="updateUserInfoContinueButton()">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Device Return Question -->
+            <div class="device-return-question">
+              <span class="question-label">Would you be willing to return the device for evaluation? *</span>
+              <p class="hint-text">Returning the device helps us investigate and improve our products.</p>
+              <div class="question-radio-group">
+                <div class="question-radio-item" data-value="yes" onclick="selectDeviceReturn('yes')">
+                  <input type="radio" name="deviceReturn" id="device-yes" value="yes">
+                  <label for="device-yes">Yes</label>
+                </div>
+                <div class="question-radio-item" data-value="no" onclick="selectDeviceReturn('no')">
+                  <input type="radio" name="deviceReturn" id="device-no" value="no">
+                  <label for="device-no">No</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="nav-buttons">
+            <button class="nav-button back" onclick="showPage('questions-page')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+              </svg>
+              Go back
+            </button>
+            <button class="nav-button continue" id="yourInfoContinueBtn" disabled onclick="submitReport()">
+              Review your report
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(content => {
@@ -2577,20 +3107,26 @@ function createProductSupportWidgetHTML(): string {
       });
       
       const mainContainer = document.querySelector('.widget-container');
-      const allPages = ['before-we-begin', 'product-info', 'product-details', 'expired-product', 'issue-info'];
+      const allPages = ['before-we-begin', 'product-info', 'product-details', 'expired-product', 'issue-info', 'questions-page', 'your-info'];
       
       if (pageId === 'main') {
         // Show main product support view
         mainContainer.style.display = 'block';
-        allPages.forEach(p => document.getElementById(p).classList.remove('active'));
+        allPages.forEach(p => {
+          const el = document.getElementById(p);
+          if (el) el.classList.remove('active');
+        });
       } else {
         // Hide main container and show specific page
         mainContainer.style.display = 'none';
         allPages.forEach(p => {
-          if (p === pageId) {
-            document.getElementById(p).classList.add('active');
-          } else {
-            document.getElementById(p).classList.remove('active');
+          const el = document.getElementById(p);
+          if (el) {
+            if (p === pageId) {
+              el.classList.add('active');
+            } else {
+              el.classList.remove('active');
+            }
           }
         });
       }
@@ -2708,15 +3244,106 @@ function createProductSupportWidgetHTML(): string {
     
     // Issue Information Page functions
     const issueOptions = {
-      pen_issue: ['Pen did not work', 'Pen jammed', 'Dose window issue', 'Leaking', 'Other pen issue'],
-      needle_issue: ['Needle bent', 'Needle missing', 'Needle contaminated', 'Other needle issue'],
-      packaging_issue: ['Damaged box', 'Missing items', 'Wrong product', 'Other packaging issue'],
-      experience_not_captured: ['Side effect', 'Unexpected reaction', 'No effect', 'Other experience']
+      pen_issue: [
+        { value: 'base_cap', label: 'Base cap' },
+        { value: 'medicine_leaked', label: 'Medicine leaked' },
+        { value: 'needle_issue', label: 'Needle issue' },
+        { value: 'dose_window', label: 'Dose window issue' },
+        { value: 'pen_did_not_work', label: 'Pen did not work' },
+        { value: 'pen_jammed', label: 'Pen jammed' },
+        { value: 'other_pen_issue', label: 'Other pen issue' }
+      ],
+      needle_issue: [
+        { value: 'needle_bent', label: 'Needle bent' },
+        { value: 'needle_missing', label: 'Needle missing' },
+        { value: 'needle_contaminated', label: 'Needle contaminated' },
+        { value: 'other_needle_issue', label: 'Other needle issue' }
+      ],
+      packaging_issue: [
+        { value: 'carton_damaged', label: 'Carton Damaged' },
+        { value: 'missing_items', label: 'Missing items' },
+        { value: 'wrong_product', label: 'Wrong product' },
+        { value: 'other_packaging_issue', label: 'Other packaging issue' }
+      ],
+      experience_not_captured: [
+        { value: 'side_effect', label: 'Side effect' },
+        { value: 'unexpected_reaction', label: 'Unexpected reaction' },
+        { value: 'no_effect', label: 'No effect' },
+        { value: 'other_experience', label: 'Other experience' }
+      ]
+    };
+    
+    // Question configurations based on issue type and product concern
+    const questionConfigs = {
+      'pen_issue_base_cap': {
+        title: 'Pen Issue: Base cap',
+        questions: [
+          {
+            id: 'dsh0001-1',
+            text: 'I attempted to complete my injection without removing the base cap',
+            options: ['Yes', 'No'],
+            disablesOthersOnYes: true
+          },
+          {
+            id: 'dsh0001-2',
+            text: 'If you answered no to the first question, was the base cap difficult to remove or were you unable to remove it?',
+            options: ['Yes', 'No', 'N/A'],
+            dependsOnFirst: true
+          },
+          {
+            id: 'dsh0001-3',
+            text: 'If you answered no to the first question, did part of the base cap remain covering the needle?',
+            options: ['Yes', 'No', 'N/A'],
+            dependsOnFirst: true
+          }
+        ]
+      },
+      'pen_issue_medicine_leaked': {
+        title: 'Pen Issue: Medicine leaked',
+        questions: [
+          {
+            id: 'dsh0003-1',
+            text: 'Which of these did you observe?',
+            options: ['Medicine leaked from the needle when you removed the base cap', 'Medicine leaked from the needle while pen was placed against the skin', 'Medicine leaked from the needle after removing pen away from skin'],
+            enablesSpecificQuestions: true
+          },
+          {
+            id: 'dsh0003-2',
+            text: 'If Medicine leaked from the needle after removing pen away from skin, were 2 clicks heard during the injection?',
+            options: ['Yes', 'No', "I don't remember"],
+            enabledByOption: 2
+          },
+          {
+            id: 'dsh0003-3',
+            text: 'If medicine leaked from the needle when you removed the base cap, did you unlock the pen before removing the base cap?',
+            options: ['Yes', 'No', "I don't remember"],
+            enabledByOption: 0
+          },
+          {
+            id: 'dsh0003-4',
+            text: 'Is the gray plunger visible?',
+            options: ['Yes', 'No', "I don't remember"],
+            alwaysEnabled: true
+          }
+        ]
+      },
+      'packaging_issue_carton_damaged': {
+        title: 'Packaging Issue: Carton Damaged',
+        questions: [
+          {
+            id: 'dsh0006-1',
+            text: 'Was the carton sealed?',
+            options: ['Yes', 'No', "I don't remember"],
+            alwaysEnabled: true
+          }
+        ]
+      }
     };
     
     let issueState = {
       issueType: '',
-      productConcern: ''
+      productConcern: '',
+      questionAnswers: {}
     };
     
     function updateIssueType() {
@@ -2728,10 +3355,10 @@ function createProductSupportWidgetHTML(): string {
       concernSelect.innerHTML = '<option value="">Select product concern</option>';
       
       if (issueType && issueOptions[issueType]) {
-        issueOptions[issueType].forEach(option => {
+        issueOptions[issueType].forEach(optionObj => {
           const opt = document.createElement('option');
-          opt.value = option.toLowerCase().replace(/\\s+/g, '_');
-          opt.textContent = option;
+          opt.value = optionObj.value;
+          opt.textContent = optionObj.label;
           concernSelect.appendChild(opt);
         });
         concernSelect.disabled = false;
@@ -2758,8 +3385,323 @@ function createProductSupportWidgetHTML(): string {
     
     function continueFromIssue() {
       console.log('Issue submitted:', issueState);
-      alert('Issue Information submitted!\\nType: ' + issueState.issueType + '\\nConcern: ' + issueState.productConcern + '\\n\\nNext step coming soon!');
+      // Build the config key (e.g., 'pen_issue_base_cap')
+      const configKey = issueState.issueType + '_' + issueState.productConcern;
+      
+      // Check if there's a question config for this combination
+      if (questionConfigs[configKey]) {
+        renderQuestionsPage(questionConfigs[configKey]);
+        showPage('questions-page');
+      } else {
+        // If no specific questions, go directly to Your Information
+        showPage('your-info');
+        loadUserProfile();
+      }
     }
+    
+    function renderQuestionsPage(config) {
+      const questionsContainer = document.getElementById('questionsContainer');
+      const questionsTitle = document.getElementById('questionsTitle');
+      
+      questionsTitle.textContent = config.title;
+      questionsContainer.innerHTML = '';
+      issueState.questionAnswers = {};
+      
+      config.questions.forEach((question, qIndex) => {
+        const questionGroup = document.createElement('div');
+        questionGroup.className = 'question-group';
+        questionGroup.id = 'question-' + question.id;
+        
+        const label = document.createElement('span');
+        label.className = 'question-label';
+        label.textContent = question.text;
+        questionGroup.appendChild(label);
+        
+        const radioGroup = document.createElement('div');
+        radioGroup.className = 'question-radio-group';
+        
+        question.options.forEach((option, optIndex) => {
+          const radioItem = document.createElement('div');
+          radioItem.className = 'question-radio-item' + (question.dependsOnFirst || question.enabledByOption !== undefined ? ' disabled' : '');
+          radioItem.dataset.questionId = question.id;
+          radioItem.dataset.optionIndex = optIndex;
+          
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = question.id;
+          radio.id = question.id + '-' + optIndex;
+          radio.value = option;
+          radio.disabled = question.dependsOnFirst || (question.enabledByOption !== undefined && !question.alwaysEnabled);
+          
+          const radioLabel = document.createElement('label');
+          radioLabel.setAttribute('for', question.id + '-' + optIndex);
+          radioLabel.textContent = option;
+          
+          radioItem.appendChild(radio);
+          radioItem.appendChild(radioLabel);
+          
+          radioItem.onclick = function(e) {
+            if (radio.disabled) return;
+            selectQuestionAnswer(question.id, option, optIndex, config);
+          };
+          
+          radioGroup.appendChild(radioItem);
+        });
+        
+        questionGroup.appendChild(radioGroup);
+        questionsContainer.appendChild(questionGroup);
+      });
+      
+      updateQuestionsContinueButton();
+    }
+    
+    function selectQuestionAnswer(questionId, answer, optionIndex, config) {
+      issueState.questionAnswers[questionId] = { answer, optionIndex };
+      
+      // Update selection styling
+      const questionGroup = document.getElementById('question-' + questionId);
+      questionGroup.querySelectorAll('.question-radio-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      questionGroup.querySelector('[data-option-index="' + optionIndex + '"]').classList.add('selected');
+      questionGroup.querySelector('input[value="' + answer + '"]').checked = true;
+      
+      // Find the question config
+      const questionConfig = config.questions.find(q => q.id === questionId);
+      
+      // Handle conditional disabling (Pen Issue: Base cap)
+      if (questionConfig && questionConfig.disablesOthersOnYes) {
+        const dependentQuestions = config.questions.filter(q => q.dependsOnFirst);
+        
+        if (answer === 'Yes') {
+          // Disable subsequent questions and set N/A
+          dependentQuestions.forEach(depQ => {
+            const depGroup = document.getElementById('question-' + depQ.id);
+            depGroup.querySelectorAll('.question-radio-item').forEach(item => {
+              item.classList.add('disabled');
+              item.classList.remove('selected');
+            });
+            depGroup.querySelectorAll('input[type="radio"]').forEach(radio => {
+              radio.disabled = true;
+              radio.checked = false;
+            });
+            // Auto-select N/A if available
+            const naOption = depQ.options.indexOf('N/A');
+            if (naOption !== -1) {
+              const naItem = depGroup.querySelector('[data-option-index="' + naOption + '"]');
+              naItem.classList.add('selected');
+              naItem.querySelector('input').checked = true;
+              issueState.questionAnswers[depQ.id] = { answer: 'N/A', optionIndex: naOption };
+            }
+          });
+        } else {
+          // Enable subsequent questions
+          dependentQuestions.forEach(depQ => {
+            const depGroup = document.getElementById('question-' + depQ.id);
+            depGroup.querySelectorAll('.question-radio-item').forEach(item => {
+              item.classList.remove('disabled');
+              item.classList.remove('selected');
+            });
+            depGroup.querySelectorAll('input[type="radio"]').forEach(radio => {
+              radio.disabled = false;
+              radio.checked = false;
+            });
+            delete issueState.questionAnswers[depQ.id];
+          });
+        }
+      }
+      
+      // Handle enablesSpecificQuestions (Medicine leaked)
+      if (questionConfig && questionConfig.enablesSpecificQuestions) {
+        config.questions.forEach(q => {
+          if (q.enabledByOption !== undefined) {
+            const depGroup = document.getElementById('question-' + q.id);
+            if (optionIndex === q.enabledByOption) {
+              // Enable this question
+              depGroup.querySelectorAll('.question-radio-item').forEach(item => {
+                item.classList.remove('disabled');
+              });
+              depGroup.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.disabled = false;
+              });
+            } else {
+              // Disable and reset
+              depGroup.querySelectorAll('.question-radio-item').forEach(item => {
+                item.classList.add('disabled');
+                item.classList.remove('selected');
+              });
+              depGroup.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.disabled = true;
+                radio.checked = false;
+              });
+              delete issueState.questionAnswers[q.id];
+            }
+          }
+        });
+      }
+      
+      updateQuestionsContinueButton();
+    }
+    
+    function updateQuestionsContinueButton() {
+      const continueBtn = document.getElementById('questionsContinueBtn');
+      // Get the config key
+      const configKey = issueState.issueType + '_' + issueState.productConcern;
+      const config = questionConfigs[configKey];
+      
+      if (!config) {
+        continueBtn.disabled = true;
+        return;
+      }
+      
+      // Check if all required questions are answered
+      let allAnswered = true;
+      config.questions.forEach(q => {
+        // If question is not disabled, it needs an answer
+        const questionGroup = document.getElementById('question-' + q.id);
+        const firstRadioItem = questionGroup.querySelector('.question-radio-item');
+        const isDisabled = firstRadioItem.classList.contains('disabled');
+        
+        if (!isDisabled && !issueState.questionAnswers[q.id]) {
+          allAnswered = false;
+        }
+      });
+      
+      continueBtn.disabled = !allAnswered;
+    }
+    
+    function continueFromQuestions() {
+      console.log('Questions submitted:', issueState);
+      showPage('your-info');
+      loadUserProfile();
+    }
+    
+    // User Information functions
+    let userInfo = {
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      permissionToContact: '',
+      email: '',
+      phone: '',
+      address: '',
+      apartment: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      deviceReturn: ''
+    };
+    
+    function loadUserProfile() {
+      // This will be populated by ChatGPT when it calls the get-user-profile tool
+      // For now, we'll check if there's cached profile data
+      if (window.cachedUserProfile) {
+        populateUserInfo(window.cachedUserProfile);
+      }
+    }
+    
+    function populateUserInfo(profile) {
+      if (profile.givenName) {
+        document.getElementById('firstName').value = profile.givenName;
+        userInfo.firstName = profile.givenName;
+      }
+      if (profile.familyName) {
+        document.getElementById('lastName').value = profile.familyName;
+        userInfo.lastName = profile.familyName;
+      }
+      if (profile.email) {
+        document.getElementById('userEmail').value = profile.email;
+        userInfo.email = profile.email;
+      }
+      if (profile.phoneNumber) {
+        document.getElementById('userPhone').value = profile.phoneNumber;
+        userInfo.phone = profile.phoneNumber;
+      }
+      if (profile.dateOfBirth) {
+        document.getElementById('dateOfBirth').value = profile.dateOfBirth;
+        userInfo.dateOfBirth = profile.dateOfBirth;
+      }
+      if (profile.address) {
+        if (profile.address.street) {
+          document.getElementById('streetAddress').value = profile.address.street;
+          userInfo.address = profile.address.street;
+        }
+        if (profile.address.city) {
+          document.getElementById('userCity').value = profile.address.city;
+          userInfo.city = profile.address.city;
+        }
+        if (profile.address.state) {
+          document.getElementById('userState').value = profile.address.state;
+          userInfo.state = profile.address.state;
+        }
+        if (profile.address.zipCode) {
+          document.getElementById('userZipCode').value = profile.address.zipCode;
+          userInfo.zipCode = profile.address.zipCode;
+        }
+      }
+    }
+    
+    function selectPermissionToContact(value) {
+      userInfo.permissionToContact = value;
+      
+      document.querySelectorAll('#permissionGroup .question-radio-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      event.currentTarget.classList.add('selected');
+      event.currentTarget.querySelector('input').checked = true;
+      
+      // Enable/disable contact fields based on selection
+      const emailField = document.getElementById('userEmail');
+      const phoneField = document.getElementById('userPhone');
+      
+      if (value === 'yes') {
+        emailField.disabled = false;
+        phoneField.disabled = false;
+      } else {
+        emailField.disabled = true;
+        phoneField.disabled = true;
+      }
+    }
+    
+    function selectDeviceReturn(value) {
+      userInfo.deviceReturn = value;
+      
+      document.querySelectorAll('#deviceReturnGroup .question-radio-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      event.currentTarget.classList.add('selected');
+      event.currentTarget.querySelector('input').checked = true;
+    }
+    
+    function submitReport() {
+      // Collect all form data
+      userInfo.firstName = document.getElementById('firstName').value;
+      userInfo.lastName = document.getElementById('lastName').value;
+      userInfo.dateOfBirth = document.getElementById('dateOfBirth').value;
+      userInfo.email = document.getElementById('userEmail').value;
+      userInfo.phone = document.getElementById('userPhone').value;
+      userInfo.address = document.getElementById('streetAddress').value;
+      userInfo.apartment = document.getElementById('userApartment').value;
+      userInfo.city = document.getElementById('userCity').value;
+      userInfo.state = document.getElementById('userState').value;
+      userInfo.zipCode = document.getElementById('userZipCode').value;
+      
+      console.log('Report submitted:', {
+        formState,
+        issueState,
+        userInfo
+      });
+      
+      alert('Your report has been submitted successfully!\\n\\nThank you for contacting Lilly Product Support.');
+    }
+    
+    // Allow ChatGPT to set user profile data
+    window.setUserProfile = function(profile) {
+      window.cachedUserProfile = profile;
+      if (document.getElementById('your-info').classList.contains('active')) {
+        populateUserInfo(profile);
+      }
+    };
     
     function scanBarcode() {
       alert('Barcode scanning feature coming soon!');
