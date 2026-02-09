@@ -1315,20 +1315,21 @@ function createProductSupportWidgetHTML(): string {
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-      background: #f8fafc;
+      background: #f3f4f6;
       color: #1f2937;
       line-height: 1.6;
-      padding: 20px;
+      padding: 24px;
     }
     
     .widget-container { 
       width: 100%; 
-      max-width: 900px;
+      max-width: 800px;
       margin: 0 auto;
       background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
       overflow: hidden;
+      border: 1px solid #e5e7eb;
     }
     
     .widget-header {
@@ -1674,6 +1675,91 @@ function createProductSupportWidgetHTML(): string {
     
     .progress-step.active {
       background: #dc2626;
+    }
+    
+    /* Step List Styles */
+    .step-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px 0;
+    }
+    
+    .step-list-item {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      padding-bottom: 24px;
+    }
+    
+    .step-list-item:last-child {
+      padding-bottom: 0;
+    }
+    
+    .step-list-item:not(:last-child) .step-pill::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      width: 2px;
+      height: calc(100% + 0px);
+      background: #e5e7eb;
+    }
+    
+    .step-list-item.complete:not(:last-child) .step-pill::after {
+      background: #22c55e;
+    }
+    
+    .step-pill {
+      position: relative;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+    
+    .step-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1;
+    }
+    
+    .step-counter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    
+    .step-list-item.complete .step-counter {
+      background: #22c55e;
+      color: white;
+    }
+    
+    .step-complete-icon {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .step-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 2px;
+    }
+    
+    .step-description {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    .step-list-item.complete .step-description {
+      color: #22c55e;
     }
     
     /* Product Info Page */
@@ -3012,15 +3098,63 @@ function createProductSupportWidgetHTML(): string {
   <div id="your-info" class="page-view">
     <div class="widget-container" style="display: block;">
       <div class="content-area">
-        <!-- Progress Bar -->
+        <!-- Step List -->
         <div class="progress-section">
           <p class="progress-label">Your progress</p>
-          <div class="progress-bar">
-            <div class="progress-step active"></div>
-            <div class="progress-step active"></div>
-            <div class="progress-step active"></div>
-            <div class="progress-step active"></div>
-          </div>
+          <ol class="step-list">
+            <li class="step-list-item complete" aria-current="false">
+              <div class="step-pill"></div>
+              <div class="step-content" aria-hidden="true">
+                <div class="step-counter">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div class="step-label">Product information</div>
+                  <div class="step-description">Completed</div>
+                </div>
+              </div>
+            </li>
+            <li class="step-list-item complete" aria-current="false">
+              <div class="step-pill"></div>
+              <div class="step-content" aria-hidden="true">
+                <div class="step-counter">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div class="step-label">Issue information</div>
+                  <div class="step-description">Completed</div>
+                </div>
+              </div>
+            </li>
+            <li class="step-list-item complete" aria-current="false">
+              <div class="step-pill"></div>
+              <div class="step-content" aria-hidden="true">
+                <div class="step-counter">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div class="step-label">Your information</div>
+                  <div class="step-description">In progress</div>
+                </div>
+              </div>
+            </li>
+            <li class="step-list-item" aria-current="false">
+              <div class="step-pill"></div>
+              <div class="step-content" aria-hidden="true">
+                <div class="step-counter">4</div>
+                <div>
+                  <div class="step-label">Report &amp; submit</div>
+                  <div class="step-description">Not started</div>
+                </div>
+              </div>
+            </li>
+          </ol>
         </div>
         
         <div class="product-info-content">
@@ -3197,7 +3331,7 @@ function createProductSupportWidgetHTML(): string {
               </svg>
               Go back
             </button>
-            <button class="nav-button continue" id="yourInfoContinueBtn" disabled onclick="submitReport()">
+            <button class="nav-button continue" id="yourInfoContinueBtn" onclick="submitReport()">
               Review your report
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
                 <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
