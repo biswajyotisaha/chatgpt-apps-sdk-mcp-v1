@@ -2027,16 +2027,16 @@ function createProductSupportWidgetHTML(): string {
       margin-bottom: 24px;
     }
     
-    .expired-message-box.warning {
-      background: #fef3c7;
-      border: 1px solid #f59e0b;
-      border-left: 4px solid #d97706;
+    .expired-message-box.error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
     }
     
     .expired-message-box.info {
-      background: #eff6ff;
-      border: 1px solid #93c5fd;
-      border-left: 4px solid #3b82f6;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #22c55e;
     }
     
     .expired-message-box.active {
@@ -2044,25 +2044,25 @@ function createProductSupportWidgetHTML(): string {
     }
     
     .expired-message-box h3 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #92400e;
-      margin: 0 0 12px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: #991b1b;
+      margin: 0 0 8px 0;
     }
     
     .expired-message-box.info h3 {
-      color: #1e40af;
+      color: #166534;
     }
     
     .expired-message-box p {
       font-size: 16px;
-      color: #78350f;
+      color: #991b1b;
       margin: 0 0 16px 0;
       line-height: 1.5;
     }
     
     .expired-message-box.info p {
-      color: #1e3a8a;
+      color: #166534;
     }
     
     .expired-action-btn {
@@ -2423,9 +2423,9 @@ function createProductSupportWidgetHTML(): string {
             </div>
           </fieldset>
           
-          <!-- Warning message for YES -->
-          <div id="expiredYesMessage" class="expired-message-box warning">
-            <h3>Action needed</h3>
+          <!-- Error message for YES -->
+          <div id="expiredYesMessage" class="expired-message-box error">
+            <h3>Action needed:</h3>
             <p>If you have taken the expired medication, please report this on Lilly Safety Reporting Tool.</p>
             <a href="https://val-safety-reporting-public.lilly.com" target="_blank" class="expired-action-btn safety">
               Report a Lilly safety concern
