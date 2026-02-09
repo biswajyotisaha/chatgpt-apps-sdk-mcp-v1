@@ -1647,6 +1647,150 @@ function createProductSupportWidgetHTML(): string {
       background: #e5e7eb;
       margin: 32px 0;
     }
+    
+    /* Progress Bar */
+    .progress-section {
+      margin-bottom: 32px;
+    }
+    
+    .progress-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+    
+    .progress-bar {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .progress-step {
+      flex: 1;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+    }
+    
+    .progress-step.active {
+      background: #dc2626;
+    }
+    
+    /* Product Info Page */
+    .product-info-content h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1f2937;
+      font-family: Georgia, 'Times New Roman', serif;
+      margin-bottom: 16px;
+    }
+    
+    .product-info-content .subtitle {
+      font-size: 18px;
+      color: #4b5563;
+      margin-bottom: 32px;
+    }
+    
+    .info-section {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 32px;
+      padding: 24px;
+      background: #f9fafb;
+      border-radius: 12px;
+    }
+    
+    .info-section.no-product-section {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .info-section {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .info-content h6 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+    
+    .info-content p {
+      font-size: 16px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .info-image img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .batch-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    
+    .batch-input {
+      flex: 1;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    .batch-input:focus {
+      border-color: #dc2626;
+    }
+    
+    .batch-submit-btn {
+      width: 52px;
+      height: 52px;
+      background: #dc2626;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    
+    .batch-submit-btn:hover {
+      background: #b91c1c;
+    }
+    
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      border: none;
+    }
+    
+    .action-btn.filled {
+      background: #dc2626;
+      color: white;
+    }
+    
+    .action-btn.filled:hover {
+      background: #b91c1c;
+    }
   </style>
 </head>
 <body>
@@ -1763,27 +1907,6 @@ function createProductSupportWidgetHTML(): string {
           </ul>
         </div>
         
-        <div class="thick-divider"></div>
-        
-        <div class="resources-section">
-          <h6>Additional resources</h6>
-          <div class="resources-grid">
-            <div class="resource-column">
-              <a href="https://mounjaro.lilly.com" target="_blank" class="primary-link">Mounjaro</a>
-              <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#pi" target="_blank" class="secondary-link">Prescribing Information with Boxed Warnings</a>
-              <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#mg" target="_blank" class="secondary-link">Medication Guide</a>
-              <a href="https://uspl.lilly.com/mounjaro/mounjaro.html#ug0" target="_blank" class="secondary-link">Instructions for Use - Pen</a>
-            </div>
-            <div class="resource-column">
-              <a href="https://zepbound.lilly.com" target="_blank" class="primary-link">Zepbound</a>
-              <a href="https://uspl.lilly.com/zepbound/zepbound.html#pi" target="_blank" class="secondary-link">Prescribing Information with Boxed Warnings</a>
-              <a href="https://uspl.lilly.com/zepbound/zepbound.html#mg" target="_blank" class="secondary-link">Medication Guide</a>
-              <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug" target="_blank" class="secondary-link">Instructions for Use - Pen</a>
-              <a href="https://uspl.lilly.com/zepbound/zepbound.html#ug" target="_blank" class="secondary-link">Instructions for Use - KwikPen</a>
-            </div>
-          </div>
-        </div>
-        
         <div class="nav-buttons">
           <button class="nav-button back" onclick="showPage('main')">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
@@ -1791,12 +1914,94 @@ function createProductSupportWidgetHTML(): string {
             </svg>
             Go back
           </button>
-          <button class="nav-button continue" onclick="showPage('form')">
+          <button class="nav-button continue" onclick="showPage('product-info')">
             Continue
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
               <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
             </svg>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Product Information Page -->
+  <div id="product-info" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <p class="progress-label">Your progress</p>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+          </div>
+        </div>
+        
+        <div class="product-info-content">
+          <h1>Product information</h1>
+          <p class="subtitle">To verify product authenticity we will need your lot/batch number.</p>
+          
+          <!-- Individual Product Section -->
+          <div class="info-section">
+            <div class="info-content">
+              <h6>If you have your individual product</h6>
+              <p>Enter the lot/batch number found on the pen or bottle label, located just above the expiration date.</p>
+              <div class="batch-input-row">
+                <input type="text" id="batchNumber" placeholder="Lot/batch number" maxlength="15" class="batch-input" />
+                <button type="button" class="batch-submit-btn" onclick="submitBatchNumber()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="info-image">
+              <img src="https://mcp-server-ekh0.onrender.com/public/images/lot-batch-number-example-aq_6iK29.svg" alt="Lot batch number example" />
+            </div>
+          </div>
+          
+          <!-- Medicine Package Section -->
+          <div class="info-section barcode-section">
+            <div class="info-content">
+              <h6>If you have your medicine package</h6>
+              <p>Scan the 2D barcode printed on the outside of the medication package. <strong>Do not</strong> scan any other barcode on the package or individual products.</p>
+              <button type="button" class="action-btn filled" onclick="scanBarcode()">
+                Scan medicine package
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="info-image">
+              <img src="https://mcp-server-ekh0.onrender.com/public/images/serial_number-DN6HT7jN.svg" alt="Barcode example" />
+            </div>
+          </div>
+          
+          <!-- No Product Section -->
+          <div class="info-section no-product-section">
+            <h6>If you do not have the individual product or medicine package</h6>
+            <p>Please contact your dispensing pharmacy for the lot/batch number. You may continue without the lot/batch number, but you will not be eligible for replacement product.</p>
+            <button type="button" class="action-btn filled" onclick="continueWithoutBatch()">
+              Continue without lot/batch number
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="thick-divider"></div>
+          
+          <div class="nav-buttons" style="justify-content: flex-start;">
+            <button class="nav-button back" onclick="showPage('before-we-begin')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+              </svg>
+              Go back
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1836,14 +2041,35 @@ function createProductSupportWidgetHTML(): string {
         // Show main product support view
         mainContainer.style.display = 'block';
         document.getElementById('before-we-begin').classList.remove('active');
+        document.getElementById('product-info').classList.remove('active');
       } else if (pageId === 'before-we-begin') {
         // Show before we begin page
         mainContainer.style.display = 'none';
         document.getElementById('before-we-begin').classList.add('active');
-      } else if (pageId === 'form') {
-        // Continue to next step (placeholder for future form)
-        alert('Form step coming soon!');
+        document.getElementById('product-info').classList.remove('active');
+      } else if (pageId === 'product-info') {
+        // Show product information page
+        mainContainer.style.display = 'none';
+        document.getElementById('before-we-begin').classList.remove('active');
+        document.getElementById('product-info').classList.add('active');
       }
+    }
+    
+    function submitBatchNumber() {
+      const batchNumber = document.getElementById('batchNumber').value;
+      if (batchNumber.trim()) {
+        alert('Batch number submitted: ' + batchNumber + '\\nNext step coming soon!');
+      } else {
+        alert('Please enter a lot/batch number');
+      }
+    }
+    
+    function scanBarcode() {
+      alert('Barcode scanning feature coming soon!');
+    }
+    
+    function continueWithoutBatch() {
+      alert('Continuing without batch number. Next step coming soon!');
     }
     
     // Update the Get product support button to navigate to before-we-begin page
