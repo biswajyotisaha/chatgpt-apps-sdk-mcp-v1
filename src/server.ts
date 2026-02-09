@@ -3570,10 +3570,10 @@ function createProductSupportWidgetHTML(): string {
       continueBtn.disabled = !allAnswered;
     }
     
-    function continueFromQuestions() {
+    async function continueFromQuestions() {
       console.log('Questions submitted:', issueState);
       showPage('your-info');
-      loadUserProfile();
+      await loadUserProfile();
     }
     
     // User Information functions
@@ -3592,11 +3592,47 @@ function createProductSupportWidgetHTML(): string {
       deviceReturn: ''
     };
     
-    function loadUserProfile() {
-      // This will be populated by ChatGPT when it calls the get-user-profile tool
-      // For now, we'll check if there's cached profile data
-      if (window.cachedUserProfile) {
-        populateUserInfo(window.cachedUserProfile);
+    async function loadUserProfile() {
+      // Show loading state
+      const loadingMessage = document.createElement('div');
+      loadingMessage.id = 'profileLoadingMessage';
+      loadingMessage.style.cssText = 'padding: 12px; background: var(--lds-g-color-aqua-20); border-radius: 8px; margin-bottom: 20px; color: var(--lds-g-color-purple-90); font-size: 14px;';
+      loadingMessage.textContent = 'Loading your profile information...';
+      
+      const yourInfoPage = document.getElementById('your-info');
+      const formGrid = yourInfoPage.querySelector('.form-grid');
+      if (formGrid) {
+        formGrid.parentNode.insertBefore(loadingMessage, formGrid);
+      }
+      
+      try {
+        // Request ChatGPT to call the get-user-profile tool
+        const response = await fetch('/mcp/tools/get-user-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          if (result.structuredContent && result.structuredContent.profile) {
+            populateUserInfo(result.structuredContent.profile);
+            // Cache for future use
+            window.cachedUserProfile = result.structuredContent.profile;
+            
+            // Update loading message to success
+            loadingMessage.style.background = 'var(--lds-g-color-green-20)';
+            loadingMessage.textContent = '✓ Profile information loaded successfully';
+            setTimeout(() => loadingMessage.remove(), 3000);
+          }
+        } else {
+          throw new Error('Failed to load profile');
+        }
+      } catch (error) {
+        console.error('Error loading user profile:', error);
+        loadingMessage.style.background = 'var(--lds-g-color-red-20)';
+        loadingMessage.textContent = 'Could not load profile. Please fill in your information manually.';
+        setTimeout(() => loadingMessage.remove(), 5000);
       }
     }
     
