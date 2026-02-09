@@ -1791,6 +1791,148 @@ function createProductSupportWidgetHTML(): string {
     .action-btn.filled:hover {
       background: #b91c1c;
     }
+    
+    /* Alert Box */
+    .alert-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .alert-box p {
+      font-size: 16px;
+      color: #991b1b;
+      margin: 0;
+    }
+    
+    /* Selection Chips */
+    .form-section {
+      margin-bottom: 24px;
+    }
+    
+    .form-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .selection-chips {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .selection-chip {
+      padding: 12px 24px;
+      border: 2px solid #d1d5db;
+      border-radius: 30px;
+      background: white;
+      font-size: 16px;
+      font-weight: 500;
+      color: #4b5563;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .selection-chip:hover {
+      border-color: #dc2626;
+      color: #dc2626;
+    }
+    
+    .selection-chip.selected {
+      border-color: #dc2626;
+      background: #dc2626;
+      color: white;
+    }
+    
+    .selection-chip:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* Radio with Image */
+    .radio-options {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    
+    .radio-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border: 2px solid #d1d5db;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 150px;
+    }
+    
+    .radio-option:hover {
+      border-color: #dc2626;
+    }
+    
+    .radio-option.selected {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+    
+    .radio-option.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    
+    .radio-option img {
+      height: 80px;
+      width: auto;
+    }
+    
+    .radio-option label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #1f2937;
+    }
+    
+    /* Select Dropdown */
+    .form-select {
+      width: 100%;
+      max-width: 300px;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: white;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    
+    .form-select:focus {
+      border-color: #dc2626;
+    }
+    
+    .batch-display {
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #f3f4f6;
+      color: #6b7280;
+      max-width: 300px;
+    }
+    
+    .nav-button.continue:disabled {
+      background: #fecaca;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -1819,12 +1961,12 @@ function createProductSupportWidgetHTML(): string {
             <p class="bold-text">For issues and questions related to Mounjaro® (tirzepatide), or Zepbound® (tirzepatide) products</p>
             <p>If something doesn't seem right with your product or you have questions, we're here to help. Our team can look into concerns related to quality, usability, appearance, or safety. If you need support with your Lilly product, connect with us below.</p>
             <p class="small-text">Please report per local country requirements. Visit a region or country specific Lilly-owned site via the globe icon in the menu for more information.</p>
-            <a href="https://qa.unex.lilly.com/producthelp/before-we-begin" target="_blank" class="action-button">
+            <button type="button" class="action-button" onclick="showPage('before-we-begin')">
               Get product support
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
                 <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
               </svg>
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -2007,6 +2149,94 @@ function createProductSupportWidgetHTML(): string {
     </div>
   </div>
   
+  <!-- Product Details Page -->
+  <div id="product-details" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <p class="progress-label">Your progress</p>
+          <div class="progress-bar">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+          </div>
+        </div>
+        
+        <div class="product-info-content">
+          <h1>Product details</h1>
+          
+          <!-- Alert Box -->
+          <div class="alert-box">
+            <p><strong>Please Note:</strong> Confirm that the information below is correct as the information from the barcode scan did not match a Lilly product. When you submit, Lilly will verify product authenticity.</p>
+          </div>
+          
+          <!-- Batch Number Display -->
+          <div class="form-section">
+            <label class="form-label">Lot/Batch number</label>
+            <div class="batch-display" id="displayBatchNumber">-</div>
+          </div>
+          
+          <!-- Product Name Selection -->
+          <div class="form-section">
+            <label class="form-label">Product name</label>
+            <div class="selection-chips">
+              <button type="button" class="selection-chip" data-product="mounjaro" onclick="selectProduct('mounjaro')">Mounjaro</button>
+              <button type="button" class="selection-chip" data-product="zepbound" onclick="selectProduct('zepbound')">Zepbound</button>
+            </div>
+          </div>
+          
+          <!-- Product Type Selection -->
+          <div class="form-section">
+            <label class="form-label">Product type</label>
+            <div class="radio-options" id="productTypeOptions">
+              <div class="radio-option disabled" data-type="pen" onclick="selectProductType('pen')">
+                <img src="https://mcp-server-ekh0.onrender.com/public/images/zepbound-auto-injector-C38U2n85.svg" alt="Pen" />
+                <label>Pen</label>
+              </div>
+              <div class="radio-option disabled" data-type="kwikpen" onclick="selectProductType('kwikpen')">
+                <img src="https://mcp-server-ekh0.onrender.com/public/images/zepbound-kwikpen-CcXeYcHn.svg" alt="KwikPen" />
+                <label>KwikPen</label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Strength Dropdown -->
+          <div class="form-section">
+            <label class="form-label">Strength</label>
+            <select class="form-select" id="strengthSelect" disabled onchange="updateStrength()">
+              <option value="">Select strength</option>
+              <option value="2.5">2.5 mg</option>
+              <option value="5">5 mg</option>
+              <option value="7.5">7.5 mg</option>
+              <option value="10">10 mg</option>
+              <option value="12.5">12.5 mg</option>
+              <option value="15">15 mg</option>
+            </select>
+          </div>
+          
+          <div class="thick-divider"></div>
+          
+          <div class="nav-buttons">
+            <button class="nav-button back" onclick="showPage('product-info')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+              </svg>
+              Go back
+            </button>
+            <button class="nav-button continue" id="continueBtn" disabled onclick="continueToNextStep()">
+              Continue
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(content => {
@@ -2036,32 +2266,105 @@ function createProductSupportWidgetHTML(): string {
       });
       
       const mainContainer = document.querySelector('.widget-container');
+      const allPages = ['before-we-begin', 'product-info', 'product-details'];
       
       if (pageId === 'main') {
         // Show main product support view
         mainContainer.style.display = 'block';
-        document.getElementById('before-we-begin').classList.remove('active');
-        document.getElementById('product-info').classList.remove('active');
-      } else if (pageId === 'before-we-begin') {
-        // Show before we begin page
+        allPages.forEach(p => document.getElementById(p).classList.remove('active'));
+      } else {
+        // Hide main container and show specific page
         mainContainer.style.display = 'none';
-        document.getElementById('before-we-begin').classList.add('active');
-        document.getElementById('product-info').classList.remove('active');
-      } else if (pageId === 'product-info') {
-        // Show product information page
-        mainContainer.style.display = 'none';
-        document.getElementById('before-we-begin').classList.remove('active');
-        document.getElementById('product-info').classList.add('active');
+        allPages.forEach(p => {
+          if (p === pageId) {
+            document.getElementById(p).classList.add('active');
+          } else {
+            document.getElementById(p).classList.remove('active');
+          }
+        });
       }
     }
+    
+    // Product Details form state
+    let formState = {
+      batchNumber: '',
+      productName: '',
+      productType: '',
+      strength: ''
+    };
     
     function submitBatchNumber() {
       const batchNumber = document.getElementById('batchNumber').value;
       if (batchNumber.trim()) {
-        alert('Batch number submitted: ' + batchNumber + '\\nNext step coming soon!');
+        formState.batchNumber = batchNumber.trim();
+        document.getElementById('displayBatchNumber').textContent = formState.batchNumber;
+        showPage('product-details');
       } else {
         alert('Please enter a lot/batch number');
       }
+    }
+    
+    function selectProduct(product) {
+      formState.productName = product;
+      
+      // Update chip selection
+      document.querySelectorAll('.selection-chip').forEach(chip => {
+        chip.classList.remove('selected');
+      });
+      document.querySelector('[data-product="' + product + '"]').classList.add('selected');
+      
+      // Enable product type options
+      document.querySelectorAll('.radio-option').forEach(option => {
+        option.classList.remove('disabled');
+      });
+      
+      // Reset product type and strength when product changes
+      formState.productType = '';
+      formState.strength = '';
+      document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+      document.getElementById('strengthSelect').value = '';
+      document.getElementById('strengthSelect').disabled = true;
+      
+      updateContinueButton();
+    }
+    
+    function selectProductType(type) {
+      if (formState.productName === '') {
+        alert('Please select a product name first');
+        return;
+      }
+      
+      formState.productType = type;
+      
+      // Update radio option selection
+      document.querySelectorAll('.radio-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      document.querySelector('[data-type="' + type + '"]').classList.add('selected');
+      
+      // Enable strength dropdown
+      document.getElementById('strengthSelect').disabled = false;
+      
+      updateContinueButton();
+    }
+    
+    function updateStrength() {
+      formState.strength = document.getElementById('strengthSelect').value;
+      updateContinueButton();
+    }
+    
+    function updateContinueButton() {
+      const continueBtn = document.getElementById('continueBtn');
+      if (formState.productName && formState.productType && formState.strength) {
+        continueBtn.disabled = false;
+      } else {
+        continueBtn.disabled = true;
+      }
+    }
+    
+    function continueToNextStep() {
+      console.log('Form submitted:', formState);
+      alert('Product Details submitted!\\nBatch: ' + formState.batchNumber + '\\nProduct: ' + formState.productName + '\\nType: ' + formState.productType + '\\nStrength: ' + formState.strength + ' mg\\n\\nNext step coming soon!');
     }
     
     function scanBarcode() {
