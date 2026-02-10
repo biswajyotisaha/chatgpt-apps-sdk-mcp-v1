@@ -3649,7 +3649,7 @@ function createProductSupportWidgetHTML(): string {
       });
       
       const mainContainer = document.querySelector('.widget-container');
-      const allPages = ['before-we-begin', 'product-info', 'product-details', 'expired-product', 'issue-info', 'questions-page', 'your-info'];
+      const allPages = ['before-we-begin', 'product-info', 'product-details', 'expired-product', 'issue-info', 'questions-page', 'your-info', 'review-report', 'report-submitted'];
       
       if (pageId === 'main') {
         // Show main product support view
