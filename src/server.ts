@@ -1310,7 +1310,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://mcp-server-ekh0.onrender.com blob: data:; img-src 'self' https://mcp-server-ekh0.onrender.com data:; connect-src 'self' https://gifthealth.zendesk.com https://val-safety-reporting-public.lilly.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; media-src 'self' https://appssdk.s3.eu-north-1.amazonaws.com blob: data:; img-src 'self' https://appssdk.s3.eu-north-1.amazonaws.com data:; connect-src 'self' https://gifthealth.zendesk.com https://val-safety-reporting-public.lilly.com;">
   <title>Product Support - Lilly</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2752,7 +2752,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
       <div id="product-support" class="tab-content active">
         <div class="tab-layout">
           <div class="tab-image-container">
-            <img src="https://mcp-server-ekh0.onrender.com/public/images/product-support.jpeg" alt="Product Support" class="tab-image">
+            <img src="https://appssdk.s3.eu-north-1.amazonaws.com/product-support.jpeg" alt="Product Support" class="tab-image">
           </div>
           <div class="tab-text">
             <h2>Product Support</h2>
@@ -2773,7 +2773,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
       <div id="shipping-issues" class="tab-content">
         <div class="tab-layout">
           <div class="tab-image-container">
-            <img src="https://mcp-server-ekh0.onrender.com/public/images/shipping-issues.jpeg" alt="Shipping Issues" class="tab-image">
+            <img src="https://appssdk.s3.eu-north-1.amazonaws.com/shipping-issues.jpeg" alt="Shipping Issues" class="tab-image">
           </div>
           <div class="tab-text">
             <h2>Shipping-related issues</h2>
@@ -2802,7 +2802,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
       <div id="side-effects" class="tab-content">
         <div class="tab-layout">
           <div class="tab-image-container">
-            <img src="https://mcp-server-ekh0.onrender.com/public/images/side-effects.jpeg" alt="Report Side Effects" class="tab-image">
+            <img src="https://appssdk.s3.eu-north-1.amazonaws.com/side-effects.jpeg" alt="Report Side Effects" class="tab-image">
           </div>
           <div class="tab-text">
             <h2>Report a possible side effect</h2>
@@ -2905,7 +2905,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
               </div>
             </div>
             <div class="info-image">
-              <img src="https://mcp-server-ekh0.onrender.com/public/images/lot-batch-number-example-aq_6iK29.svg" alt="Lot batch number example" />
+              <img src="https://appssdk.s3.eu-north-1.amazonaws.com/lot-batch-number-example-aq_6iK29.svg" alt="Lot batch number example" />
             </div>
           </div>
           
@@ -2991,11 +2991,11 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
             <label class="form-label">Product type</label>
             <div class="radio-options" id="productTypeOptions">
               <div class="radio-option disabled" data-type="pen" onclick="selectProductType('pen')">
-                <img src="https://mcp-server-ekh0.onrender.com/public/images/zepbound-auto-injector-C38U2n85.svg" alt="Pen" />
+                <img src="https://appssdk.s3.eu-north-1.amazonaws.com/zepbound-auto-injector-C38U2n85.svg" alt="Pen" />
                 <label>Pen</label>
               </div>
               <div class="radio-option disabled" data-type="kwikpen" onclick="selectProductType('kwikpen')">
-                <img src="https://mcp-server-ekh0.onrender.com/public/images/zepbound-kwikpen-CcXeYcHn.svg" alt="KwikPen" />
+                <img src="https://appssdk.s3.eu-north-1.amazonaws.com/zepbound-kwikpen-CcXeYcHn.svg" alt="KwikPen" />
                 <label>KwikPen</label>
               </div>
             </div>
@@ -3188,7 +3188,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
               <p>Please answer the question(s) below to help us better understand your concern.</p>
             </div>
             <div class="questions-header-image">
-              <img src="https://mcp-server-ekh0.onrender.com/public/images/pen-diagram.svg" alt="Product Diagram" onerror="this.style.display='none'">
+              <img src="https://appssdk.s3.eu-north-1.amazonaws.com/pen_diagram-C3cm34AE.svg" alt="Product Diagram" onerror="this.style.display='none'">
             </div>
           </div>
           
@@ -6353,17 +6353,17 @@ server.registerResource(
       'openai/widgetDomain': 'https://product-support.onrender.com',
       'openai/widgetCSP': {
         connect_domains: [
-          'https://mcp-server-ekh0.onrender.com',
+          'https://appssdk.s3.eu-north-1.amazonaws.com',
           'https://gifthealth.zendesk.com',
           'https://val-safety-reporting-public.lilly.com'
         ],
         resource_domains: [
-          'https://mcp-server-ekh0.onrender.com',
+          'https://appssdk.s3.eu-north-1.amazonaws.com',
           'https://gifthealth.zendesk.com',
           'https://val-safety-reporting-public.lilly.com'
         ],
         media_domains: [
-          'https://mcp-server-ekh0.onrender.com'
+          'https://appssdk.s3.eu-north-1.amazonaws.com'
         ]
       }
     }
@@ -6379,17 +6379,17 @@ server.registerResource(
             'openai/widgetDomain': 'https://product-support.onrender.com',
             'openai/widgetCSP': {
               connect_domains: [
-                'https://mcp-server-ekh0.onrender.com',
+                'https://appssdk.s3.eu-north-1.amazonaws.com',
                 'https://gifthealth.zendesk.com',
                 'https://val-safety-reporting-public.lilly.com'
               ],
               resource_domains: [
-                'https://mcp-server-ekh0.onrender.com',
+                'https://appssdk.s3.eu-north-1.amazonaws.com',
                 'https://gifthealth.zendesk.com',
                 'https://val-safety-reporting-public.lilly.com'
               ],
               media_domains: [
-                'https://mcp-server-ekh0.onrender.com'
+                'https://appssdk.s3.eu-north-1.amazonaws.com'
               ]
             }
           }
