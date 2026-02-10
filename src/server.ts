@@ -2571,6 +2571,165 @@ function createProductSupportWidgetHTML(): string {
     .take-home-button:hover {
       background: #b91c1c;
     }
+    
+    /* Review Report Page Styles */
+    .review-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    
+    .review-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+    }
+    
+    .review-card-header h6 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0;
+    }
+    
+    .review-card-header .edit-link {
+      color: #dc2626;
+      font-size: 16px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .review-card-header .edit-link:hover {
+      text-decoration: underline;
+    }
+    
+    .review-card-divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 0;
+      border: none;
+    }
+    
+    .review-card-content {
+      padding: 20px 24px;
+    }
+    
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .review-grid-item dt {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    
+    .review-grid-item dd {
+      font-size: 16px;
+      color: #1f2937;
+      margin: 0;
+    }
+    
+    .review-alert {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .review-alert svg {
+      flex-shrink: 0;
+      color: #3b82f6;
+      margin-top: 2px;
+    }
+    
+    .review-alert p {
+      font-size: 15px;
+      color: #1e40af;
+      margin: 0;
+      line-height: 1.5;
+    }
+    
+    .confirmation-section-review {
+      margin-top: 32px;
+    }
+    
+    .confirmation-section-review h2 {
+      font-size: 28px;
+      font-weight: 400;
+      font-family: Georgia, serif;
+      color: #1f2937;
+      margin-bottom: 20px;
+    }
+    
+    .confirm-checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .confirm-checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    
+    .confirm-checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: #dc2626;
+      cursor: pointer;
+    }
+    
+    .confirm-checkbox-item label {
+      font-size: 16px;
+      color: #1f2937;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    
+    .confirm-checkbox-item label a {
+      color: #dc2626;
+      text-decoration: none;
+    }
+    
+    .confirm-checkbox-item label a:hover {
+      text-decoration: underline;
+    }
+    
+    .privacy-text {
+      font-size: 15px;
+      color: #4b5563;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    
+    .privacy-text a {
+      color: #dc2626;
+      text-decoration: none;
+    }
+    
+    .privacy-text a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -3268,6 +3427,115 @@ function createProductSupportWidgetHTML(): string {
               </svg>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Review Report Page -->
+  <div id="review-report" class="page-view">
+    <div class="widget-container" style="display: block;">
+      <div class="content-area">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 100%"></div>
+          </div>
+          <div class="step-labels">
+            <span>Product information</span>
+            <span>Issue information</span>
+            <span>Your information</span>
+            <span class="active-step">Report &amp; submit</span>
+          </div>
+        </div>
+        
+        <h1 style="font-size: 28px; font-weight: 400; font-family: Georgia, serif; color: #1f2937; margin-bottom: 8px;">Review your report</h1>
+        
+        <div class="review-alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z"></path>
+          </svg>
+          <p>Please review the information below before submitting your report. Click &quot;Edit&quot; to make changes to any section.</p>
+        </div>
+        
+        <!-- Product Information Card -->
+        <div class="review-card">
+          <div class="review-card-header">
+            <h6>Product information</h6>
+            <a class="edit-link" onclick="showPage('product-info')">Edit</a>
+          </div>
+          <hr class="review-card-divider">
+          <div class="review-card-content">
+            <dl class="review-grid" id="review-product-grid">
+              <!-- Populated by JS -->
+            </dl>
+          </div>
+        </div>
+        
+        <!-- Issue Information Card -->
+        <div class="review-card">
+          <div class="review-card-header">
+            <h6>Issue information</h6>
+            <a class="edit-link" onclick="showPage('issue-info')">Edit</a>
+          </div>
+          <hr class="review-card-divider">
+          <div class="review-card-content">
+            <dl class="review-grid" id="review-issue-grid">
+              <!-- Populated by JS -->
+            </dl>
+          </div>
+        </div>
+        
+        <!-- Your Information Card -->
+        <div class="review-card">
+          <div class="review-card-header">
+            <h6>Your information</h6>
+            <a class="edit-link" onclick="showPage('your-info')">Edit</a>
+          </div>
+          <hr class="review-card-divider">
+          <div class="review-card-content">
+            <dl class="review-grid" id="review-user-grid">
+              <!-- Populated by JS -->
+            </dl>
+          </div>
+        </div>
+        
+        <!-- Confirmation Section -->
+        <div class="confirmation-section-review">
+          <h2>Confirm and submit</h2>
+          <div class="confirm-checkbox-group">
+            <div class="confirm-checkbox-item">
+              <input type="checkbox" id="confirm-accuracy" onchange="updateReviewSubmitButton()">
+              <label for="confirm-accuracy">I confirm that the information provided is accurate to the best of my knowledge.</label>
+            </div>
+            <div class="confirm-checkbox-item">
+              <input type="checkbox" id="confirm-resident" onchange="updateReviewSubmitButton()">
+              <label for="confirm-resident">I confirm that I am a US resident aged 18 or older.</label>
+            </div>
+            <div class="confirm-checkbox-item">
+              <input type="checkbox" id="confirm-product" onchange="updateReviewSubmitButton()">
+              <label for="confirm-product">I confirm that I am filing a report for a Mounjaro, Zepbound, or Orforglipron product made by Eli Lilly.</label>
+            </div>
+          </div>
+          
+          <p class="privacy-text">
+            By submitting this report, you agree to our <a href="#">Privacy Policy</a> and acknowledge that the information provided will be used to investigate product quality concerns. Eli Lilly may contact you for additional details regarding your report.
+          </p>
+        </div>
+        
+        <div class="nav-buttons">
+          <button class="nav-button back" onclick="showPage('your-info')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H212A12,12,0,0,1,224,128Z"></path>
+            </svg>
+            Go back
+          </button>
+          <button class="nav-button continue" id="reviewSubmitBtn" disabled onclick="finalSubmit()">
+            Submit report
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -4042,18 +4310,117 @@ function createProductSupportWidgetHTML(): string {
       userInfo.state = document.getElementById('state').value;
       userInfo.zipCode = document.getElementById('zipCode').value;
       
+      // Populate review page and show it
+      populateReviewPage();
+      showPage('review-report');
+    }
+    
+    function populateReviewPage() {
+      // Reset confirmation checkboxes
+      document.getElementById('confirm-accuracy').checked = false;
+      document.getElementById('confirm-resident').checked = false;
+      document.getElementById('confirm-product').checked = false;
+      updateReviewSubmitButton();
+      
+      // Product Information card
+      var productGrid = document.getElementById('review-product-grid');
+      var productHtml = '';
+      if (formState.productName) {
+        productHtml += '<div class="review-grid-item"><dt>PRODUCT</dt><dd>' + formState.productName + '</dd></div>';
+      }
+      if (formState.productType) {
+        productHtml += '<div class="review-grid-item"><dt>TYPE</dt><dd>' + formState.productType + '</dd></div>';
+      }
+      if (formState.strength) {
+        productHtml += '<div class="review-grid-item"><dt>STRENGTH</dt><dd>' + formState.strength + '</dd></div>';
+      }
+      if (formState.batchNumber) {
+        productHtml += '<div class="review-grid-item"><dt>LOT / BATCH NUMBER</dt><dd>' + formState.batchNumber + '</dd></div>';
+      } else {
+        productHtml += '<div class="review-grid-item"><dt>LOT / BATCH NUMBER</dt><dd>Not provided</dd></div>';
+      }
+      productGrid.innerHTML = productHtml;
+      
+      // Issue Information card
+      var issueGrid = document.getElementById('review-issue-grid');
+      var issueHtml = '';
+      if (issueState.issueType) {
+        issueHtml += '<div class="review-grid-item"><dt>ISSUE TYPE</dt><dd>' + issueState.issueType + '</dd></div>';
+      }
+      if (issueState.productConcern) {
+        issueHtml += '<div class="review-grid-item"><dt>PRODUCT CONCERN</dt><dd>' + issueState.productConcern + '</dd></div>';
+      }
+      if (issueState.questionAnswers) {
+        var qaKeys = Object.keys(issueState.questionAnswers);
+        for (var i = 0; i < qaKeys.length; i++) {
+          var qKey = qaKeys[i];
+          var qVal = issueState.questionAnswers[qKey];
+          if (qVal) {
+            issueHtml += '<div class="review-grid-item"><dt>' + qKey.toUpperCase() + '</dt><dd>' + qVal + '</dd></div>';
+          }
+        }
+      }
+      issueGrid.innerHTML = issueHtml;
+      
+      // Your Information card
+      var userGrid = document.getElementById('review-user-grid');
+      var userHtml = '';
+      var fullName = (userInfo.firstName || '') + ' ' + (userInfo.lastName || '');
+      if (fullName.trim()) {
+        userHtml += '<div class="review-grid-item"><dt>NAME</dt><dd>' + fullName.trim() + '</dd></div>';
+      }
+      if (userInfo.dateOfBirth) {
+        userHtml += '<div class="review-grid-item"><dt>DATE OF BIRTH</dt><dd>' + userInfo.dateOfBirth + '</dd></div>';
+      }
+      if (userInfo.email) {
+        userHtml += '<div class="review-grid-item"><dt>EMAIL</dt><dd>' + userInfo.email + '</dd></div>';
+      }
+      if (userInfo.phone) {
+        userHtml += '<div class="review-grid-item"><dt>PHONE</dt><dd>' + userInfo.phone + '</dd></div>';
+      }
+      var fullAddress = '';
+      if (userInfo.address) fullAddress += userInfo.address;
+      if (userInfo.apartment) fullAddress += ', ' + userInfo.apartment;
+      if (fullAddress) {
+        userHtml += '<div class="review-grid-item"><dt>ADDRESS</dt><dd>' + fullAddress + '</dd></div>';
+      }
+      var cityStateZip = '';
+      if (userInfo.city) cityStateZip += userInfo.city;
+      if (userInfo.state) cityStateZip += ', ' + userInfo.state;
+      if (userInfo.zipCode) cityStateZip += ' ' + userInfo.zipCode;
+      if (cityStateZip) {
+        userHtml += '<div class="review-grid-item"><dt>CITY / STATE / ZIP</dt><dd>' + cityStateZip + '</dd></div>';
+      }
+      if (userInfo.permissionToContact) {
+        userHtml += '<div class="review-grid-item"><dt>PERMISSION TO CONTACT</dt><dd>' + (userInfo.permissionToContact === 'yes' ? 'Yes' : 'No') + '</dd></div>';
+      }
+      if (userInfo.deviceReturn) {
+        userHtml += '<div class="review-grid-item"><dt>WILLING TO RETURN DEVICE</dt><dd>' + (userInfo.deviceReturn === 'yes' ? 'Yes' : 'No') + '</dd></div>';
+      }
+      userGrid.innerHTML = userHtml;
+    }
+    
+    function updateReviewSubmitButton() {
+      var cb1 = document.getElementById('confirm-accuracy').checked;
+      var cb2 = document.getElementById('confirm-resident').checked;
+      var cb3 = document.getElementById('confirm-product').checked;
+      var btn = document.getElementById('reviewSubmitBtn');
+      btn.disabled = !(cb1 && cb2 && cb3);
+    }
+    
+    function finalSubmit() {
       // Generate confirmation number
-      const today = new Date();
-      const dateStr = today.getFullYear().toString().slice(-2) + 
-                      String(today.getMonth() + 1).padStart(2, '0') + 
-                      String(today.getDate()).padStart(2, '0');
-      const randomNum = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
-      const confirmationNum = 'LY-' + dateStr + '-' + randomNum;
+      var today = new Date();
+      var dateStr = today.getFullYear().toString().slice(-2) + 
+                    String(today.getMonth() + 1).padStart(2, '0') + 
+                    String(today.getDate()).padStart(2, '0');
+      var randomNum = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+      var confirmationNum = 'LY-' + dateStr + '-' + randomNum;
       
       console.log('Report submitted:', {
-        formState,
-        issueState,
-        userInfo,
+        formState: formState,
+        issueState: issueState,
+        userInfo: userInfo,
         confirmationNumber: confirmationNum
       });
       
