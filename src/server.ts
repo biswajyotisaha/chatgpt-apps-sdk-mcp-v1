@@ -4306,7 +4306,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
       }
       
       const continueBtn = document.getElementById('yourInfoContinueBtn');
-      continueBtn.disabled = !allRequiredFilled;
+      continueBtn.disabled = false;
     }
     
     function submitReport() {
