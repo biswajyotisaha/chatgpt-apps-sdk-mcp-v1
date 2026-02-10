@@ -1303,7 +1303,8 @@ function createInteractiveTroubleshootingWidgetHTML(troubleshootingFlow: DeviceT
  * 
  * @returns Complete HTML string ready for rendering in ChatGPT widget
  */
-function createProductSupportWidgetHTML(): string {
+function createProductSupportWidgetHTML(embeddedProfile?: any): string {
+  const profileJSON = embeddedProfile ? JSON.stringify(embeddedProfile).replace(/</g, '\\u003c').replace(/>/g, '\\u003e') : 'null';
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -4112,10 +4113,10 @@ function createProductSupportWidgetHTML(): string {
       continueBtn.disabled = !allAnswered;
     }
     
-    async function continueFromQuestions() {
+    function continueFromQuestions() {
       console.log('Questions submitted:', issueState);
       showPage('your-info');
-      await loadUserProfile();
+      loadUserProfile();
     }
     
     // User Information functions
@@ -4134,48 +4135,31 @@ function createProductSupportWidgetHTML(): string {
       deviceReturn: ''
     };
     
-    async function loadUserProfile() {
-      // Show loading state
-      const loadingMessage = document.createElement('div');
-      loadingMessage.id = 'profileLoadingMessage';
-      loadingMessage.style.cssText = 'padding: 12px; background: var(--lds-g-color-aqua-20); border-radius: 8px; margin-bottom: 20px; color: var(--lds-g-color-purple-90); font-size: 14px;';
-      loadingMessage.textContent = 'Loading your profile information...';
+    function loadUserProfile() {
+      // Use embedded profile data from server (fetched at tool invocation time)
+      var profile = window.__embeddedProfile || null;
       
-      const yourInfoPage = document.getElementById('your-info');
-      const formGrid = yourInfoPage.querySelector('.form-grid');
+      if (!profile) {
+        console.log('No embedded profile data available');
+        return;
+      }
+      
+      // Show loading state briefly
+      var loadingMessage = document.createElement('div');
+      loadingMessage.id = 'profileLoadingMessage';
+      loadingMessage.style.cssText = 'padding: 12px; background: #d1fae5; border-radius: 8px; margin-bottom: 20px; color: #065f46; font-size: 14px;';
+      loadingMessage.textContent = '✓ Profile information loaded successfully';
+      
+      var yourInfoPage = document.getElementById('your-info');
+      var formGrid = yourInfoPage.querySelector('.form-grid');
       if (formGrid) {
         formGrid.parentNode.insertBefore(loadingMessage, formGrid);
       }
       
-      try {
-        // Request ChatGPT to call the get-user-profile tool
-        const response = await fetch('/mcp/tools/get-user-profile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          if (result.structuredContent && result.structuredContent.profile) {
-            populateUserInfo(result.structuredContent.profile);
-            // Cache for future use
-            window.cachedUserProfile = result.structuredContent.profile;
-            
-            // Update loading message to success
-            loadingMessage.style.background = 'var(--lds-g-color-green-20)';
-            loadingMessage.textContent = '✓ Profile information loaded successfully';
-            setTimeout(() => loadingMessage.remove(), 3000);
-          }
-        } else {
-          throw new Error('Failed to load profile');
-        }
-      } catch (error) {
-        console.error('Error loading user profile:', error);
-        loadingMessage.style.background = 'var(--lds-g-color-red-20)';
-        loadingMessage.textContent = 'Could not load profile. Please fill in your information manually.';
-        setTimeout(() => loadingMessage.remove(), 5000);
-      }
+      populateUserInfo(profile);
+      window.cachedUserProfile = profile;
+      
+      setTimeout(function() { loadingMessage.remove(); }, 3000);
     }
     
     function populateUserInfo(profile) {
@@ -4216,6 +4200,34 @@ function createProductSupportWidgetHTML(): string {
           document.getElementById('zipCode').value = profile.address.zipCode;
           userInfo.zipCode = profile.address.zipCode;
         }
+      }
+      // Also check primaryResidence (AWS API format)
+      var residence = profile.primaryResidence;
+      if (residence && typeof residence === 'object') {
+        if (residence.address1) {
+          document.getElementById('address').value = residence.address1;
+          userInfo.address = residence.address1;
+        }
+        if (residence.address2) {
+          document.getElementById('apartment').value = residence.address2;
+          userInfo.apartment = residence.address2;
+        }
+        if (residence.city) {
+          document.getElementById('city').value = residence.city;
+          userInfo.city = residence.city;
+        }
+        if (residence.state) {
+          document.getElementById('state').value = residence.state;
+          userInfo.state = residence.state;
+        }
+        if (residence.zipCode) {
+          document.getElementById('zipCode').value = residence.zipCode;
+          userInfo.zipCode = residence.zipCode;
+        }
+      }
+      if (profile.dob && !profile.dateOfBirth) {
+        document.getElementById('dateOfBirth').value = profile.dob;
+        userInfo.dateOfBirth = profile.dob;
       }
       
       // Trigger validation after populating fields
@@ -4472,6 +4484,9 @@ function createProductSupportWidgetHTML(): string {
         });
       }
     });
+    
+    // Embedded profile data from server
+    window.__embeddedProfile = ${profileJSON};
     
     console.log('Product Support widget loaded');
   </script>
@@ -7300,18 +7315,42 @@ server.registerTool(
     _meta: {
       'openai/outputTemplate': 'ui://widget/product-support-v1.html',
       'openai/toolInvocation/invoking': 'Loading product support resources...',
-      'openai/toolInvocation/invoked': 'Product support resources loaded successfully',
-      'securitySchemes': [
-        { type: 'noauth' }
-      ]
+      'openai/toolInvocation/invoked': 'Product support resources loaded successfully'
     },
     inputSchema: {}
   },
   async () => {
     console.log('🛟 Product Support tool invoked');
     
-    // Create dynamic product support widget
-    const productSupportHTML = createProductSupportWidgetHTML();
+    // Fetch user profile server-side to embed in widget
+    let userProfile: any = null;
+    try {
+      const userToken = await requireAccessToken();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      
+      const profileResponse = await fetch(`${capiGatewayUrl}/v1/userAggregate`, {
+        method: 'GET',
+        headers: { 
+          Authorization: `Bearer ${userToken}`,
+          'Content-Type': 'application/json'
+        },
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        userProfile = profileData.profile || null;
+        console.log('✅ User profile fetched for product support widget');
+      }
+    } catch (error: any) {
+      console.warn('⚠️ Could not fetch user profile for widget:', error.message);
+    }
+    
+    // Create dynamic product support widget with embedded profile
+    const productSupportHTML = createProductSupportWidgetHTML(userProfile);
     
     const dynamicResource = {
       uri: 'ui://widget/product-support-v1.html',
