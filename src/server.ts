@@ -4620,173 +4620,140 @@ server.registerResource(
         text: `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>User Profile</title>
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --brand:#e81f26;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --shadow:0 8px 24px rgba(0,0,0,.08);
-      --radius:20px;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>User Profile</title>
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background:var(--bg);
-      color:var(--text);
-      display:grid;
-      place-items:center;
-      min-height:100svh;
-      padding:24px;
-    }
+<style>
+:root{
+  --panel:#e5e5e5;
+  --text:#2d2d2d;
+  --muted:#555;
+}
 
-    .wrap{max-width:820px;width:100%;display:flex;flex-direction:column;gap:18px}
+*{ box-sizing:border-box; }
 
-    .card{
-      position:relative;
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:28px;
-      overflow:hidden;
-    }
+body{
+  margin:0;
+  font-family: Helvetica, Arial, sans-serif;
+  color:var(--text);
+  background:white;
+  display:flex;
+  justify-content:center;
+  padding:60px 20px;
+}
 
-    .card-header{
-      text-align:center;
-      margin-bottom:32px;
-    }
+.profile-panel{
+  background:transparent;
+  width:100%;
+  max-width:900px;
+  padding:50px 60px;
+}
 
-    .logo-lilly{
-      width:120px;
-      height:auto;
-      margin:0 auto 16px;
-      display:block;
-    }
+.profile-title{
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:40px;
+}
 
-    .profile-subtitle{
-      font-size:14px;
-      color:var(--muted);
-    }
+.profile-grid{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  row-gap:26px;
+  column-gap:40px;
+  font-size:18px;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:1fr auto;
-      row-gap:26px;
-      column-gap:24px;
-      align-items:center;
-      font-size:18px;
-    }
+.label{
+  font-weight:600;
+}
 
-    .label{
-      color:#111827;
-      font-weight:600;
-      letter-spacing:.02em;
-    }
+.value{
+  font-weight:400;
+  color:#333;
+  line-height:1.4;
+}
 
-    .value{
-      font-weight:500;
-      text-align:right;
-    }
-
-    .value.empty{
-      color:var(--muted);
-      font-style:italic;
-      font-weight:400;
-    }
-
-    @media (max-width:640px){
-      .grid{font-size:16px;}
-    }
-
-    #skeleton { text-align: center; padding: 40px; color: var(--muted); }
-  </style>
+.value.empty{
+  color:var(--muted);
+  font-style:italic;
+}
+</style>
 </head>
+
 <body>
-  <div id="skeleton" aria-busy="true">
-    Loading user profile…
-  </div>
 
-  <div id="root" hidden></div>
+<div id="skeleton">Loading user profile…</div>
+<div id="root" hidden></div>
 
-  <script>
-    const root = document.getElementById('root');
-    const skeleton = document.getElementById('skeleton');
+<script>
+const root = document.getElementById('root');
+const skeleton = document.getElementById('skeleton');
 
-    function renderIfReady() {
-      const out = window.openai?.toolOutput || {};
-      const profile = out.profile || null;
+function renderIfReady() {
+  const out = window.openai?.toolOutput || {};
+  const profile = out.profile || null;
+  if (!profile) return;
 
-      if (!profile) return;
+  const givenName = profile.givenName || '';
+  const familyName = profile.familyName || '';
+  const email = profile.email || '';
+  const phoneNumber = profile.phoneNumber || '';
+  const dob = profile.dob || '';
+  const gender = profile.gender || '';
 
-      const givenName = profile.givenName || '';
-      const familyName = profile.familyName || '';
-      
-      const email = profile.email || '';
-      const phoneNumber = profile.phoneNumber || '';
-      const dob = profile.dob || '';
-      const gender = profile.gender || '';
-      
-      // Format address from primaryResidence object
-      const residence = profile.primaryResidence;
-      let address = '';
-      if (residence && typeof residence === 'object') {
-        const parts = [
-          residence.address1,
-          residence.address2,
-          residence.city,
-          residence.state,
-          residence.zipCode
-        ].filter(Boolean);
-        address = parts.join(', ');
-      }
+  const residence = profile.primaryResidence;
+  let address = '';
+  if (residence && typeof residence === 'object') {
+    address = [
+      residence.address1,
+      residence.address2,
+      residence.city,
+      residence.state,
+      residence.zipCode
+    ].filter(Boolean).join(', ');
+  }
 
-      root.innerHTML = \`
-  <main class="wrap" role="main" aria-label="User Profile">
-    <section class="card" aria-label="Profile Information">
-      <div class="card-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly logo" class="logo-lilly" />
-        <div class="profile-subtitle">Profile Information</div>
-      </div>
+  root.innerHTML = \`
+    <section class="profile-panel">
+      <div class="profile-title">Profile Information</div>
 
-      <div class="grid" role="list">
-        <div class="label" role="listitem">First Name</div>
-        <div class="value \${givenName ? '' : 'empty'}" aria-label="First Name value">\${givenName || 'Not provided'}</div>
+      <div class="profile-grid">
+        <div class="label">First name:</div>
+        <div class="value \${givenName ? '' : 'empty'}">\${givenName || 'Not provided'}</div>
 
-        <div class="label" role="listitem">Last Name</div>
-        <div class="value \${familyName ? '' : 'empty'}" aria-label="Last Name value">\${familyName || 'Not provided'}</div>
+        <div class="label">Last name:</div>
+        <div class="value \${familyName ? '' : 'empty'}">\${familyName || 'Not provided'}</div>
 
-        <div class="label" role="listitem">Email</div>
-        <div class="value \${email ? '' : 'empty'}" aria-label="Email value">\${email || 'Not provided'}</div>
+        <div class="label">Email:</div>
+        <div class="value \${email ? '' : 'empty'}">\${email || 'Not provided'}</div>
 
-        <div class="label" role="listitem">Phone</div>
-        <div class="value \${phoneNumber ? '' : 'empty'}" aria-label="Phone value">\${phoneNumber || 'Not provided'}</div>
+        <div class="label">Phone:</div>
+        <div class="value \${phoneNumber ? '' : 'empty'}">\${phoneNumber || 'Not provided'}</div>
 
-        <div class="label" role="listitem">Date of Birth</div>
-        <div class="value \${dob ? '' : 'empty'}" aria-label="DOB value">\${dob || 'Not provided'}</div>
+        <div class="label">Date of birth:</div>
+        <div class="value \${dob ? '' : 'empty'}">\${dob || 'Not provided'}</div>
 
-        <div class="label" role="listitem">Gender</div>
-        <div class="value \${gender ? '' : 'empty'}" aria-label="Gender value">\${gender ? gender.charAt(0).toUpperCase() + gender.slice(1) : 'Not provided'}</div>
+        <div class="label">Gender:</div>
+        <div class="value \${gender ? '' : 'empty'}">
+          \${gender ? gender.charAt(0).toUpperCase() + gender.slice(1) : 'Not provided'}
+        </div>
 
-        <div class="label" role="listitem">Address</div>
-        <div class="value \${address ? '' : 'empty'}" aria-label="Address value" style="max-width:400px">\${address || 'Not provided'}</div>
+        <div class="label">Address:</div>
+        <div class="value \${address ? '' : 'empty'}">\${address || 'Not provided'}</div>
       </div>
     </section>
-  </main>\`;
+  \`;
 
-      skeleton.hidden = true;
-      root.hidden = false;
-    }
+  skeleton.hidden = true;
+  root.hidden = false;
+}
 
-    renderIfReady();
-    window.addEventListener('openai:set_globals', renderIfReady);
-    window.addEventListener('openai:tool_response', renderIfReady);
-  </script>
+renderIfReady();
+window.addEventListener('openai:set_globals', renderIfReady);
+window.addEventListener('openai:tool_response', renderIfReady);
+</script>
+
 </body>
 </html>`,
         _meta: {
@@ -4829,101 +4796,87 @@ server.registerResource(
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lilly Savings Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savings Card</title>
   <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --brand:#e81f26; /* Lilly red (approx) */
-      --text:#1f2937;
-      --muted:#6b7280;
-      --accent:#0b5cab; /* blue accent for "EXPIRES" */
-      --shadow:0 8px 24px rgba(0,0,0,.08);
-      --radius:20px;
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: transparent;
+      margin: 0;
+      padding: 40px;
+      color: #222;
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background:var(--bg);
-      color:var(--text);
-      display:grid;
-      place-items:center;
-      min-height:100svh;
-      padding:24px;
+    .container {
+      max-width: 900px;
+      margin: auto;
     }
 
-    .wrap{max-width:820px;width:100%;display:flex;flex-direction:column;gap:18px}
-
-    /* Top card */
-    .card{
-      position:relative;
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:28px 28px 32px 28px;
-      overflow:hidden;
-    }
-    .card::after{ /* angled light band */
-      content:"";
-      position:absolute;inset:-30% -40% auto auto;
-      width:70%;height:170%;
-      background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.06));
-      transform:skewX(-18deg);
-      border-radius:40px;
-      pointer-events:none;
+    .header {
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
-    .card-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-
-    .logo-lilly{
-      width:76px;height:34px;object-fit:contain;flex:0 0 auto
+    .card {
+      background: #bfbfbf;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      margin-bottom: 40px;
     }
 
-    .meta{ text-align:right }
-    .meta small{color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:700}
-    .meta .number{font-size:28px;font-weight:700;margin-top:4px}
-
-    .content{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start;margin-top:22px}
-
-    .logo-L{ /* big scripted L */
-      width:120px;height:120px;object-fit:contain
+    .logo {
+      margin-bottom: 20px;
     }
 
-    .terms{line-height:1.6;font-size:16px}
-
-    .expires{position:absolute;right:28px;top:96px;color:var(--accent);font-weight:800;letter-spacing:.08em}
-
-    .footnote{ text-align:center; color:var(--muted); font-size:15px; padding:2px 6px }
-
-    /* Bottom details panel */
-    .panel{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:26px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:1fr auto; /* label / value */
-      row-gap:26px;
-      column-gap:24px;
-      align-items:center;
-      font-size:22px;
-    }
-    .label{color:#111827;font-weight:600;letter-spacing:.02em}
-    .value{font-weight:600;}
-
-    @media (max-width:640px){
-      .content{grid-template-columns:1fr;}
-      .expires{position:static;margin-top:8px;text-align:right}
-      .meta .number{font-size:22px}
-      .grid{font-size:18px}
+    .logo img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
     }
 
-    #skeleton { text-align: center; padding: 40px; color: var(--muted); }
+    .label {
+      letter-spacing: 2px;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .card-number {
+      font-size: 42px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .expires {
+      display: inline-block;
+      background: #e8e8e8;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .subtext {
+      max-width: 600px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      row-gap: 20px;
+      column-gap: 20px;
+      font-size: 18px;
+    }
+
+    .details .title {
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #skeleton { text-align: center; padding: 40px; color: #666; }
   </style>
 </head>
 <body>
@@ -4950,46 +4903,36 @@ server.registerResource(
       const rxGroup = copayCard.RxGroup || 'N/A';
 
       root.innerHTML = \`
-  <main class="wrap" role="main" aria-label="Lilly Savings Card">
-    <!-- Savings Card -->
-    <section class="card" aria-label="Savings Card">
-      <div class="card-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly logo" class="logo-lilly" />
-        <div class="meta">
-          <small>Savings Card #</small>
-          <div class="number" aria-label="Card Number">\${cardNumber}</div>
-        </div>
+  <div class="container">
+    <div class="header">Lilly Savings Card</div>
+
+    <div class="card">
+      <div class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly" /></div>
+
+      <div class="label">SAVINGS CARD</div>
+      <div class="card-number">\${cardNumber}</div>
+
+      <div class="expires">Expires: 12/31/\${expirationYear}</div>
+
+      <div class="subtext">
+        Offer good until <strong>12/31/\${expirationYear}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
       </div>
+    </div>
 
-      <div class="content">
-        <img src="https://logosandtypes.com/wp-content/uploads/2025/04/Lilly-scaled.png" alt="Lilly L logo" class="logo-L" />
-        <p class="terms">
-          Offer good until <strong>12/31/\${out.expirationYear || new Date().getFullYear() + 1}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
-        </p>
-      </div>
+    <div class="details">
+      <div class="title">RXBIN:</div>
+      <div>\${rxBIN}</div>
 
-      <div class="expires">EXPIRES</div>
-    </section>
+      <div class="title">PCN:</div>
+      <div>\${rxPCN}</div>
 
-    <p class="footnote">*Governmental beneficiaries excluded, terms and conditions apply.</p>
+      <div class="title">GRP:</div>
+      <div>\${rxGroup}</div>
 
-    <!-- Bottom info panel -->
-    <section class="panel" aria-label="Pharmacy Processing Info">
-      <div class="grid" role="list">
-        <div class="label" role="listitem">RXBIN</div>
-        <div class="value" aria-label="RXBIN value">\${rxBIN}</div>
-
-        <div class="label" role="listitem">PCN</div>
-        <div class="value" aria-label="PCN value">\${rxPCN}</div>
-
-        <div class="label" role="listitem">GRP</div>
-        <div class="value" aria-label="GRP value">\${rxGroup}</div>
-
-        <div class="label" role="listitem">ID#</div>
-        <div class="value" aria-label="ID Number">\${cardNumber}</div>
-      </div>
-    </section>
-  </main>\`;
+      <div class="title">ID:</div>
+      <div>\${cardNumber}</div>
+    </div>
+  </div>\`;
 
       skeleton.hidden = true;
       root.hidden = false;
