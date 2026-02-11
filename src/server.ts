@@ -4772,101 +4772,84 @@ server.registerResource(
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lilly Savings Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savings Card</title>
   <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --brand:#e81f26; /* Lilly red (approx) */
-      --text:#1f2937;
-      --muted:#6b7280;
-      --accent:#0b5cab; /* blue accent for "EXPIRES" */
-      --shadow:0 8px 24px rgba(0,0,0,.08);
-      --radius:20px;
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 40px;
+      color: #222;
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background:var(--bg);
-      color:var(--text);
-      display:grid;
-      place-items:center;
-      min-height:100svh;
-      padding:24px;
+    .container {
+      max-width: 900px;
+      margin: auto;
     }
 
-    .wrap{max-width:820px;width:100%;display:flex;flex-direction:column;gap:18px}
-
-    /* Top card */
-    .card{
-      position:relative;
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:28px 28px 32px 28px;
-      overflow:hidden;
-    }
-    .card::after{ /* angled light band */
-      content:"";
-      position:absolute;inset:-30% -40% auto auto;
-      width:70%;height:170%;
-      background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.06));
-      transform:skewX(-18deg);
-      border-radius:40px;
-      pointer-events:none;
+    .header {
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
-    .card-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-
-    .logo-lilly{
-      width:76px;height:34px;object-fit:contain;flex:0 0 auto
+    .card {
+      background: #bfbfbf;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      margin-bottom: 40px;
     }
 
-    .meta{ text-align:right }
-    .meta small{color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:700}
-    .meta .number{font-size:28px;font-weight:700;margin-top:4px}
-
-    .content{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start;margin-top:22px}
-
-    .logo-L{ /* big scripted L */
-      width:120px;height:120px;object-fit:contain
+    .logo {
+      font-size: 48px;
+      color: #c4312e;
+      font-style: italic;
+      margin-bottom: 20px;
     }
 
-    .terms{line-height:1.6;font-size:16px}
-
-    .expires{position:absolute;right:28px;top:96px;color:var(--accent);font-weight:800;letter-spacing:.08em}
-
-    .footnote{ text-align:center; color:var(--muted); font-size:15px; padding:2px 6px }
-
-    /* Bottom details panel */
-    .panel{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:26px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:1fr auto; /* label / value */
-      row-gap:26px;
-      column-gap:24px;
-      align-items:center;
-      font-size:22px;
-    }
-    .label{color:#111827;font-weight:600;letter-spacing:.02em}
-    .value{font-weight:600;}
-
-    @media (max-width:640px){
-      .content{grid-template-columns:1fr;}
-      .expires{position:static;margin-top:8px;text-align:right}
-      .meta .number{font-size:22px}
-      .grid{font-size:18px}
+    .label {
+      letter-spacing: 2px;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
     }
 
-    #skeleton { text-align: center; padding: 40px; color: var(--muted); }
+    .card-number {
+      font-size: 42px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .expires {
+      display: inline-block;
+      background: #e8e8e8;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .subtext {
+      max-width: 600px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      row-gap: 20px;
+      column-gap: 20px;
+      font-size: 18px;
+    }
+
+    .details .title {
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #skeleton { text-align: center; padding: 40px; color: #666; }
   </style>
 </head>
 <body>
@@ -4893,46 +4876,36 @@ server.registerResource(
       const rxGroup = copayCard.RxGroup || 'N/A';
 
       root.innerHTML = \`
-  <main class="wrap" role="main" aria-label="Lilly Savings Card">
-    <!-- Savings Card -->
-    <section class="card" aria-label="Savings Card">
-      <div class="card-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly logo" class="logo-lilly" />
-        <div class="meta">
-          <small>Savings Card #</small>
-          <div class="number" aria-label="Card Number">\${cardNumber}</div>
-        </div>
+  <div class="container">
+    <div class="header">Lilly Savings Card</div>
+
+    <div class="card">
+      <div class="logo">L</div>
+
+      <div class="label">SAVINGS CARD</div>
+      <div class="card-number">\${cardNumber}</div>
+
+      <div class="expires">Expires: 12/31/\${expirationYear}</div>
+
+      <div class="subtext">
+        Offer good until <strong>12/31/\${expirationYear}</strong> or for up to 24 months from patient qualification into the program, whichever comes first. *Governmental beneficiaries excluded, terms and conditions apply.
       </div>
+    </div>
 
-      <div class="content">
-        <img src="https://logosandtypes.com/wp-content/uploads/2025/04/Lilly-scaled.png" alt="Lilly L logo" class="logo-L" />
-        <p class="terms">
-          Offer good until <strong>12/31/\${out.expirationYear || new Date().getFullYear() + 1}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
-        </p>
-      </div>
+    <div class="details">
+      <div class="title">RXBIN:</div>
+      <div>\${rxBIN}</div>
 
-      <div class="expires">EXPIRES</div>
-    </section>
+      <div class="title">PCN:</div>
+      <div>\${rxPCN}</div>
 
-    <p class="footnote">*Governmental beneficiaries excluded, terms and conditions apply.</p>
+      <div class="title">GRP:</div>
+      <div>\${rxGroup}</div>
 
-    <!-- Bottom info panel -->
-    <section class="panel" aria-label="Pharmacy Processing Info">
-      <div class="grid" role="list">
-        <div class="label" role="listitem">RXBIN</div>
-        <div class="value" aria-label="RXBIN value">\${rxBIN}</div>
-
-        <div class="label" role="listitem">PCN</div>
-        <div class="value" aria-label="PCN value">\${rxPCN}</div>
-
-        <div class="label" role="listitem">GRP</div>
-        <div class="value" aria-label="GRP value">\${rxGroup}</div>
-
-        <div class="label" role="listitem">ID#</div>
-        <div class="value" aria-label="ID Number">\${cardNumber}</div>
-      </div>
-    </section>
-  </main>\`;
+      <div class="title">ID:</div>
+      <div>\${cardNumber}</div>
+    </div>
+  </div>\`;
 
       skeleton.hidden = true;
       root.hidden = false;
