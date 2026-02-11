@@ -88,7 +88,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
       font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-      background: #f8fafc;
+      background: white;
       padding: 20px;
     }
     .carousel-container { 
@@ -123,7 +123,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       background: white;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 20px;
     }
     .product-image-container {
@@ -134,6 +134,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       min-height: 250px;
       max-height: 300px;
       overflow: hidden;
+      align-self: center;
     }
     .product-image {
       width: 100%;
@@ -146,7 +147,8 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       font-size: 24px;
       font-weight: 600;
       color: #1f2937;
-      text-align: center;
+      text-align: left;
+      align-self: flex-start;
     }
     .buy-button {
       background-color: rgb(255, 37, 27);
@@ -195,7 +197,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
 </head>
 <body>
   <div class="carousel-container">
-    <div class="header-text">Available Medicines • ${medicines.length} FDA-Approved Options</div>
+    <div class="header-text">Buy medicines online from Lilly Direct</div>
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carousel-track">
         ${medicines.map(medicine => `
@@ -206,9 +208,6 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
             <div class="medicine-name">${medicine.name}</div>
             <a href="${medicine.buyLink}" target="_blank" class="buy-button">
               ${medicine.buyLinkText}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 256 256" class="arrow-icon">
-                <path d="m221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
-              </svg>
             </a>
           </div>
         `).join('')}
