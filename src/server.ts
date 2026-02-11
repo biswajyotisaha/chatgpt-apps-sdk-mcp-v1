@@ -101,6 +101,13 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       border-radius: 16px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
+    .header-text {
+      text-align: center;
+      color: #374151;
+      margin-bottom: 20px;
+      font-weight: 500;
+      font-size: 18px;
+    }
     .carousel-track { 
       display: flex; 
       gap: 0; 
@@ -116,53 +123,16 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       background: white;
       display: flex;
       flex-direction: column;
-      min-height: 500px;
-      max-height: 540px;
-    }
-    .medicine-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-    .medicine-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-    }
-    .medicine-logo {
-      width: 185px;
-      height: auto;
-    }
-    .badge {
-      display: flex;
       align-items: center;
-      border: 1px solid #9ca3af;
-      border-radius: 6px;
-      padding: 8px 12px;
-      width: 168px;
-      font-size: 16px;
-    }
-    .badge-icon {
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
-    }
-    .fda-text {
-      font-style: italic;
-      font-size: 10px;
-      color: #6b7280;
-      margin: 16px 0;
+      gap: 20px;
     }
     .product-image-container {
-      flex: 1;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 180px;
-      max-height: 220px;
-      margin: 20px 0;
+      min-height: 250px;
+      max-height: 300px;
       overflow: hidden;
     }
     .product-image {
@@ -172,21 +142,11 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       max-height: 100%;
       object-fit: contain;
     }
-    .cta-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-      padding-top: 20px;
-      flex-shrink: 0;
-    }
-    .delivery-badge {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid #9ca3af;
-      border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 16px;
+    .medicine-name {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+      text-align: center;
     }
     .buy-button {
       background-color: rgb(255, 37, 27);
@@ -200,7 +160,6 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 180px;
       cursor: pointer;
       transition: background-color 0.2s;
       gap: 8px;
@@ -232,69 +191,25 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
     .carousel-wrapper {
       position: relative;
     }
-    .status {
-      text-align: center;
-      color: #374151;
-      margin-bottom: 20px;
-      font-weight: 500;
-      font-size: 18px;
-    }
-    .auth-banner {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 12px;
-      text-align: center;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 14px;
-    }
-    .auth-banner a {
-      color: white;
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
   <div class="carousel-container">
-    <div class="auth-banner">
-      🔐 <a href="/auth-status">Check your login status</a> for personalized medicine recommendations
-    </div>
-    <div class="status">💊 Available Medicines • ${medicines.length} FDA-Approved Options</div>
+    <div class="header-text">Available Medicines • ${medicines.length} FDA-Approved Options</div>
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carousel-track">
         ${medicines.map(medicine => `
           <div class="medicine-tile">
-            <div class="medicine-content">
-              <div class="medicine-header">
-                <div>
-                  <img src="${medicine.logo}" alt="${medicine.name}" class="medicine-logo" crossorigin="anonymous" referrerpolicy="no-referrer">
-                </div>
-                <div class="badge">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256" class="badge-icon">
-                    <path d="M183.31,188l22.35-22.34a8,8,0,0,0-11.32-11.32L172,176.69l-41.15-41.16A52,52,0,0,0,124,32H72a8,8,0,0,0-8,8V192a8,8,0,0,0,16,0V136h28.69l52,52-22.35,22.34a8,8,0,0,0,11.32-11.32L172,199.31l22.34,22.35a8,8,0,0,0,11.32-11.32ZM80,48h44a36,36,0,0,1,0,72H80Z"></path>
-                  </svg>
-                  <span>FDA-approved</span>
-                </div>
-              </div>
-              <div class="fda-text">FDA-approved</div>
-              <div class="product-image-container">
-                <img src="${medicine.image}" alt="${medicine.name}" class="product-image" crossorigin="anonymous" referrerpolicy="no-referrer">
-              </div>
+            <div class="product-image-container">
+              <img src="${medicine.image}" alt="${medicine.name}" class="product-image" crossorigin="anonymous" referrerpolicy="no-referrer">
             </div>
-            <div class="cta-bar">
-              <div class="delivery-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256" class="badge-icon">
-                  <path d="M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32l80.34,44-29.77,16.3-80.35-44ZM128,120,47.66,76l33.9-18.56,80.34,44ZM40,90l80,43.78v85.79L40,175.82Zm176,85.78h0l-80,43.79V133.82l32-17.51V152a8,8,0,0,0,16,0V107.55L216,90v85.77Z"></path>
-                </svg>
-                <span>Free delivery</span>
-              </div>
-              <a href="${medicine.buyLink}" target="_blank" class="buy-button">
-                ${medicine.buyLinkText}
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 256 256" class="arrow-icon">
-                  <path d="m221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
-                </svg>
-              </a>
-            </div>
+            <div class="medicine-name">${medicine.name}</div>
+            <a href="${medicine.buyLink}" target="_blank" class="buy-button">
+              ${medicine.buyLinkText}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 256 256" class="arrow-icon">
+                <path d="m221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
+              </svg>
+            </a>
           </div>
         `).join('')}
       </div>
