@@ -4777,7 +4777,7 @@ server.registerResource(
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: #f4f4f4;
+      background: transparent;
       margin: 0;
       padding: 40px;
       color: #222;
@@ -4802,10 +4802,13 @@ server.registerResource(
     }
 
     .logo {
-      font-size: 48px;
-      color: #c4312e;
-      font-style: italic;
       margin-bottom: 20px;
+    }
+
+    .logo img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
     }
 
     .label {
@@ -4880,7 +4883,7 @@ server.registerResource(
     <div class="header">Lilly Savings Card</div>
 
     <div class="card">
-      <div class="logo">L</div>
+      <div class="logo"><img src="https://logosandtypes.com/wp-content/uploads/2025/04/Lilly-scaled.png" alt="Lilly" crossorigin="anonymous" referrerpolicy="no-referrer" /></div>
 
       <div class="label">SAVINGS CARD</div>
       <div class="card-number">\${cardNumber}</div>
@@ -4888,7 +4891,7 @@ server.registerResource(
       <div class="expires">Expires: 12/31/\${expirationYear}</div>
 
       <div class="subtext">
-        Offer good until <strong>12/31/\${expirationYear}</strong> or for up to 24 months from patient qualification into the program, whichever comes first. *Governmental beneficiaries excluded, terms and conditions apply.
+        Offer good until <strong>12/31/\${expirationYear}</strong> or for up to 24 months from patient qualification into the program, whichever comes first.
       </div>
     </div>
 
