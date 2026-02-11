@@ -4883,7 +4883,7 @@ server.registerResource(
     <div class="header">Lilly Savings Card</div>
 
     <div class="card">
-      <div class="logo"><img src="https://logosandtypes.com/wp-content/uploads/2025/04/Lilly-scaled.png" alt="Lilly" crossorigin="anonymous" referrerpolicy="no-referrer" /></div>
+      <div class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly" /></div>
 
       <div class="label">SAVINGS CARD</div>
       <div class="card-number">\${cardNumber}</div>
