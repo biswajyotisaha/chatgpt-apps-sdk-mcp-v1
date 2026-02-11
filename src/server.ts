@@ -4620,7 +4620,7 @@ body{
 }
 
 .profile-panel{
-  background:var(--panel);
+  background:transparent;
   width:100%;
   max-width:900px;
   padding:50px 60px;
