@@ -126,6 +126,12 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       align-items: flex-start;
       gap: 20px;
     }
+    .medicine-logo {
+      max-width: 180px;
+      width: 100%;
+      height: auto;
+      align-self: center;
+    }
     .product-image-container {
       width: 100%;
       display: flex;
