@@ -126,6 +126,12 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       align-items: flex-start;
       gap: 20px;
     }
+    .medicine-logo {
+      max-width: 180px;
+      width: 100%;
+      height: auto;
+      align-self: center;
+    }
     .product-image-container {
       width: 100%;
       display: flex;
@@ -143,13 +149,6 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       max-height: 100%;
       object-fit: contain;
     }
-    .medicine-name {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1f2937;
-      text-align: left;
-      align-self: center;
-    }
     .buy-button {
       background-color: rgb(255, 37, 27);
       color: white;
@@ -165,6 +164,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       cursor: pointer;
       transition: background-color 0.2s;
       gap: 8px;
+      align-self: flex-start;
     }
     .buy-button:hover {
       background-color: rgb(220, 30, 22);
@@ -202,10 +202,10 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       <div class="carousel-track" id="carousel-track">
         ${medicines.map(medicine => `
           <div class="medicine-tile">
+           <img src="${medicine.logo}" alt="${medicine.name} logo" class="medicine-logo" crossorigin="anonymous" referrerpolicy="no-referrer">
             <div class="product-image-container">
               <img src="${medicine.image}" alt="${medicine.name}" class="product-image" crossorigin="anonymous" referrerpolicy="no-referrer">
             </div>
-            <div class="medicine-name">${medicine.name}</div>
             <a href="${medicine.buyLink}" target="_blank" class="buy-button">
               ${medicine.buyLinkText}
             </a>
