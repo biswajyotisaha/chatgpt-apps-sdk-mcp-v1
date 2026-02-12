@@ -148,7 +148,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
       font-weight: 600;
       color: #1f2937;
       text-align: left;
-      align-self: center;
+      align-self: flex-start;
     }
     .buy-button {
       background-color: rgb(255, 37, 27);
