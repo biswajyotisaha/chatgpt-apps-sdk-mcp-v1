@@ -246,10 +246,15 @@ if (dotsContainer) {
   });
 }
 
-const cardWidth = slides[0] ? slides[0].offsetWidth + 12 : 0; /* card width + gap */
+const GAP = 12;
+const cardWidth = slides[0] ? slides[0].offsetWidth + GAP : 0;
+const container = document.querySelector('.slides');
+const maxScroll = track.scrollWidth - container.offsetWidth;
 
 function updateCarousel() {
-  track.style.transform = \`translateX(-\${index * cardWidth}px)\`;
+  let offset = index * cardWidth;
+  if (offset > maxScroll) offset = maxScroll;   /* clamp so last card has a clean edge */
+  track.style.transform = \`translateX(-\${offset}px)\`;
 
   document.querySelectorAll(".dot").forEach((dot, i) => {
     dot.classList.toggle("active", i === index);
@@ -265,12 +270,14 @@ function updateCarousel() {
 }
 
 function nextSlide() {
-  index = (index + 1) % slides.length;
+  if (index < slides.length - 1) { index++; }
+  else { index = 0; }
   updateCarousel();
 }
 
 function prevSlide() {
-  index = (index - 1 + slides.length) % slides.length;
+  if (index > 0) { index--; }
+  else { index = slides.length - 1; }
   updateCarousel();
 }
 
