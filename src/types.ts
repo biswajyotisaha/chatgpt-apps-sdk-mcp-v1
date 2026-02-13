@@ -113,3 +113,30 @@ export interface ProductQualityComplaint {
   timestamp: string;
   status: 'submitted' | 'under-review' | 'resolved';
 }
+
+// App capabilities types
+export interface AppCapabilityFeature {
+  name: string;
+  description: string;
+}
+
+export interface AppCapabilityCategory {
+  icon: string;
+  name: string;
+  features: AppCapabilityFeature[];
+}
+
+// Injection instructions types
+export interface InjectionStep {
+  title: string;
+  description: string;
+  warning: string;
+  image: string;
+}
+
+export interface InjectionMedicineData {
+  name: string;
+  videoUrl: string;
+  instructionsUrl: string;
+  steps: InjectionStep[];
+}
