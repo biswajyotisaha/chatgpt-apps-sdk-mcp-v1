@@ -109,28 +109,30 @@ body {
 /* Slide Wrapper */
 .slides {
   overflow: hidden;
-  border-radius: 20px;
 }
 
 .slides-track {
   display: flex;
+  gap: 12px;
   transition: transform 0.4s ease;
 }
 
 /* Card */
 .card {
-  min-width: 100%;
+  min-width: calc(100% - 60px);
   background: #cfd6dc;
   padding: 20px;
   border-radius: 20px;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .card img {
   width: 100%;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
+  background: #e2e8ed;
 }
 
 .card-title {
@@ -244,8 +246,10 @@ if (dotsContainer) {
   });
 }
 
+const cardWidth = slides[0] ? slides[0].offsetWidth + 12 : 0; /* card width + gap */
+
 function updateCarousel() {
-  track.style.transform = \`translateX(-\${index * 100}%)\`;
+  track.style.transform = \`translateX(-\${index * cardWidth}px)\`;
 
   document.querySelectorAll(".dot").forEach((dot, i) => {
     dot.classList.toggle("active", i === index);
