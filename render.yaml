@@ -20,7 +20,7 @@ services:
       
       # Redis connection (set manually in Render dashboard)
       - key: REDIS_URL
-        sync: false
+        value: redis://red-d4rb98ogjchc73bpidb0:6379
       
       # Your existing environment variables
       - key: CAPI_GATEWAY_URL
