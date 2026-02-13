@@ -36,7 +36,7 @@ server.registerResource(
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: transparent;
       --card: #ffffff;
       --brand: #e81f26;
       --text: #1f2937;
@@ -352,11 +352,6 @@ server.registerResource(
   
   <div id="root" hidden>
     <div class="container">
-      <div class="header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Lilly-Logo.svg" alt="Lilly" />
-        <h1>Nearby Pharmacies</h1>
-      </div>
-      
       <div id="error-container"></div>
       
       <div id="lilly-direct-container"></div>
