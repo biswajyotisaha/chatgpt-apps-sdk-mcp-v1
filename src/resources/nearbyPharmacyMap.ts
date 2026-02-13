@@ -91,97 +91,62 @@ server.registerResource(
     }
     
     .pharmacy-list {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
+      background: #ffffff;
+      padding: 30px;
     }
     
     .pharmacy-list h2 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 12px;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 25px;
       color: var(--text);
     }
     
     .pharmacy-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px;
-      border-radius: 8px;
-      transition: background 0.2s;
+      padding: 18px 0;
+      border-top: 1px dashed #cfcfcf;
       cursor: pointer;
     }
     
-    .pharmacy-item:hover {
-      background: #f3f4f6;
+    .pharmacy-item:first-child {
+      border-top: none;
     }
     
-    .pharmacy-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--brand);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+    .pharmacy-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 6px;
     }
     
-    .pharmacy-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: white;
+    .pharmacy-description {
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 10px;
     }
     
-    .pharmacy-info {
-      flex: 1;
-    }
-    
-    .pharmacy-name {
-      font-weight: 600;
+    .pharmacy-meta {
       font-size: 14px;
-      margin-bottom: 4px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
     
-    .pharmacy-address {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 4px;
+    .pharmacy-status {
+      color: #1c8b4a;
+      font-weight: 500;
+    }
+    
+    .pharmacy-status.closed {
+      color: #d44;
     }
     
     .pharmacy-distance {
-      font-size: 12px;
-      color: var(--brand);
+      color: #d44;
       font-weight: 500;
     }
     
-    .pharmacy-hours {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    
-    .open-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      background: #10b981;
-      color: white;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 500;
-      margin-left: 8px;
-    }
-    
-    .closed-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      background: #ef4444;
-      color: white;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 500;
-      margin-left: 8px;
+    .pharmacy-divider {
+      color: #999;
     }
     
     #skeleton {
@@ -362,7 +327,7 @@ server.registerResource(
       
 
       <div class="pharmacy-list">
-        <h2>📍 Pharmacies Near You</h2>
+        <h2>Pharmacies near you</h2>
         <div id="pharmacy-items"></div>
       </div>
     </div>
@@ -457,19 +422,18 @@ server.registerResource(
       pharmacyItems.innerHTML = pharmacies.map((pharmacy, index) => {
         const distance = calculateDistance(userLat, userLng, pharmacy.lat, pharmacy.lng);
         const isOpen = isPharmacyOpen();
-        const statusBadge = isOpen 
-          ? '<span class="open-badge">Open</span>'
-          : '<span class="closed-badge">Closed</span>';
+        const statusText = isOpen ? 'Open' : 'Closed';
+        const statusClass = isOpen ? 'pharmacy-status' : 'pharmacy-status closed';
         
         return '<div class="pharmacy-item" onclick="focusPharmacy(' + index + ')">' +
-          '<div class="pharmacy-icon">' +
-            '<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg>' +
-          '</div>' +
-          '<div class="pharmacy-info">' +
-            '<div class="pharmacy-name">' + pharmacy.name + statusBadge + '</div>' +
-            '<div class="pharmacy-address">' + pharmacy.address + '</div>' +
-            '<div class="pharmacy-distance">📍 ' + distance + ' miles away</div>' +
-            '<div class="pharmacy-hours">Hours: 8:00 AM - 9:00 PM</div>' +
+          '<div class="pharmacy-title">' + pharmacy.name + '</div>' +
+          '<div class="pharmacy-description">' + pharmacy.address + '</div>' +
+          '<div class="pharmacy-meta">' +
+            '<span class="' + statusClass + '">' + statusText + '</span>' +
+            '<span class="pharmacy-divider">\u2022</span>' +
+            '<span>Closes 9:00 PM</span>' +
+            '<span class="pharmacy-divider">|</span>' +
+            '<span class="pharmacy-distance">' + distance + ' miles away</span>' +
           '</div>' +
         '</div>';
       }).join('');
