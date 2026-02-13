@@ -79,175 +79,200 @@ const transport = new StreamableHTTPServerTransport({
  */
 function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
   return `<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Medicine Carousel</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-      background: white;
-      padding: 20px;
-    }
-    .carousel-container { 
-      width: 100%; 
-      max-width: 600px;
-      margin: 0 auto;
-      overflow: hidden; 
-      padding: 20px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    }
-    .header-text {
-      text-align: center;
-      color: #374151;
-      margin-bottom: 20px;
-      font-weight: 500;
-      font-size: 18px;
-    }
-    .carousel-track { 
-      display: flex; 
-      gap: 0; 
-      transition: transform 0.3s ease;
-      width: ${medicines.length * 100}%;
-    }
-    .medicine-tile { 
-      min-width: calc(100% / ${medicines.length});
-      flex: 0 0 calc(100% / ${medicines.length});
-      border: 1px solid #e5e7eb;
-      border-radius: 24px;
-      padding: 36px;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-    }
-    .medicine-logo {
-      max-width: 180px;
-      width: 100%;
-      height: auto;
-      align-self: center;
-    }
-    .product-image-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 250px;
-      max-height: 300px;
-      overflow: hidden;
-      align-self: center;
-    }
-    .medicine-logo {
-      max-width: 180px;
-      width: 100%;
-      height: auto;
-      align-self: center;
-    }
-    .product-image {
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .buy-button {
-      background-color: rgb(255, 37, 27);
-      color: white;
-      border: none;
-      border-radius: 9999px;
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: 500;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      gap: 8px;
-      align-self: flex-start;
-    }
-    .buy-button:hover {
-      background-color: rgb(220, 30, 22);
-    }
-    .arrow-icon {
-      width: 16px;
-      height: 16px;
-      fill: white;
-    }
-    .nav-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.9);
-      border: none;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      font-size: 18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 10;
-    }
-    .nav-prev { left: 20px; }
-    .nav-next { right: 20px; }
-    .carousel-wrapper {
-      position: relative;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Card Carousel</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* Carousel Container */
+.carousel {
+  width: 420px;
+  position: relative;
+}
+
+/* Header */
+.carousel-header {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+/* Slide Wrapper */
+.slides {
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.slides-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+/* Card */
+.card {
+  min-width: 100%;
+  background: #cfd6dc;
+  padding: 20px;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 15px;
+}
+
+/* Button */
+.card-btn {
+  margin-top: 15px;
+  background: #d63a2f;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.arrow {
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: #333;
+}
+</style>
 </head>
+
 <body>
-  <div class="carousel-container">
-    <div class="header-text">Buy medicines online from Lilly Direct</div>
-    <div class="carousel-wrapper">
-      <div class="carousel-track" id="carousel-track">
-        ${medicines.map(medicine => `
-          <div class="medicine-tile">
-            <img src="${medicine.logo}" alt="${medicine.name} logo" class="medicine-logo" crossorigin="anonymous" referrerpolicy="no-referrer">
-            <div class="product-image-container">
-              <img src="${medicine.image}" alt="${medicine.name}" class="product-image" crossorigin="anonymous" referrerpolicy="no-referrer">
-            </div>
-            <a href="${medicine.buyLink}" target="_blank" class="buy-button">
-              ${medicine.buyLinkText}
-            </a>
-          </div>
-        `).join('')}
+
+<div class="carousel">
+
+  <div class="carousel-header">
+    Buy medicines online from Lilly Direct
+  </div>
+
+  <div class="slides">
+    <div class="slides-track" id="track">
+
+      ${medicines.map(medicine => `
+      <!-- Slide: ${medicine.name} -->
+      <div class="card">
+        <img src="${medicine.image}" alt="${medicine.name}" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <div class="card-title">${medicine.name}</div>
+        <a href="${medicine.buyLink}" target="_blank" class="card-btn">${medicine.buyLinkText} &rarr;</a>
       </div>
-      ${medicines.length > 1 ? `
-        <button class="nav-button nav-prev" onclick="scrollCarousel(-1)">←</button>
-        <button class="nav-button nav-next" onclick="scrollCarousel(1)">→</button>
-      ` : ''}
+      `).join('')}
+
     </div>
   </div>
-  
-  <script>
-    let currentIndex = 0;
-    const maxIndex = ${medicines.length - 1};
-    const slideWidth = 100 / ${medicines.length};
-    
-    function scrollCarousel(direction) {
-      if (${medicines.length} <= 1) return;
-      
-      currentIndex = Math.max(0, Math.min(maxIndex, currentIndex + direction));
-      const track = document.getElementById('carousel-track');
-      track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + '%)';
-      
-      if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
-        window.oai.widget.setState({
-          currentIndex: currentIndex,
-          viewMode: 'medicine-carousel',
-          medicineCount: ${medicines.length}
-        });
-      }
-    }
-    
-    console.log('Medicine carousel loaded with ${medicines.length} items');
-  </script>
+
+  ${medicines.length > 1 ? `
+  <!-- Navigation -->
+  <div class="nav">
+    <div class="arrow" onclick="prevSlide()">&#8249;</div>
+    <div class="dots" id="dots"></div>
+    <div class="arrow" onclick="nextSlide()">&#8250;</div>
+  </div>
+  ` : ''}
+
+</div>
+
+<script>
+const track = document.getElementById("track");
+const slides = document.querySelectorAll(".card");
+const dotsContainer = document.getElementById("dots");
+
+let index = 0;
+
+/* Create dots */
+if (dotsContainer) {
+  slides.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    if (i === 0) dot.classList.add("active");
+
+    dot.addEventListener("click", () => {
+      index = i;
+      updateCarousel();
+    });
+
+    dotsContainer.appendChild(dot);
+  });
+}
+
+function updateCarousel() {
+  track.style.transform = \`translateX(-\${index * 100}%)\`;
+
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
+  });
+
+  if (window.oai && window.oai.widget && typeof window.oai.widget.setState === 'function') {
+    window.oai.widget.setState({
+      currentIndex: index,
+      viewMode: 'medicine-carousel',
+      medicineCount: slides.length
+    });
+  }
+}
+
+function nextSlide() {
+  index = (index + 1) % slides.length;
+  updateCarousel();
+}
+
+function prevSlide() {
+  index = (index - 1 + slides.length) % slides.length;
+  updateCarousel();
+}
+
+console.log('Medicine carousel loaded with ' + slides.length + ' items');
+</script>
+
 </body>
 </html>`;
 }
