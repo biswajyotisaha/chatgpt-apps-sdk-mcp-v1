@@ -7,6 +7,7 @@ import { registerNearbyPharmacyMapResource } from './nearbyPharmacyMap.js';
 import { registerInjectionInstructionsResource } from './injectionInstructions.js';
 import { registerTroubleshootingWidgetResource } from './troubleshootingWidget.js';
 import { registerProductSupportWidgetResource } from './productSupportWidget.js';
+import { registerAppCapabilitiesResource } from './appCapabilities.js';
 
 export {
   registerLillyDirectStoreResource,
@@ -17,6 +18,7 @@ export {
   registerInjectionInstructionsResource,
   registerTroubleshootingWidgetResource,
   registerProductSupportWidgetResource,
+  registerAppCapabilitiesResource,
 };
 
 /**
@@ -31,4 +33,5 @@ export function registerAllResources(server: McpServer): void {
   registerInjectionInstructionsResource(server);
   registerTroubleshootingWidgetResource(server);
   registerProductSupportWidgetResource(server);
+  registerAppCapabilitiesResource(server);
 }

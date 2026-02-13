@@ -97,42 +97,64 @@ server.registerTool(
     title: 'What Can This App Do',
     description: 'Summarizes all available features and tools in this Lilly app. Use this when a user asks what this app can do, what features or tools are available, what help is offered, or wants an overview of capabilities.',
     _meta: {
+      'openai/outputTemplate': 'ui://widget/app-capabilities-v1.html',
       'openai/toolInvocation/invoking': 'Gathering available features...',
       'openai/toolInvocation/invoked': 'Here\'s everything this app can do'
     },
     inputSchema: {}
   },
   async () => {
-    const summary = `
-Here's everything you can do with the Lilly app:
-
-🛒 **Shop & Buy Medicines**
-• **Buy Medicines Online** — Browse all FDA-approved medicines available on the Lilly online pharmacy and get direct purchase links.
-• **Shop a Specific Medicine** — Look up a specific medicine (Zepbound, Humalog, Humulin, Emgality, Basaglar, Lyumjev, or Rezvoglar) and get a direct link to buy it on Lilly.
-💉 **Injection Help**
-• **Injection Pen Instructions** — Get a step-by-step visual guide on how to use your injection pen, including safety warnings, images, and a training video.
-
-👤 **Your Account**
-• **View Your Profile** — See your personal profile information linked to your Lilly account.
-• **View Your Savings Card** — Check your copay savings card details and benefits.
-
-🔧 **Troubleshooting & Support**
-• **Troubleshooting Guide** — Look up common issues, side effects, and emergency information for your medicine.
-• **Product Support & Troubleshooting** — Get help with Mounjaro or Zepbound product issues, device troubleshooting (e.g., pen not clicking or not working), shipping problems, or report a side effect.
-
-📍 **Find a Pharmacy**
-• **Find Nearby Pharmacies** — Search for pharmacies near any address, city, or zip code and view them on an interactive map. Also shows options to buy your medicine online from Lilly Direct.
-
-Just ask me about any of these and I'll get started!
-`.trim();
+    const categories = [
+      {
+        icon: '🛒',
+        name: 'Shop & Buy Medicines',
+        features: [
+          { name: 'Buy Medicines Online', description: 'Browse all FDA-approved medicines available on the Lilly online pharmacy and get direct purchase links.' },
+          { name: 'Shop a Specific Medicine', description: 'Look up a specific medicine (Zepbound, Humalog, Humulin, Emgality, Basaglar, Lyumjev, or Rezvoglar) and get a direct link to buy it on Lilly.' }
+        ]
+      },
+      {
+        icon: '💉',
+        name: 'Injection Help',
+        features: [
+          { name: 'Injection Pen Instructions', description: 'Get a step-by-step visual guide on how to use your injection pen, including safety warnings, images, and a training video.' }
+        ]
+      },
+      {
+        icon: '👤',
+        name: 'Your Account',
+        features: [
+          { name: 'View Your Profile', description: 'See your personal profile information linked to your Lilly account.' },
+          { name: 'View Your Savings Card', description: 'Check your copay savings card details and benefits.' }
+        ]
+      },
+      {
+        icon: '🔧',
+        name: 'Troubleshooting & Support',
+        features: [
+          { name: 'Troubleshooting Guide', description: 'Look up common issues, side effects, and emergency information for your medicine.' },
+          { name: 'Product Support & Troubleshooting', description: 'Get help with Mounjaro or Zepbound product issues, device troubleshooting (e.g., pen not clicking or not working), shipping problems, or report a side effect.' }
+        ]
+      },
+      {
+        icon: '📍',
+        name: 'Find a Pharmacy',
+        features: [
+          { name: 'Find Nearby Pharmacies', description: 'Search for pharmacies near any address, city, or zip code and view them on an interactive map. Also shows options to buy your medicine online from Lilly Direct.' }
+        ]
+      }
+    ];
 
     return {
       content: [
         {
           type: 'text' as const,
-          text: summary
+          text: 'Here\'s everything you can do with the Lilly app. Browse the categories below to see all available features.'
         }
-      ]
+      ],
+      structuredContent: {
+        categories: categories
+      }
     };
   }
 );
