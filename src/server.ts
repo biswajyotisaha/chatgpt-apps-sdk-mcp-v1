@@ -22,7 +22,9 @@ import {
   LC3_DEVICE_MANUFACTURER, 
   LC3_APP_NAME, 
   LC3_APP_VERSION, 
-  LC3_DEVICE_OS 
+  LC3_DEVICE_OS,
+  LILLY_ISSUER_BASE_URL,
+  LILLY_AUDIENCE
 } from './constants.js';
 
 
@@ -86,21 +88,11 @@ app.get('/health', async (_req: Request, res: Response) => {
  * Must match Auth0 API Identifier exactly.
  */
 app.get('/.well-known/oauth-protected-resource', (req, res) => {
-  const issuerURL = process.env.LILLY_ISSUER_BASE_URL;
-  const audience = process.env.LILLY_AUDIENCE; // Use audience as resource URL
-  
-  if (!issuerURL || !audience) {
-    return res.status(503).json({
-      error: 'server_misconfig',
-      message: 'Set AUTH0_ISSUER_BASE_URL and AUTH0_AUDIENCE env vars'
-    });
-  }
-  
-  console.log('📋 PRM endpoint called - advertising resource:', audience);
+  console.log('📋 PRM endpoint called - advertising resource:', LILLY_AUDIENCE);
   
   res.json({
-    resource: audience, // MUST match the API Identifier in Auth0 EXACTLY
-    authorization_servers: [issuerURL],
+    resource: LILLY_AUDIENCE, // MUST match the API Identifier in Auth0 EXACTLY
+    authorization_servers: [LILLY_ISSUER_BASE_URL],
     scopes_supported: ['openid', 'profile'],
     bearer_methods_supported: ['header']
   });

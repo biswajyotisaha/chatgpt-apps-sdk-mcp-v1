@@ -4,9 +4,13 @@
 export const PORT = parseInt(process.env.PORT || '3000', 10);
 
 // API Gateway URLs
-export const CAPI_GATEWAY_URL = process.env.CAPI_GATEWAY_URL || 'https://consumer-api.iv.apps.lilly.com';
-export const LC3_GATEWAY_URL = process.env.LC3_GATEWAY_URL || 'https://lillytogether-gateway.iv.connectedcarecloud.com';
-export const DHISP_GATEWAY_URL = process.env.DHISP_GATEWAY_URL || 'https://qa.ext-llydhisp.net/digh-lillytogether-test-xapi-v2';
+export const CAPI_GATEWAY_URL = process.env.CAPI_GATEWAY_URL!;
+export const LC3_GATEWAY_URL = process.env.LC3_GATEWAY_URL!;
+export const DHISP_GATEWAY_URL = process.env.DHISP_GATEWAY_URL!;
+
+// Auth / OAuth URLs
+export const LILLY_ISSUER_BASE_URL = process.env.LILLY_ISSUER_BASE_URL || 'https://poc-spe-a.lilly.com';
+export const LILLY_AUDIENCE = process.env.LILLY_AUDIENCE || 'https://poc-spe-a.lilly-dev.auth0app.com/api/v2/';
 
 // LC3 Gateway Headers (hardcoded - simulating mobile app device)
 export const LC3_IDENTITY_PROVIDER = 'okta';
