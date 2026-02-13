@@ -119,16 +119,11 @@ body {
 
 /* Card */
 .card {
-  min-width: calc(100% - 60px);
+  flex: 0 0 calc(100% - 60px);
   background: #cfd6dc;
   padding: 20px;
   border-radius: 20px;
   box-sizing: border-box;
-  flex-shrink: 0;
-}
-
-.card:last-child {
-  min-width: 100%;
 }
 
 .card img {
@@ -251,13 +246,13 @@ if (dotsContainer) {
 }
 
 const GAP = 12;
-const cardWidth = slides[0] ? slides[0].offsetWidth + GAP : 0;
 const container = document.querySelector('.slides');
-const maxScroll = track.scrollWidth - container.offsetWidth;
 
 function updateCarousel() {
+  const cardWidth = slides[0] ? slides[0].getBoundingClientRect().width + GAP : 0;
+  const maxScroll = track.scrollWidth - container.offsetWidth;
   let offset = index * cardWidth;
-  if (offset > maxScroll) offset = maxScroll;   /* clamp so last card has a clean edge */
+  if (offset > maxScroll) offset = maxScroll;
   track.style.transform = \`translateX(-\${offset}px)\`;
 
   document.querySelectorAll(".dot").forEach((dot, i) => {
