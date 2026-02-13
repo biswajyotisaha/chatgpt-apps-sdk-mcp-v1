@@ -4050,13 +4050,18 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
     };
     
     function loadUserProfile() {
+      console.log('🔄 loadUserProfile called');
       // Use embedded profile data from server (fetched at tool invocation time)
       var profile = window.__embeddedProfile || null;
       
+      console.log('🔍 window.__embeddedProfile:', profile);
+      
       if (!profile) {
-        console.log('No embedded profile data available');
+        console.log('❌ No embedded profile data available');
         return;
       }
+      
+      console.log('✅ Profile data found, populating form...');
       
       // Show loading state briefly
       var loadingMessage = document.createElement('div');
@@ -4077,72 +4082,98 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
     }
     
     function populateUserInfo(profile) {
+      console.log('📋 Populating user info with profile:', JSON.stringify(profile, null, 2));
+      
+      // Name fields
       if (profile.givenName) {
         document.getElementById('firstName').value = profile.givenName;
         userInfo.firstName = profile.givenName;
+        console.log('✅ First name set:', profile.givenName);
       }
       if (profile.familyName) {
         document.getElementById('lastName').value = profile.familyName;
         userInfo.lastName = profile.familyName;
+        console.log('✅ Last name set:', profile.familyName);
       }
+      
+      // Contact fields
       if (profile.email) {
         document.getElementById('email').value = profile.email;
         userInfo.email = profile.email;
+        console.log('✅ Email set:', profile.email);
       }
       if (profile.phoneNumber) {
         document.getElementById('phone').value = profile.phoneNumber;
         userInfo.phone = profile.phoneNumber;
+        console.log('✅ Phone set:', profile.phoneNumber);
       }
+      
+      // Date of birth - check both dateOfBirth and dob
       if (profile.dateOfBirth) {
         document.getElementById('dateOfBirth').value = profile.dateOfBirth;
         userInfo.dateOfBirth = profile.dateOfBirth;
+        console.log('✅ DOB set from dateOfBirth:', profile.dateOfBirth);
+      } else if (profile.dob) {
+        document.getElementById('dateOfBirth').value = profile.dob;
+        userInfo.dateOfBirth = profile.dob;
+        console.log('✅ DOB set from dob:', profile.dob);
       }
-      if (profile.address) {
-        if (profile.address.street) {
-          document.getElementById('address').value = profile.address.street;
-          userInfo.address = profile.address.street;
-        }
-        if (profile.address.city) {
-          document.getElementById('city').value = profile.address.city;
-          userInfo.city = profile.address.city;
-        }
-        if (profile.address.state) {
-          document.getElementById('state').value = profile.address.state;
-          userInfo.state = profile.address.state;
-        }
-        if (profile.address.zipCode) {
-          document.getElementById('zipCode').value = profile.address.zipCode;
-          userInfo.zipCode = profile.address.zipCode;
-        }
-      }
-      // Also check primaryResidence (AWS API format)
+      
+      // Address - primaryResidence format (AWS API)
       var residence = profile.primaryResidence;
+      console.log('🏠 primaryResidence data:', residence);
+      
       if (residence && typeof residence === 'object') {
         if (residence.address1) {
           document.getElementById('address').value = residence.address1;
           userInfo.address = residence.address1;
+          console.log('✅ Street address set:', residence.address1);
         }
         if (residence.address2) {
           document.getElementById('apartment').value = residence.address2;
           userInfo.apartment = residence.address2;
+          console.log('✅ Apartment set:', residence.address2);
         }
         if (residence.city) {
           document.getElementById('city').value = residence.city;
           userInfo.city = residence.city;
+          console.log('✅ City set:', residence.city);
         }
         if (residence.state) {
-          document.getElementById('state').value = residence.state;
+          var stateSelect = document.getElementById('state');
+          stateSelect.value = residence.state;
           userInfo.state = residence.state;
+          console.log('✅ State set:', residence.state);
         }
         if (residence.zipCode) {
           document.getElementById('zipCode').value = residence.zipCode;
           userInfo.zipCode = residence.zipCode;
+          console.log('✅ ZIP code set:', residence.zipCode);
         }
       }
-      if (profile.dob && !profile.dateOfBirth) {
-        document.getElementById('dateOfBirth').value = profile.dob;
-        userInfo.dateOfBirth = profile.dob;
+      
+      // Fallback: Legacy address format
+      if (profile.address && typeof profile.address === 'object') {
+        console.log('🏠 Legacy address data:', profile.address);
+        if (profile.address.street && !userInfo.address) {
+          document.getElementById('address').value = profile.address.street;
+          userInfo.address = profile.address.street;
+        }
+        if (profile.address.city && !userInfo.city) {
+          document.getElementById('city').value = profile.address.city;
+          userInfo.city = profile.address.city;
+        }
+        if (profile.address.state && !userInfo.state) {
+          document.getElementById('state').value = profile.address.state;
+          userInfo.state = profile.address.state;
+        }
+        if (profile.address.zipCode && !userInfo.zipCode) {
+          document.getElementById('zipCode').value = profile.address.zipCode;
+          userInfo.zipCode = profile.address.zipCode;
+        }
       }
+      
+      console.log('📋 Final userInfo state:', JSON.stringify(userInfo, null, 2));
       
       // Trigger validation after populating fields
       updateUserInfoContinueButton();
@@ -7112,6 +7143,10 @@ server.registerTool(
         const profileData = await profileResponse.json();
         userProfile = profileData.profile || null;
         console.log('✅ User profile fetched for product support widget');
+        console.log('📋 Profile data structure:', JSON.stringify(userProfile, null, 2));
+        if (userProfile?.primaryResidence) {
+          console.log('🏠 primaryResidence:', JSON.stringify(userProfile.primaryResidence, null, 2));
+        }
       }
     } catch (error: any) {
       console.warn('⚠️ Could not fetch user profile for widget:', error.message);
