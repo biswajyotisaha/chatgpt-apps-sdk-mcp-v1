@@ -178,7 +178,7 @@ if (dotsContainer) {
 const GAP = 12;
 const container = document.querySelector('.slides');
 
-export function updateCarousel() {
+function updateCarousel() {
   const cardWidth = slides[0] ? slides[0].getBoundingClientRect().width + GAP : 0;
   const maxScroll = track.scrollWidth - container.offsetWidth;
   let offset = index * cardWidth;
@@ -198,17 +198,35 @@ export function updateCarousel() {
   }
 }
 
-export function nextSlide() {
+function nextSlide() {
   if (index < slides.length - 1) { index++; }
   else { index = 0; }
   updateCarousel();
 }
 
-export function prevSlide() {
+function prevSlide() {
   if (index > 0) { index--; }
   else { index = slides.length - 1; }
   updateCarousel();
 }
+
+/* Touch / swipe support */
+let touchStartX = 0;
+let touchEndX = 0;
+const SWIPE_THRESHOLD = 50;
+
+track.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+track.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > SWIPE_THRESHOLD) {
+    if (diff > 0) { nextSlide(); }
+    else { prevSlide(); }
+  }
+});
 
 console.log('Medicine carousel loaded with ' + slides.length + ' items');
 </script>
