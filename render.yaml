@@ -18,7 +18,7 @@ services:
       - key: PORT
         value: 8000
       
-      # Redis connection (paste your internal Redis URL here)
+      # Redis connection (set manually in Render dashboard)
       - key: REDIS_URL
         value: redis://red-d4rb98ogjchc73bpidb0:6379
       
