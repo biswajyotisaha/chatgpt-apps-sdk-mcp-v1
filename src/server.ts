@@ -4510,7 +4510,7 @@ function createProductSupportWidgetHTML(embeddedProfile?: any): string {
 // Lilly Direct Store Resource (All medicines available for purchase)
 server.registerResource(
   'lilly-direct-store',
-  'ui://widget/lilly-direct-store-v1.html',
+  'ui://widget/lilly-direct-store-v2.html',
   {
     _meta: {
       'openai/widgetDomain': 'https://lilly-direct-store.onrender.com',
@@ -4527,7 +4527,7 @@ server.registerResource(
   async () => ({
     contents: [
       {
-        uri: 'ui://widget/lilly-direct-store-v1.html',
+        uri: 'ui://widget/lilly-direct-store-v2.html',
         mimeType: 'text/html+skybridge',
         text: createMedicineCarouselHTML(),
         _meta: {
@@ -6591,7 +6591,7 @@ server.registerTool(
     title: 'Buy Medicines Online from Lilly Direct',
     description: 'Browse and shop FDA-approved medicines available for purchase on Lilly Direct online pharmacy. Use this when a user wants to buy, purchase, order, or shop for medicines online, or needs links to the Lilly Direct store.',
     _meta: {
-      'openai/outputTemplate': 'ui://widget/lilly-direct-store-v1.html',
+      'openai/outputTemplate': 'ui://widget/lilly-direct-store-v2.html',
       'openai/toolInvocation/invoking': 'Loading Lilly Direct online store...',
       'openai/toolInvocation/invoked': 'Lilly Direct store loaded successfully',
       'securitySchemes': [
