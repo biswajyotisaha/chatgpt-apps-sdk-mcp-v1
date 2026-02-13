@@ -55,7 +55,7 @@ server.registerResource(
     }
     
     .container {
-      max-width: 800px;
+      max-width: 420px;
       margin: 0 auto;
     }
     
@@ -249,132 +249,98 @@ server.registerResource(
       .header h1 { font-size: 18px; }
     }
     
-    /* Lilly Direct medicine banner styles */
-    .lilly-direct-section {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
+    /* Lilly Direct medicine carousel styles */
+    .lilly-carousel {
+      width: 100%;
+      position: relative;
       margin-bottom: 16px;
     }
     
-    .lilly-direct-section h2 {
-      font-size: 16px;
+    .lilly-carousel-header {
+      font-size: 20px;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       color: var(--text);
     }
     
-    .medicine-single {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      background: #fafafa;
+    .lilly-slides {
+      overflow: hidden;
     }
     
-    .medicine-single img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-    
-    .medicine-single-info {
-      flex: 1;
-    }
-    
-    .medicine-single-name {
-      font-weight: 600;
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-    
-    .medicine-single-label {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    
-    .medicine-buy-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 18px;
-      background: var(--brand);
-      color: white;
-      text-decoration: none;
-      border-radius: 9999px;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-    
-    .medicine-buy-btn:hover {
-      background: #c41922;
-    }
-    
-    .medicine-carousel {
+    .lilly-slides-track {
       display: flex;
       gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+      transition: transform 0.4s ease;
     }
     
-    .medicine-carousel::-webkit-scrollbar {
-      height: 4px;
+    .lilly-card {
+      flex: 0 0 calc(100% - 60px);
+      background: #cfd6dc;
+      padding: 20px;
+      border-radius: 20px;
+      box-sizing: border-box;
     }
     
-    .medicine-carousel::-webkit-scrollbar-thumb {
-      background: #d1d5db;
-      border-radius: 2px;
-    }
-    
-    .medicine-card {
-      flex: 0 0 160px;
-      scroll-snap-align: start;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px;
-      background: #fafafa;
-      text-align: center;
-      transition: border-color 0.2s;
-    }
-    
-    .medicine-card:hover {
-      border-color: var(--brand);
-    }
-    
-    .medicine-card img {
-      width: 60px;
-      height: 60px;
+    .lilly-card img {
+      width: 100%;
+      height: 200px;
       object-fit: contain;
-      margin-bottom: 8px;
+      border-radius: 10px;
+      background: #e2e8ed;
     }
     
-    .medicine-card-name {
-      font-weight: 600;
-      font-size: 13px;
-      margin-bottom: 6px;
+    .lilly-card-title {
+      font-weight: bold;
+      font-size: 22px;
+      margin-top: 15px;
     }
     
-    .medicine-card-btn {
-      display: inline-block;
-      padding: 5px 12px;
-      background: var(--brand);
+    .lilly-card-btn {
+      margin-top: 15px;
+      background: #d63a2f;
       color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 14px;
       text-decoration: none;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 500;
+      display: inline-block;
     }
     
-    .medicine-card-btn:hover {
-      background: #c41922;
+    .lilly-card-btn:hover {
+      background: #b5302a;
+    }
+    
+    .lilly-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 12px;
+      gap: 10px;
+    }
+    
+    .lilly-arrow {
+      cursor: pointer;
+      font-size: 20px;
+      user-select: none;
+    }
+    
+    .lilly-dots {
+      display: flex;
+      gap: 6px;
+    }
+    
+    .lilly-dot {
+      width: 8px;
+      height: 8px;
+      background: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .lilly-dot.active {
+      background: #333;
     }
   </style>
 </head>
@@ -400,20 +366,6 @@ server.registerResource(
       </div>
       
 
-      <div style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 0; overflow: hidden; text-align: center; margin-bottom: 16px;">
-        <div style="background: linear-gradient(135deg, #e81f26 0%, #c41922 100%); height: 4px;"></div>
-        <div style="padding: 24px;">
-          <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #0369a1; margin-bottom: 16px; display: inline-block; font-weight: 500;">🚚 Free Home Delivery</div>
-          <div style="width: 120px; height: 80px; margin: 0 auto 12px; background: #f5f5f5; border-radius: 16px; padding: 8px; display: flex; align-items: center; justify-content: center;">
-            <img src="https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:4cb54322-1b06-40ce-9d7f-3417d1fb259c" alt="Zepbound" style="width: 100%; height: 100%; object-fit: contain;" />
-          </div>
-          <div style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Zepbound®</div>
-          <div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">tirzepatide</div>
-          <div style="font-size: 14px; color: #4b5563; margin-bottom: 12px; line-height: 1.5;">Order directly from Lilly with home delivery</div>
-          <div style="color: #10b981; font-size: 14px; font-weight: 500; margin-bottom: 16px;">✓ Direct from Manufacturer</div>
-          <a href="https://www.lilly.com/lillydirect/medicines/zepbound" target="_blank" style="display: inline-block; background: #e81f26; color: white; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#c41922'" onmouseout="this.style.background='#e81f26'">Shop Zepbound</a>
-        </div>
-      </div>
       <div class="pharmacy-list">
         <h2>📍 Pharmacies Near You</h2>
         <div id="pharmacy-items"></div>
@@ -575,34 +527,92 @@ server.registerResource(
       const container = document.getElementById('lilly-direct-container');
       if (!container || !data || !data.items || !data.items.length) return;
       
-      if (data.type === 'single') {
-        const med = data.items[0];
-        container.innerHTML = '<div class="lilly-direct-section">' +
-          '<h2>\uD83D\uDED2 Buy ' + med.name + ' Online from Lilly Direct</h2>' +
-          '<div class="medicine-single">' +
-            '<img src="' + med.image + '" alt="' + med.name + '" crossorigin="anonymous" referrerpolicy="no-referrer" />' +
-            '<div class="medicine-single-info">' +
-              '<div class="medicine-single-name">' + med.name + '</div>' +
-              '<div class="medicine-single-label">FDA-approved \u2022 Free delivery</div>' +
-              '<a href="' + med.buyLink + '" target="_blank" class="medicine-buy-btn">' +
-                med.buyLinkText + ' \u2192' +
-              '</a>' +
-            '</div>' +
-          '</div>' +
+      const items = data.items;
+      const cardsHtml = items.map(function(med) {
+        return '<div class="lilly-card">' +
+          '<img src="' + med.image + '" alt="' + med.name + '" crossorigin="anonymous" referrerpolicy="no-referrer" />' +
+          '<div class="lilly-card-title">' + med.name + '</div>' +
+          '<a href="' + med.buyLink + '" target="_blank" class="lilly-card-btn">' + med.buyLinkText + ' \u2192</a>' +
         '</div>';
-      } else {
-        container.innerHTML = '<div class="lilly-direct-section">' +
-          '<h2>\uD83D\uDED2 Buy Medicines Online from Lilly Direct</h2>' +
-          '<div class="medicine-carousel">' +
-            data.items.map(function(med) {
-              return '<div class="medicine-card">' +
-                '<img src="' + med.image + '" alt="' + med.name + '" crossorigin="anonymous" referrerpolicy="no-referrer" />' +
-                '<div class="medicine-card-name">' + med.name + '</div>' +
-                '<a href="' + med.buyLink + '" target="_blank" class="medicine-card-btn">' + med.buyLinkText + '</a>' +
-              '</div>';
-            }).join('') +
+      }).join('');
+      
+      const navHtml = items.length > 1
+        ? '<div class="lilly-nav">' +
+            '<div class="lilly-arrow" id="lillyPrev">\u2039</div>' +
+            '<div class="lilly-dots" id="lillyDots"></div>' +
+            '<div class="lilly-arrow" id="lillyNext">\u203A</div>' +
+          '</div>'
+        : '';
+      
+      container.innerHTML =
+        '<div class="lilly-carousel">' +
+          '<div class="lilly-carousel-header">Buy medicines online from Lilly Direct</div>' +
+          '<div class="lilly-slides">' +
+            '<div class="lilly-slides-track" id="lillyTrack">' + cardsHtml + '</div>' +
           '</div>' +
+          navHtml +
         '</div>';
+      
+      // Carousel logic
+      var track = document.getElementById('lillyTrack');
+      var slides = track ? track.querySelectorAll('.lilly-card') : [];
+      var dotsContainer = document.getElementById('lillyDots');
+      var idx = 0;
+      
+      if (dotsContainer && slides.length > 1) {
+        for (var i = 0; i < slides.length; i++) {
+          (function(ii) {
+            var dot = document.createElement('div');
+            dot.classList.add('lilly-dot');
+            if (ii === 0) dot.classList.add('active');
+            dot.addEventListener('click', function() { idx = ii; updateLillyCarousel(); });
+            dotsContainer.appendChild(dot);
+          })(i);
+        }
+      }
+      
+      var GAP = 12;
+      var slidesContainer = container.querySelector('.lilly-slides');
+      
+      function updateLillyCarousel() {
+        if (!slides.length) return;
+        var cardW = slides[0].getBoundingClientRect().width + GAP;
+        var maxScroll = track.scrollWidth - slidesContainer.offsetWidth;
+        var offset = idx * cardW;
+        if (offset > maxScroll) offset = maxScroll;
+        track.style.transform = 'translateX(-' + offset + 'px)';
+        var allDots = container.querySelectorAll('.lilly-dot');
+        for (var d = 0; d < allDots.length; d++) {
+          allDots[d].classList.toggle('active', d === idx);
+        }
+      }
+      
+      var prevBtn = document.getElementById('lillyPrev');
+      var nextBtn = document.getElementById('lillyNext');
+      if (nextBtn) nextBtn.addEventListener('click', function() {
+        idx = idx < slides.length - 1 ? idx + 1 : 0;
+        updateLillyCarousel();
+      });
+      if (prevBtn) prevBtn.addEventListener('click', function() {
+        idx = idx > 0 ? idx - 1 : slides.length - 1;
+        updateLillyCarousel();
+      });
+      
+      // Touch/swipe support
+      var touchStartX = 0;
+      var SWIPE_THRESHOLD = 50;
+      if (track) {
+        track.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        track.addEventListener('touchend', function(e) {
+          var diff = touchStartX - e.changedTouches[0].screenX;
+          if (Math.abs(diff) > SWIPE_THRESHOLD) {
+            if (diff > 0) { idx = idx < slides.length - 1 ? idx + 1 : 0; }
+            else { idx = idx > 0 ? idx - 1 : slides.length - 1; }
+            updateLillyCarousel();
+          }
+        });
       }
     }
     
