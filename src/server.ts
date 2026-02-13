@@ -88,7 +88,7 @@ function createMedicineCarouselHTML(medicines = AVAILABLE_MEDICINES): string {
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  background: transparent;
   display: flex;
   justify-content: center;
   padding: 40px;
