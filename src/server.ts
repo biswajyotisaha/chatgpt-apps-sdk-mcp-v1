@@ -4,7 +4,7 @@ import { z } from 'zod';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { randomUUID } from 'crypto';
-import { AVAILABLE_MEDICINES } from './data.js';
+import { AVAILABLE_MEDICINES, APP_CAPABILITIES, INJECTION_MEDICINE_DATA } from './data.js';
 import { MedicineData } from './types.js';
 import { 
   setAccessToken, 
@@ -104,47 +104,6 @@ server.registerTool(
     inputSchema: {}
   },
   async () => {
-    const categories = [
-      {
-        icon: '🛒',
-        name: 'Shop & Buy Medicines',
-        features: [
-          { name: 'Buy Medicines Online', description: 'Browse all FDA-approved medicines available on the Lilly online pharmacy and get direct purchase links.' },
-          { name: 'Shop a Specific Medicine', description: 'Look up a specific medicine (Zepbound, Humalog, Humulin, Emgality, Basaglar, Lyumjev, or Rezvoglar) and get a direct link to buy it on Lilly.' }
-        ]
-      },
-      {
-        icon: '💉',
-        name: 'Injection Help',
-        features: [
-          { name: 'Injection Pen Instructions', description: 'Get a step-by-step visual guide on how to use your injection pen, including safety warnings, images, and a training video.' }
-        ]
-      },
-      {
-        icon: '👤',
-        name: 'Your Account',
-        features: [
-          { name: 'View Your Profile', description: 'See your personal profile information linked to your Lilly account.' },
-          { name: 'View Your Savings Card', description: 'Check your copay savings card details and benefits.' }
-        ]
-      },
-      {
-        icon: '🔧',
-        name: 'Troubleshooting & Support',
-        features: [
-          { name: 'Troubleshooting Guide', description: 'Look up common issues, side effects, and emergency information for your medicine.' },
-          { name: 'Product Support & Troubleshooting', description: 'Get help with Mounjaro or Zepbound product issues, device troubleshooting (e.g., pen not clicking or not working), shipping problems, or report a side effect.' }
-        ]
-      },
-      {
-        icon: '📍',
-        name: 'Find a Pharmacy',
-        features: [
-          { name: 'Find Nearby Pharmacies', description: 'Search for pharmacies near any address, city, or zip code and view them on an interactive map. Also shows options to buy your medicine online from Lilly Direct.' }
-        ]
-      }
-    ];
-
     return {
       content: [
         {
@@ -153,7 +112,7 @@ server.registerTool(
         }
       ],
       structuredContent: {
-        categories: categories
+        categories: APP_CAPABILITIES
       }
     };
   }
@@ -187,82 +146,8 @@ server.registerTool(
   async (args: any) => {
     const medicineName = args.medicineName?.toLowerCase() || 'zepbound';
     
-    // Medicine-specific data
-    // Official Zepbound/Mounjaro Instructions for Use - 4 simple steps
-    // Images served from local public folder
-    // Images loaded from Adobe AEM CDN
-    const medicineData: Record<string, { 
-      name: string; 
-      videoUrl: string; 
-      instructionsUrl: string;
-      steps: Array<{ title: string; description: string; warning: string; image: string }>;
-    }> = {
-      'zepbound': {
-        name: 'Zepbound®',
-        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
-        instructionsUrl: 'https://uspl.lilly.com/zepbound/zepbound.html#ug',
-        steps: [
-          {
-            title: "Step 1: Choose Your Injection Site",
-            description: "You may inject Zepbound in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week.",
-            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d0514e55-3fb6-4541-a31a-dd466f7ad415/as/injection_step_1.avif?assetname=injection_step_1.png&width=1200&format=avif"
-          },
-          {
-            title: "Step 2: Pull Off the Gray Base Cap",
-            description: "Pull off the gray base cap while the pen is locked. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal.",
-            warning: "Do not touch the needle. After you remove the cap, you must use the pen within 5 minutes.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:66d7adbb-0a6a-4cbe-a622-2e305f2136b3/as/injection_step_2.avif?assetname=injection_step_2.png&width=1200&format=avif"
-          },
-          {
-            title: "Step 3: Place on Skin and Unlock",
-            description: "Place the clear base flat on your skin at your chosen injection site. Make sure you can see the medicine window. Then turn the lock ring to unlock the pen.",
-            warning: "Do not press the injection button until the clear base is flat against your skin and the pen is unlocked.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:7248da27-e860-4a4f-911e-700f4162987f/as/injection_step_3.avif?assetname=injection_step_3.png&width=1200&format=avif"
-          },
-          {
-            title: "Step 4: Press and Hold the Button",
-            description: "Press and hold the purple injection button for up to 10 seconds. Listen for the first click — it means the injection has started. Keep holding. When you hear the second click, the injection is complete. You may now lift the pen.",
-            warning: "Do not lift the pen until you hear the second click. If the gray plunger is NOT visible in the window after injection, contact your healthcare provider.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:ad1c3410-ec02-447b-8f83-e9ac5eb1741e/as/injection_step_4.avif?assetname=injection_step_4.png&width=1200&format=avif"
-          }
-        ]
-      },
-      'mounjaro': {
-        name: 'Mounjaro®',
-        videoUrl: 'https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d8b622f8-8dd3-4fe8-8d79-e131035ba306/renditions/original/as/cmat-02292-single-dose-pen-injection-training-video.mp4',
-        instructionsUrl: 'https://uspl.lilly.com/mounjaro/mounjaro.html#ug',
-        steps: [
-          {
-            title: "Step 1: Choose Your Injection Site",
-            description: "You may inject Mounjaro in your stomach (abdomen) at least 2 inches away from your belly button, in the front of your thigh, or in the back of your upper arm (with help from another person). Choose a different injection site each week.",
-            warning: "Do not inject into skin that is tender, bruised, red, hard, or has scars or stretch marks.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:d0514e55-3fb6-4541-a31a-dd466f7ad415/as/injection_step_1.avif?assetname=injection_step_1.png&width=1200&format=avif"
-          },
-          {
-            title: "Step 2: Pull Off the Gray Base Cap",
-            description: "Pull off the gray base cap while the pen is locked. Do not put the gray base cap back on — this could damage the needle. You may see a few drops of medicine on the needle or clear base. This is normal.",
-            warning: "Do not touch the needle. After you remove the cap, you must use the pen within 5 minutes.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:66d7adbb-0a6a-4cbe-a622-2e305f2136b3/as/injection_step_2.avif?assetname=injection_step_2.png&width=1200&format=avif"
-          },
-          {
-            title: "Step 3: Place on Skin and Unlock",
-            description: "Place the clear base flat on your skin at your chosen injection site. Make sure you can see the medicine window. Then turn the lock ring to unlock the pen.",
-            warning: "Do not press the injection button until the clear base is flat against your skin and the pen is unlocked.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:7248da27-e860-4a4f-911e-700f4162987f/as/injection_step_3.avif?assetname=injection_step_3.png&width=1200&format=avif"
-          },
-          {
-            title: "Step 4: Press and Hold the Button",
-            description: "Press and hold the purple injection button for up to 10 seconds. Listen for the first click — it means the injection has started. Keep holding. When you hear the second click, the injection is complete. You may now lift the pen.",
-            warning: "Do not lift the pen until you hear the second click. If the gray plunger is NOT visible in the window after injection, contact your healthcare provider.",
-            image: "https://delivery-p137454-e1438138.adobeaemcloud.com/adobe/assets/urn:aaid:aem:ad1c3410-ec02-447b-8f83-e9ac5eb1741e/as/injection_step_4.avif?assetname=injection_step_4.png&width=1200&format=avif"
-          }
-        ]
-      }
-    };
-
     // Get medicine data or default to Zepbound
-    const medicine = medicineData[medicineName] || medicineData['zepbound'];
+    const medicine = INJECTION_MEDICINE_DATA[medicineName] || INJECTION_MEDICINE_DATA['zepbound'];
     const displayName = medicine.name;
 
     return {
