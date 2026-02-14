@@ -2068,6 +2068,7 @@ export function createProductSupportWidgetHTML(embeddedProfile?: any): string {
                     <option value="OK">Oklahoma</option>
                     <option value="OR">Oregon</option>
                     <option value="PA">Pennsylvania</option>
+                    <option value="PR">Puerto Rico</option>
                     <option value="RI">Rhode Island</option>
                     <option value="SC">South Carolina</option>
                     <option value="SD">South Dakota</option>
@@ -2832,13 +2833,15 @@ export function createProductSupportWidgetHTML(embeddedProfile?: any): string {
     
     function loadUserProfile() {
       console.log('🔄 loadUserProfile called');
-      // Use embedded profile data from server (fetched at tool invocation time)
-      var profile = window.__embeddedProfile || null;
+      // Read profile from ChatGPT SDK toolOutput (primary), fall back to embedded data
+      var toolOutput = (window.openai && window.openai.toolOutput) || {};
+      var profile = toolOutput.profile || window.__embeddedProfile || null;
       
-      console.log('🔍 window.__embeddedProfile:', profile);
+      console.log('🔍 window.openai.toolOutput:', toolOutput);
+      console.log('🔍 Resolved profile:', profile);
       
       if (!profile) {
-        console.log('❌ No embedded profile data available');
+        console.log('❌ No profile data available (toolOutput or embedded)');
         return;
       }
       
@@ -3211,8 +3214,24 @@ export function createProductSupportWidgetHTML(embeddedProfile?: any): string {
       }
     });
     
-    // Embedded profile data from server
+    // Embedded profile data from server (fallback)
     window.__embeddedProfile = ${profileJSON};
+    
+    // Listen for ChatGPT SDK events to receive toolOutput profile data
+    window.addEventListener('openai:tool_response', function() {
+      console.log('📡 openai:tool_response event received');
+      var toolOutput = (window.openai && window.openai.toolOutput) || {};
+      if (toolOutput.profile && document.getElementById('your-info') && document.getElementById('your-info').classList.contains('active')) {
+        loadUserProfile();
+      }
+    });
+    window.addEventListener('openai:set_globals', function() {
+      console.log('📡 openai:set_globals event received');
+      var toolOutput = (window.openai && window.openai.toolOutput) || {};
+      if (toolOutput.profile && document.getElementById('your-info') && document.getElementById('your-info').classList.contains('active')) {
+        loadUserProfile();
+      }
+    });
     
     console.log('Product Support widget loaded');
   </script>

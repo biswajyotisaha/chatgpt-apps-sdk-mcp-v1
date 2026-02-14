@@ -88,7 +88,8 @@ export function registerProductSupportTool(server: McpServer): void {
         structuredContent: {
           supportType: 'product-support',
           tabs: ['Product support', 'Shipping-related issues', 'Report a possible side effect'],
-          products: ['Mounjaro® (tirzepatide)', 'Zepbound® (tirzepatide)']
+          products: ['Mounjaro® (tirzepatide)', 'Zepbound® (tirzepatide)'],
+          profile: userProfile
         },
         _meta: {
           'openai/dynamicContent': dynamicResource
